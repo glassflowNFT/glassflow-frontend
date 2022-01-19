@@ -1,5 +1,18 @@
+:root {
+  --blue-accent: #3B6AFC;
+  --red-accent: #D1495B;
+  --almost-white: #FEFFFE;
+  --almost-black: #242423;
+  --secondary-text: #373737;
+  --border-color: #9F9F9F;
+  --input: #F2F4F8;
+}
+
+
+
 .App {
-  text-align: center;
+  width: 100%;
+  height: 100%;
 }
 
 .App-logo {
