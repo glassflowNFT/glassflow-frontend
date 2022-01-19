@@ -1,0 +1,39 @@
+.nav-wrapper {
+  display: flex;
+  max-width: 100%;
+  height: 80px;
+  padding: 0 4em;
+  align-items: center;
+  span {
+    color: var(--blue-accent);
+    font-weight: bolder;
+    font-size: 20pt;
+  }
+
+}
+
+.nav-wrapper ul {
+  display: flex;
+  width: 100%;
+  list-style-type: none;
+  justify-content: flex-end;
+  li {
+    margin: 0 1em;
+    a {
+      text-decoration: none;
+      color: var(--secondary-text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all ease 0.1s;
+      svg {
+        margin-right: 5px;  
+        height: 20px;
+        transform: translateY(-1px);
+      }
+      &:hover {
+        color: var(--blue-accent);
+      }
+    }
+  }
+}
