@@ -1,6 +1,7 @@
 import './verification.css';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
+import cookie from 'react-cookies';
 
 export default function Verification() {
   const navigate = useNavigate();
@@ -20,6 +21,17 @@ export default function Verification() {
 
     // is the user older than 21 years old
     if (yearDiff >= 21) {
+      // setup cookie expiration
+      const expires = new Date();
+      expires.setDate(Date.now() + 1000 * 60 * 60 * 24 * 14);
+      // save cookie
+      cookie.save(
+        'age-verified',
+        'true',
+        {
+          expires
+        }
+      );
       navigate("/")
     } else {
       setError("You are not old enough to access GlassFlow")

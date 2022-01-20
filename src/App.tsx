@@ -14,7 +14,6 @@ import Search from './pages/Search/Search';
 function App() {
   const navigate = useNavigate();
 
-  // TODO: only save cookie after user validates age
   const handleNavigation = () => {
 
     // load age verification cookie
@@ -22,17 +21,6 @@ function App() {
 
     // check if cookie exists
     if (!verificationCookie) {
-      // setup cookie expiration
-      const expires = new Date();
-      expires.setDate(Date.now() + 1000 * 60 * 60 * 24 * 14);
-      // save cookie
-      cookie.save(
-        'age-verified',
-        'true',
-        {
-          expires
-        }
-      );
       // navigate to the verify page on initial visit
       navigate("/verify");
     }

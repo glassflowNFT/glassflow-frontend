@@ -1,1 +1,109 @@
-/* No CSS */
+.hero-section {
+  display: flex;
+  width: 100%;
+}
+
+.page-section {
+  margin-bottom: 10em;
+}
+
+.collections-section .collections-header h1 {
+  font-size: 20pt;
+  color: var(--blue-accent);
+}
+
+.collections-section .collections-header button svg {
+  height: 15px;
+  width: auto;
+  margin-left: 10px;
+}
+
+.call-to-action {
+  flex: 1;
+}
+
+.call-to-action p {
+  margin-top: 0;
+  max-width: 80%;
+  font-size: 35pt;
+}
+
+.call-to-action button {
+  width: auto;
+  height: 80px;
+  font-size: 25pt;
+}
+
+.call-to-action button svg {
+  height: 40px;
+  width: auto;
+  margin-left: 10px;
+  transform: translateY(1px);
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-image img {
+  max-width: 600px;
+  border-radius: 10px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  transform: rotate(-3deg);
+  z-index: 2;
+}
+
+.hero-image svg {
+  position: absolute;
+  z-index: 1;
+  top: -40%;
+  width: 90%;
+  height: auto;
+}
+
+.collections-wrapper {
+  padding: 3em 0;
+}
+
+.collections-wrapper .collection {
+  display: flex;
+  max-width: 500px;
+}
+
+.collections-wrapper .collection .collection-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.collections-wrapper .collection .collection-name {
+  font-weight: bold;
+}
+
+.collections-wrapper .collection .collection-description {
+  margin: 10px 0;
+}
+
+.collections-wrapper .collection .collection-link {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--blue-accent);
+  font-weight: bold;
+  transition: all ease 0.3s;
+}
+
+.collections-wrapper .collection .collection-link:hover {
+  transform: translateX(3px);
+}
+
+.collections-wrapper .collection img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  margin-right: 20px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
