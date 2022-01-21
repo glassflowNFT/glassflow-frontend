@@ -10,6 +10,7 @@ import Mint from './pages/Mint/Mint';
 import User from './pages/User/User';
 import Support from './pages/Support/Support';
 import Search from './pages/Search/Search';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ function App() {
           <Route path="/search" element={<Search/>} />
           <Route path="/verify" element={<Verification/>} />
         </Routes>
+        <Footer/>
       </div>
   );
 }

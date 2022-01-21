@@ -1,8 +1,38 @@
 import './home.css';
 import { ChevronRight } from 'react-feather';
+import { generateSentences, generateWords } from '../../components/LoremIpsum';
+
+
 
 export default function Home() {
 
+  const renderCollection = () => {
+    return(
+      <div className="collection">
+        <img src="https://lotgrafix.com/wp-content/uploads/2019/04/34-asana-color-gradient.jpg" alt="collection"></img>
+        <div className="collection-info">
+          <span className="collection-name">{generateSentences(1)}</span>
+          <p className="collection-description secondary">{generateSentences(1)}</p>
+          <span className="collection-link">See Collection <ChevronRight/></span>
+        </div>
+      </div>
+    );
+  }
+
+  const renderTrendingArtists = () => {
+    const count = Math.round(Math.random() * (500 - 0) + 0);
+    return (
+      <div className="artist">
+        <div className="image-wrapper">
+          <img src={`https://picsum.photos/200/${count}`} alt="artist"></img>
+        </div>
+        <div className="artist-info">
+          <span className="artist-name">{generateWords(2)}</span>
+          <span className="artist-bio secondary">{generateSentences(1)}</span>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="home-wrapper page-wrapper">
@@ -24,29 +54,31 @@ export default function Home() {
         </section>
       </section>
       <section className="collections-section page-section">
-        <section className="collections-header">
+        <section className="home-section-header">
           <h1>Featured Collections</h1>
           <p className="secondary">
-            Nisi vitae suscipit tellus mauris a diam. Eget nunc lobortis mattis
-            aliquam faucibus purus in massa. Nec ullamcorper sit amet risus
-            nullam eget. Id diam maecenas ultricies mi eget. Id diam maecenas
-            ultricies mi eget mauris pharetra et ultrices. Sit amet luctus
-            venenatis lectus. Suspendisse faucibus interdum posuere lorem ipsum
-            dolor sit amet consectetur.
+            {generateSentences(10)} 
           </p>
           <button className="primary-button">
             View All Collections <ChevronRight />
           </button>
-          <section className="collections-wrapper">
-            <div className="collection">
-              <img src="https://lotgrafix.com/wp-content/uploads/2019/04/34-asana-color-gradient.jpg" alt="collection"></img>
-              <div className="collection-info">
-                <span className="collection-name">Nisi vitae suscipit</span>
-                <p className="collection-description secondary">Eget nunc lobortis mattis aliquam faucibus purus in massa.</p>
-                <span className="collection-link">See Collection <ChevronRight/></span>
-              </div>
-            </div>
-          </section>
+        </section>
+        <section className="collections-wrapper">
+          {[...Array(9)].map(renderCollection)}
+        </section>
+      </section>
+      <section className="collections-section page-section">
+        <section className="home-section-header">
+          <h1>Trending Artists</h1>
+          <p className="secondary">
+            {generateSentences(10)} 
+          </p>
+          <button className="primary-button">
+            View All Artists <ChevronRight />
+          </button>
+        </section>
+        <section className="artists-wrapper">
+          {[...Array(10)].map(renderTrendingArtists)}
         </section>
       </section>
     </div>

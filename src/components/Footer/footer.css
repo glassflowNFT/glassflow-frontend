@@ -1,1 +1,60 @@
-/* No CSS */
+.footer-wrapper {
+  width: 100%;
+  height: auto;
+}
+
+.footer-top {
+  color: white;
+  background: var(--blue-accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6em;
+}
+
+.footer-top .footer-section {
+  display: flex;
+}
+
+.footer-top .footer-section ul {
+  list-style-type: none;
+  text-align: right;
+  margin-left: 2em;
+}
+
+.footer-top .footer-section ul li {
+  margin: 1em 0;
+  font-weight: lighter;
+  transition: all ease 0.3s;
+}
+
+.footer-top .footer-section ul li:not(:first-child):hover {
+  transform: translateX(-5px);
+}
+
+.footer-top .footer-section ul a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer-top .footer-section ul .footer-first {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 6em;
+}
+
+.footer-bottom .footer-socials {
+  display: flex;
+  align-items: center;
+}
+
+.footer-bottom .footer-socials svg {
+  margin: 0 1em;
+  color: var(--blue-accent);
+}

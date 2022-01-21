@@ -5,11 +5,11 @@
 }
 
 .page-section {
-  margin-bottom: 10em;
+  margin-bottom: 6em;
 }
 
 .collections-section {
-  .collections-header {
+  .home-section-header {
     h1 {
       font-size: 20pt;
       color: var(--blue-accent);
@@ -67,9 +67,13 @@
 
 .collections-wrapper {
   padding: 3em 0;
+  display: grid;
+  // grid-template-columns: auto auto auto;
   .collection {
     display: flex;
     max-width: 500px;
+    margin: 1em 0;
+    grid-gap: 1rem;
     .collection-info {
       display: flex;
       flex-direction: column;
@@ -98,6 +102,89 @@
       border-radius: 10px;
       margin-right: 20px;
       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      cursor: pointer;
     }
+  }
+}
+
+.artists-wrapper {
+  padding: 3em 0;
+  display: grid;
+  .artist{
+    max-width: 300px;
+    cursor: pointer;
+    margin: 1em 0;
+    grid-gap: 1rem;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background: var(--almost-white);
+    border-radius: 10px;
+    padding: 0.5em;
+    transition: all ease 0.5s;
+    .image-wrapper {
+      width: 300px;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 10px;
+      img {
+        width: auto;
+        height: 200%;
+        margin-right: 20px;
+        // filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      }
+    }
+    .artist-info {
+      display: flex;
+      flex-direction: column;
+      padding: 0 5px;
+      .artist-name {
+        font-weight: bold;
+      }
+      span {
+        margin: 5px 0;
+      }
+      svg {
+        color: var(--blue-accent);
+      }
+    }
+    .collection-name {
+      font-weight: bold;
+    } 
+    .collection-description {
+      margin: 10px 0;
+    }
+    .collection-link {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: var(--blue-accent);
+      font-weight: bold;
+      transition: all ease 0.3s;
+      &:hover {
+        transform: translateX(3px);
+      }
+    }
+    &:hover {
+      filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
+      transform: translateY(3px);
+    }
+
+  }
+}
+
+@media (min-width: 1000px) {
+  .collections-wrapper { 
+    grid-template-columns: repeat(2, 1fr); 
+  }
+  .artists-wrapper {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+
+@media (min-width: 1600px) {
+  .collections-wrapper { 
+    grid-template-columns: repeat(3, 1fr); 
+  }
+  .artists-wrapper {
+    grid-template-columns: repeat(5, 1fr); 
   }
 }

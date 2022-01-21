@@ -4,15 +4,15 @@
 }
 
 .page-section {
-  margin-bottom: 10em;
+  margin-bottom: 6em;
 }
 
-.collections-section .collections-header h1 {
+.collections-section .home-section-header h1 {
   font-size: 20pt;
   color: var(--blue-accent);
 }
 
-.collections-section .collections-header button svg {
+.collections-section .home-section-header button svg {
   height: 15px;
   width: auto;
   margin-left: 10px;
@@ -66,11 +66,14 @@
 
 .collections-wrapper {
   padding: 3em 0;
+  display: grid;
 }
 
 .collections-wrapper .collection {
   display: flex;
   max-width: 500px;
+  margin: 1em 0;
+  grid-gap: 1rem;
 }
 
 .collections-wrapper .collection .collection-info {
@@ -106,4 +109,97 @@
   border-radius: 10px;
   margin-right: 20px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  cursor: pointer;
+}
+
+.artists-wrapper {
+  padding: 3em 0;
+  display: grid;
+}
+
+.artists-wrapper .artist {
+  max-width: 300px;
+  cursor: pointer;
+  margin: 1em 0;
+  grid-gap: 1rem;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  background: var(--almost-white);
+  border-radius: 10px;
+  padding: 0.5em;
+  transition: all ease 0.5s;
+}
+
+.artists-wrapper .artist .image-wrapper {
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.artists-wrapper .artist .image-wrapper img {
+  width: auto;
+  height: 200%;
+  margin-right: 20px;
+}
+
+.artists-wrapper .artist .artist-info {
+  display: flex;
+  flex-direction: column;
+  padding: 0 5px;
+}
+
+.artists-wrapper .artist .artist-info .artist-name {
+  font-weight: bold;
+}
+
+.artists-wrapper .artist .artist-info span {
+  margin: 5px 0;
+}
+
+.artists-wrapper .artist .artist-info svg {
+  color: var(--blue-accent);
+}
+
+.artists-wrapper .artist .collection-name {
+  font-weight: bold;
+}
+
+.artists-wrapper .artist .collection-description {
+  margin: 10px 0;
+}
+
+.artists-wrapper .artist .collection-link {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--blue-accent);
+  font-weight: bold;
+  transition: all ease 0.3s;
+}
+
+.artists-wrapper .artist .collection-link:hover {
+  transform: translateX(3px);
+}
+
+.artists-wrapper .artist:hover {
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
+  transform: translateY(3px);
+}
+
+@media (min-width: 1000px) {
+  .collections-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .artists-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1600px) {
+  .collections-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .artists-wrapper {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
