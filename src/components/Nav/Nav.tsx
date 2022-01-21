@@ -29,7 +29,7 @@ export default function Nav() {
 
   return (
     <nav className="nav-wrapper">
-      <span>GlassFlow</span>
+      <a href="/" className="site-title">GlassFlow</a>
       <ul>
         <li onClick={linkClicked}>
           <Link to="/" className={`${currentPage === "home" ? "active" : ""}`}>

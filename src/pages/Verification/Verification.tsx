@@ -34,7 +34,7 @@ export default function Verification() {
       );
       navigate("/")
     } else {
-      setError("You are not old enough to access GlassFlow")
+      setError("You muse be 21+ to access GlassFlow")
     }
   }
 

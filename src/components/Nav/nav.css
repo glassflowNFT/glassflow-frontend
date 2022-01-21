@@ -4,12 +4,14 @@
   height: 80px;
   padding: 0 6em;
   align-items: center;
+  border-bottom: 1px solid var(--input);
 }
 
-.nav-wrapper span {
+.nav-wrapper .site-title {
   color: var(--blue-accent);
   font-weight: bolder;
   font-size: 20pt;
+  text-decoration: none;
 }
 
 .nav-wrapper ul {
