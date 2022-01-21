@@ -44,9 +44,17 @@
   .footer-socials {
     display: flex;
     align-items: center;
-    svg {
-      margin: 0 1em;
-      color: var(--blue-accent);
+    .social-icons {
+      transform: translateY(1px);
+      svg {
+        margin-left: 2em;
+        color: var(--blue-accent);
+        transition: all ease 0.3s;
+        &:hover {
+          transform: scale(1.1) rotate(360deg);
+        }
+      }
     }
   }
+
 }

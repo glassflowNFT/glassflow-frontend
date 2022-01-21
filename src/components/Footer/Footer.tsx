@@ -30,9 +30,11 @@ export default function Footer() {
         <span className="secondary">© 2022 GlassFlow Inc.</span>
         <div className="footer-socials">
           <span>Our Socials:</span>
-          <a href="/"><Twitter/></a>
-          <a href="/"><Facebook/></a>
-          <a href="/"><Instagram/></a>
+          <section className="social-icons">
+            <a href="/"><Twitter/></a>
+            <a href="/"><Facebook/></a>
+            <a href="/"><Instagram/></a>
+          </section>
         </div>
       </div>
     </footer>

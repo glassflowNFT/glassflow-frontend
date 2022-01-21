@@ -54,7 +54,16 @@
   align-items: center;
 }
 
-.footer-bottom .footer-socials svg {
-  margin: 0 1em;
+.footer-bottom .footer-socials .social-icons {
+  transform: translateY(1px);
+}
+
+.footer-bottom .footer-socials .social-icons svg {
+  margin-left: 2em;
   color: var(--blue-accent);
+  transition: all ease 0.3s;
+}
+
+.footer-bottom .footer-socials .social-icons svg:hover {
+  transform: scale(1.1) rotate(360deg);
 }
