@@ -38,6 +38,10 @@
   margin-bottom: 5px;
 }
 
+.auth-wrapper .auth-left .toggle-auth {
+  margin-top: 10px;
+}
+
 .auth-wrapper .auth-left b {
   color: red;
   font-weight: normal;
