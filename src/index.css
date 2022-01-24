@@ -1,11 +1,9 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-image: url("./assets/crossword.png");
 }
 
@@ -16,8 +14,7 @@ html, body, #root {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .secondary {
@@ -42,7 +39,7 @@ code {
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   transition: all ease 0.3s;
   font-weight: bold;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .primary-button svg {
@@ -53,4 +50,23 @@ code {
 .primary-button:hover {
   filter: brightness(80%) drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   transform: translateY(3px);
+}
+
+.fadeIn {
+  animation: fadeIn ease 0.3s;
+}
+
+.fadeInLonger {
+  animation: fadeIn ease 1s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

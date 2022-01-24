@@ -13,6 +13,7 @@
     h1 {
       font-size: 20pt;
       color: var(--blue-accent);
+      margin-bottom: 0px;
     }
     button {
       svg {
@@ -28,13 +29,14 @@
   flex: 1;
   p {
     margin-top: 0;
-    max-width: 80%;
+    max-width: 100%;
     font-size: 35pt;
+    font-family: 'Poppins Black', sans-serif;
   }
   button {
     width: auto;
     height: 80px;
-    font-size: 25pt;
+    font-size: 20pt;
     svg {
       height: 40px;
       width: auto;
@@ -53,7 +55,7 @@
     max-width: 600px;
     border-radius: 10px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    transform: rotate(-3deg);
+    transform: rotate(-2deg);
     z-index: 2;
   }
   svg {

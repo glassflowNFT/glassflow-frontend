@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Home, PlusCircle, User, HelpCircle, Search } from 'react-feather';
+import { Home, PlusCircle, User, HelpCircle, Search, UserPlus } from 'react-feather';
 import { Link } from "react-router-dom";
 import "./nav.css"
 
-export default function Nav() {
+export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [currentPage, setCurrentPage] = useState<string>();
 
   useEffect(() => {
@@ -25,6 +25,11 @@ export default function Nav() {
     // extract link text
     const page = el.innerText.toLowerCase();
     setCurrentPage(page);
+  }
+
+  const authClicked = (e: any) => {
+    // show the user authentication modal
+    props.setShowAuth(true);
   }
 
   return (
@@ -66,6 +71,13 @@ export default function Nav() {
             className={`${currentPage === "search" ? "active" : ""}`}
           >
             <Search /> Search
+          </Link>
+        </li>
+        <li onClick={authClicked}>
+          <Link 
+            to={`/${currentPage}`}
+          >
+            <UserPlus/> Login / Signup 
           </Link>
         </li>
       </ul>

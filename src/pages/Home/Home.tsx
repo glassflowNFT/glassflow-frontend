@@ -8,8 +8,9 @@ import gradient from 'random-gradient';
 export default function Home() {
 
   const renderCollection = () => {
+    const count = Math.round(Math.random() * (500 - 0) + 0);
     return(
-      <div className="collection">
+      <div className="collection" key={count}>
         <img src="https://lotgrafix.com/wp-content/uploads/2019/04/34-asana-color-gradient.jpg" alt="collection"></img>
         <div className="collection-info">
           <span className="collection-name">{generateSentences(1)}</span>
@@ -24,7 +25,7 @@ export default function Home() {
     const count = Math.round(Math.random() * (500 - 0) + 0);
     const bgGradient = { background: gradient(count.toString()) };
     return (
-      <div className="artist">
+      <div className="artist" key={count}>
         <div className="image-wrapper" style={bgGradient}>
           {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
         </div>
@@ -37,12 +38,11 @@ export default function Home() {
   }
 
   return (
-    <div className="home-wrapper page-wrapper">
+    <div className="home-wrapper page-wrapper  fadeInLonger">
       <section className="hero-section page-section">
         <section className="call-to-action">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliq.
+            {generateSentences(2)}
           </p>
           <button className="primary-button">
             Get Started <ChevronRight />

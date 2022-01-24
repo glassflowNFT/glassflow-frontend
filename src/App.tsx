@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from "react-router-dom";
 import './App.css';
 import Home from './pages/Home/Home';
@@ -11,9 +11,11 @@ import User from './pages/User/User';
 import Support from './pages/Support/Support';
 import Search from './pages/Search/Search';
 import Footer from './components/Footer/Footer';
+import UserAuth from './components/UserAuth/UserAuth';
 
 function App() {
   const navigate = useNavigate();
+  const [showAuth, setShowAuth] = useState<boolean>(false);
 
   const handleNavigation = () => {
 
@@ -35,7 +37,8 @@ function App() {
 
   return (
       <div className="App">
-        <Nav/>
+        <Nav setShowAuth={setShowAuth}/>
+        {showAuth && <UserAuth showAuth={showAuth} setShowAuth={setShowAuth}/>}
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/mint" element={<Mint/>} />
