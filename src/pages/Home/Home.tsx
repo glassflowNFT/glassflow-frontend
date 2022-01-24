@@ -1,6 +1,7 @@
 import './home.css';
 import { ChevronRight } from 'react-feather';
 import { generateSentences, generateWords } from '../../components/LoremIpsum';
+import gradient from 'random-gradient';
 
 
 
@@ -21,10 +22,11 @@ export default function Home() {
 
   const renderTrendingArtists = () => {
     const count = Math.round(Math.random() * (500 - 0) + 0);
+    const bgGradient = { background: gradient(count.toString()) };
     return (
       <div className="artist">
-        <div className="image-wrapper">
-          <img src={`https://picsum.photos/200/${count}`} alt="artist"></img>
+        <div className="image-wrapper" style={bgGradient}>
+          {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
         </div>
         <div className="artist-info">
           <span className="artist-name">{generateWords(2)}</span>

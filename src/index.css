@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Quicksand', sans-serif;
+  background-image: url("./assets/crossword.png");
 }
 
 html, body, #root {

@@ -121,11 +121,11 @@
   max-width: 300px;
   cursor: pointer;
   margin: 1em 0;
-  grid-gap: 1rem;
+  grid-gap: 2em;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   background: var(--almost-white);
   border-radius: 10px;
-  padding: 0.5em;
+  padding: 0.8em;
   transition: all ease 0.5s;
 }
 
@@ -150,6 +150,7 @@
 
 .artists-wrapper .artist .artist-info .artist-name {
   font-weight: bold;
+  margin-top: 1em;
 }
 
 .artists-wrapper .artist .artist-info span {
@@ -160,11 +161,7 @@
   color: var(--blue-accent);
 }
 
-.artists-wrapper .artist .collection-name {
-  font-weight: bold;
-}
-
-.artists-wrapper .artist .collection-description {
+.artists-wrapper .artist .artist-bio {
   margin: 10px 0;
 }
 
@@ -186,7 +183,26 @@
   transform: translateY(3px);
 }
 
+@media (min-width: 900px) {
+  .artists-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+  }
+  .artist {
+    max-width: 100%;
+  }
+}
+
 @media (min-width: 1000px) {
+  .collections-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .artists-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
   .collections-wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -200,6 +216,6 @@
     grid-template-columns: repeat(3, 1fr);
   }
   .artists-wrapper {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
