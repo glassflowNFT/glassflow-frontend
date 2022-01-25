@@ -38,7 +38,7 @@ export default function Home() {
   }
 
   return (
-    <div className="home-wrapper page-wrapper  fadeInLonger">
+    <div className="home-wrapper page-wrapper">
       <section className="hero-section page-section">
         <section className="call-to-action">
           <p>

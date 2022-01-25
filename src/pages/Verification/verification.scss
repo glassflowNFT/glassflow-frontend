@@ -9,6 +9,14 @@
   position: absolute;
   top: 0;
   left: 0;
+  .verification-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5em 0;
+    button {
+      width: 49%;
+    }
+  }
 }
 
 .verification-wrapper .container {
@@ -26,14 +34,12 @@
     margin: 0.5em 0;
   }
   button {
-    width: 100%;
     height: 40px;
     background-color: var(--blue-accent);
     color: white;
     border-radius: 10px;
     border: none;
     transition: all ease 0.3s;
-    margin-bottom: 0.5em;
     cursor: pointer;
     &:hover {
       filter: brightness(80%);

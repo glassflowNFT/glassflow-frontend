@@ -22,13 +22,13 @@ export default function Signup(props: {setShowLogin: (show: boolean) => void}) {
             <span>
               First Name <b>*</b>
             </span>
-            <input placeholder="your_email@email.com"></input>
+            <input placeholder="Your first name"></input>
           </section>
           <section className="auth-field-section">
             <span>
               Last Name <b>*</b>
             </span>
-            <input placeholder="your_email@email.com"></input>
+            <input placeholder="Your last name"></input>
           </section>
         </section>
         <section className="auth-field-section">

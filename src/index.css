@@ -7,6 +7,10 @@ body {
   background-image: url("./assets/crossword.png");
 }
 
+*{
+  box-sizing: border-box;
+}
+
 html, body, #root {
   width: 100vw;
   height: 100vh;
@@ -23,7 +27,8 @@ code {
 
 .page-wrapper {
   padding: 0 6em;
-  padding-top: 7em;
+  padding-top: 5em;
+  animation: fadeIn ease 0.5s;
 }
 
 .primary-button {
