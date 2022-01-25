@@ -75,7 +75,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
         </li>
         <li onClick={authClicked}>
           <Link 
-            to={`/${currentPage}`}
+            to={`/${currentPage === 'home' ? '/' : currentPage}`}
           >
             <UserPlus/> Login / Signup 
           </Link>

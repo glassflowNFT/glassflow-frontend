@@ -9,7 +9,7 @@
   border-radius: 10px;
   position: absolute;
   width: 60%;
-  height: 80%;
+  height: 90%;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   display: flex;
   overflow: hidden;
@@ -20,14 +20,13 @@
   height: 100%;
   width: 100%;
   padding: 0 3em;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   background-image: url("../../assets/crossword.png");
+  overflow-y: auto;
 }
 
 .auth-wrapper .auth-left .primary-button {
   width: 100%;
+  margin-bottom: 1em;
 }
 
 .auth-wrapper .auth-left .auth-header {
@@ -39,7 +38,7 @@
 }
 
 .auth-wrapper .auth-left .toggle-auth {
-  margin-top: 10px;
+  padding-bottom: 2em;
 }
 
 .auth-wrapper .auth-left b {
@@ -75,10 +74,84 @@
   width: 100%;
 }
 
-.auth-field-section input {
+.auth-field-section .hint {
+  font-size: 0.7em;
+  display: block;
+  margin: 3px 0;
+}
+
+.auth-field-section.double {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 0em;
+}
+
+.auth-field-section.double .auth-field-section {
+  width: 48%;
+}
+
+.auth-field-section input, .auth-field-section textarea {
   height: 45px;
   border-radius: 10px;
   background: #F2F4F8;
   border: none;
   padding-left: 1em;
+}
+
+.auth-field-section textarea {
+  height: 80px;
+  padding-top: 1em;
+  font-family: 'Poppins', sans-serif;
+}
+
+.checkbox-wrapper {
+  padding-left: 3px;
+}
+
+.checkbox-wrapper .checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-wrapper .checkbox input {
+  height: 25px;
+  cursor: pointer;
+}
+
+.file-selector-wrapper {
+  width: 100%;
+  position: relative;
+  height: 100px;
+}
+
+.file-selector-wrapper svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--border-color);
+}
+
+.file-selector {
+  border: 1px dashed var(--blue-accent) !important;
+  display: flex;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0);
+  width: 100%;
+  height: 100% !important;
+}
+
+.file-selector::-webkit-file-upload-button {
+  display: none;
+}
+
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signup-wrapper {
+  padding-bottom: 1em;
 }
