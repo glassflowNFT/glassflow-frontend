@@ -10,7 +10,6 @@ export default function UserAuth(props: {
   showAuth: boolean
 }) {
   const [showLogin, setShowLogin] = useState<boolean>(true);
-
   return (
     <Modal
       open={props.showAuth}
