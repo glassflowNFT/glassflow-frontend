@@ -1,6 +1,6 @@
 import './verification.css';
 import { useNavigate } from 'react-router';
-import React, { ReactEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import cookie from 'react-cookies';
 
 export default function Verification() {
