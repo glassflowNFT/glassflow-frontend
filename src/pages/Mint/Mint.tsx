@@ -5,6 +5,8 @@ import "./mint.css";
 export default function Mint() {
 
   const [creators, setCreators] = useState<[string, number][]>([["", 100]]);
+  const [showCollections, setShowCollections] = useState<boolean>(false);
+  const [selectedCollection, setSelectedCollection] = useState<string>("No Collection");
 
   // update any changes
   const updateCreators = (e: any, index: number, id: number) => {
@@ -20,6 +22,27 @@ export default function Mint() {
     }
     // update state
     setCreators(newCreators);
+  }
+
+  const updateSelectedCollection = (e: any) => {
+    setSelectedCollection(e.target.innerHTML);
+  }
+
+  const getCollections = () => {
+    if (showCollections)
+    return(
+      <div className="user-collections-wrapper">
+        <div className="user-collection" onClick={updateSelectedCollection}>No Collection</div>
+        <div className="user-collection" onClick={updateSelectedCollection}>Collection A</div>
+        <div className="user-collection" onClick={updateSelectedCollection}>Collection B</div>
+        <div className="user-collection" onClick={updateSelectedCollection}>Collection C</div>
+        <div className="user-collection" onClick={updateSelectedCollection}>Collection D</div>
+        <div className="user-collection">
+          <PlusCircle/>
+          Create New Collection
+        </div>
+      </div>
+    );
   }
 
   // add a new creator + revenue share to the list
@@ -79,9 +102,10 @@ export default function Mint() {
         <span className="hint secondary">
           This is the collection your item will be grouped with
         </span>
-        <div className="collection-dropdown">
-          <span>Select Collection</span>
+        <div className="collection-dropdown" onClick={() => setShowCollections(!showCollections)}>
+          <span>{selectedCollection}</span>
           <ChevronDown />
+          {getCollections()}
         </div>
       </section>
       <section className="mint-input-section">

@@ -11,8 +11,8 @@ const sentence = generateSentences(5);
 
 export default function User() {
 
-
   const [selectedFilter, setSelectedFilter] = useState<string>("owned");
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const setFilter = (e: any) => {
     setSelectedFilter(e.target.innerHTML.toLowerCase());
@@ -21,6 +21,7 @@ export default function User() {
   const renderTrendingArtists = () => {
     const count = Math.round(Math.random() * (500 - 0) + 0);
     const bgGradient = { background: gradient(count.toString()) };
+    // const words = generateWords(2);
     return (
       <div className="content" key={count}>
         <div className="image-wrapper" style={bgGradient}>
@@ -77,7 +78,7 @@ export default function User() {
       <section className="user-content">
         <div className="search-wrapper">
           <Search/>
-          <input placeholder="Search for items"></input>
+          <input placeholder="Search for items" onChange={(e: any) => setSearchValue(e.target.value)}></input>
         </div>
         <section className="content-wrapper">
         {[...Array(Math.round(Math.random() * (20 - 1) + 1))].map(renderTrendingArtists)}
