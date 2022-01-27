@@ -12,6 +12,7 @@ const sentence = generateSentences(5);
 export default function User() {
 
   const [selectedFilter, setSelectedFilter] = useState<string>("owned");
+  // eslint-disable-next-line
   const [searchValue, setSearchValue] = useState<string>("");
 
   const setFilter = (e: any) => {
