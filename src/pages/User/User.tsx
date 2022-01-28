@@ -2,7 +2,8 @@ import { generateSentences, generateWords } from "../../components/LoremIpsum";
 import gradient from 'random-gradient';
 import "./user.css";
 import { useState } from "react";
-import { Search } from "react-feather";
+import { Edit, Search } from "react-feather";
+// import { useKeplr } from "../../components/useKeplr";
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
@@ -14,6 +15,8 @@ export default function User() {
   const [selectedFilter, setSelectedFilter] = useState<string>("owned");
   // eslint-disable-next-line
   const [searchValue, setSearchValue] = useState<string>("");
+  // const { active, account } = useKeplr();
+  const address = "cosmos198ydmld7696w02a85tgn3aw2y99uvdg7zs3srz"
 
   const setFilter = (e: any) => {
     setSelectedFilter(e.target.innerHTML.toLowerCase());
@@ -36,18 +39,28 @@ export default function User() {
     )
   }
 
+  const showEdit = () => {
+    // const userAddr  = getAccount();
+    // return (userAddr === address) 
+    return false;
+  }
+
   return (
     <div className="user-wrapper page-wrapper">
       <section className="user-info-wrapper">
         <div className="profile-wrapper" style={bgGradient}></div>
         <section className="user-info">
           <div>
-            <span className="user-name">{words}</span>
+            <span className="user-name">
+              {words} {showEdit() && <Edit/>}
+            </span>
             <span className="user-address secondary">
-              (0xeD470d85A7FD0f2b558A7bbFADb2338A7c03F51A)
+              ({address})
             </span>
           </div>
-          <p className="user-bio secondary">{sentence}</p>
+          <p className="user-bio secondary">
+            {sentence} {showEdit() && <Edit/>}
+          </p>
         </section>
       </section>
       <section className="content-filter-wrapper">

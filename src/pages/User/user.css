@@ -26,6 +26,14 @@
   margin-right: 1.5em;
 }
 
+.user-info svg {
+  cursor: pointer;
+  width: 20px;
+  color: var(--blue-accent);
+  transform: translateY(5px);
+  margin: 0 5px;
+}
+
 .user-info .user-name {
   font-weight: bold;
   text-transform: capitalize;

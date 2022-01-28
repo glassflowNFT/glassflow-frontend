@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Home, PlusCircle, User, HelpCircle, Search, UserPlus } from 'react-feather';
 import { Link } from "react-router-dom";
+import { useKeplr } from "../../components/useKeplr";
 import "./nav.css"
 
 export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [currentPage, setCurrentPage] = useState<string>();
+  const [walletAddress, setWalletAddress] = useState<string>();
+  const { activateBrowserWallet } = useKeplr();
 
   useEffect(() => {
     // set current page when user first navigates to site
@@ -30,6 +33,16 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const authClicked = (e: any) => {
     // show the user authentication modal
     props.setShowAuth(true);
+  }
+
+  const connectWallet = async () => {
+    let addr:any = await activateBrowserWallet();
+    addr = addr.address;
+
+    if (addr) {
+      addr = `${addr.substring(0, 10)}...${addr.substring(addr.length - 5, addr.length - 1)}`
+      setWalletAddress(addr);
+    }
   }
 
   return (
@@ -79,6 +92,9 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
           >
             <UserPlus/> Login / Signup 
           </Link>
+        </li>
+        <li onClick={connectWallet} className="connect-wallet-button">
+          {walletAddress ? walletAddress : "Connect Wallet"}
         </li>
       </ul>
     </nav>
