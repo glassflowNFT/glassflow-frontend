@@ -25,7 +25,7 @@ function App() {
     // check if cookie exists
     if (!verificationCookie) {
       // navigate to the verify page on initial visit
-      navigate("/verify");
+      navigate("/verify")
     }
 
   }
@@ -36,13 +36,13 @@ function App() {
   }, []);
 
   return (
-      <div className="App">
-        <Nav setShowAuth={setShowAuth}/>
-        {showAuth && <UserAuth showAuth={showAuth} setShowAuth={setShowAuth}/>}
-        <Routes>
+    <div className="App">
+      <Nav setShowAuth={setShowAuth}/>
+      {showAuth && <UserAuth showAuth={showAuth} setShowAuth={setShowAuth}/>}
+      <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/mint" element={<Mint/>} />
-          <Route path="/user" element={<User/>} />
+          <Route path="/user/*" element={<User/>} />
           <Route path="/support" element={<Support/>} />
           <Route path="/search" element={<Search/>} />
           <Route path="/verify" element={<Verification/>} />

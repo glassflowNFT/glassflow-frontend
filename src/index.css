@@ -65,6 +65,10 @@ code {
   animation: fadeIn ease 0.5s;
 }
 
+iframe {
+  display: none;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;

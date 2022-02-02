@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { Home, PlusCircle, User, HelpCircle, Search, UserPlus } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
+import { useBetween } from 'use-between';
 import "./nav.css"
 
 export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [currentPage, setCurrentPage] = useState<string>();
-  const [walletAddress, setWalletAddress] = useState<string>();
-  const { activateBrowserWallet } = useKeplr();
+  const useSharedKeplr = () => useBetween(useKeplr);
+  const { activateBrowserWallet, account } = useSharedKeplr();
 
   useEffect(() => {
     // set current page when user first navigates to site
@@ -35,14 +36,12 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
     props.setShowAuth(true);
   }
 
-  const connectWallet = async () => {
-    let addr:any = await activateBrowserWallet();
-    addr = addr.address;
+  const shortenAddress = (addr: string) => {
+      return `${addr.substring(0, 10)}...${addr.substring(addr.length - 5, addr.length - 1)}`
+  }
 
-    if (addr) {
-      addr = `${addr.substring(0, 10)}...${addr.substring(addr.length - 5, addr.length - 1)}`
-      setWalletAddress(addr);
-    }
+  const connectWallet = async () => {
+    await activateBrowserWallet();
   }
 
   return (
@@ -94,7 +93,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
           </Link>
         </li>
         <li onClick={connectWallet} className="connect-wallet-button">
-          {walletAddress ? walletAddress : "Connect Wallet"}
+          {account ? shortenAddress(account) : "Connect Wallet"}
         </li>
       </ul>
     </nav>

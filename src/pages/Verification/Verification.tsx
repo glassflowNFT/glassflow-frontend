@@ -1,5 +1,6 @@
 import './verification.css';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
 import cookie from 'react-cookies';
 
@@ -22,7 +23,8 @@ export default function Verification() {
           expires
         }
       );
-      navigate("/");
+      // navigate("/");
+      navigate("/")
     } else {
       setError("You muse be 21+ to access GlassFlow");
     }

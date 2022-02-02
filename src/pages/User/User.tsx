@@ -1,9 +1,11 @@
 import { generateSentences, generateWords } from "../../components/LoremIpsum";
 import gradient from 'random-gradient';
 import "./user.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Edit, Search } from "react-feather";
-// import { useKeplr } from "../../components/useKeplr";
+// import useInterval from "../../components/useInterval";
+import { useKeplr } from "../../components/useKeplr";
+import { useBetween } from 'use-between';
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
@@ -15,8 +17,25 @@ export default function User() {
   const [selectedFilter, setSelectedFilter] = useState<string>("owned");
   // eslint-disable-next-line
   const [searchValue, setSearchValue] = useState<string>("");
-  // const { active, account } = useKeplr();
-  const address = "cosmos198ydmld7696w02a85tgn3aw2y99uvdg7zs3srz"
+  const [isOwner, setIsOwner] = useState<boolean>(false);
+  const userAddress = "juno198ydmld7696w02a85tgn3aw2y99uvdg75zjty7"
+  const useSharedKeplr = () => useBetween(useKeplr);
+  const { account, client } = useSharedKeplr();
+
+  useEffect(() => {
+    // check if the current user is the owner of this page
+    // TODO: have user sign message to prove ownership
+    setIsOwner(account === userAddress)
+    getAccountData()
+    // eslint-disable-next-line
+  }, [account, client]);
+
+  const getAccountData = async () => {
+    if (client) {
+      const x = await client.getHeight();
+      console.log(x);
+    }
+  }
 
   const setFilter = (e: any) => {
     setSelectedFilter(e.target.innerHTML.toLowerCase());
@@ -39,12 +58,6 @@ export default function User() {
     )
   }
 
-  const showEdit = () => {
-    // const userAddr  = getAccount();
-    // return (userAddr === address) 
-    return false;
-  }
-
   return (
     <div className="user-wrapper page-wrapper">
       <section className="user-info-wrapper">
@@ -52,14 +65,14 @@ export default function User() {
         <section className="user-info">
           <div>
             <span className="user-name">
-              {words} {showEdit() && <Edit/>}
+              {words} {isOwner && <Edit/>}
             </span>
             <span className="user-address secondary">
-              ({address})
+              ({userAddress})
             </span>
           </div>
           <p className="user-bio secondary">
-            {sentence} {showEdit() && <Edit/>}
+            {sentence} {isOwner && <Edit/>}
           </p>
         </section>
       </section>

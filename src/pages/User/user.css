@@ -32,6 +32,11 @@
   color: var(--blue-accent);
   transform: translateY(5px);
   margin: 0 5px;
+  transition: all ease 0.3s;
+}
+
+.user-info svg:hover {
+  transform: translateY(5px) scale(0.95);
 }
 
 .user-info .user-name {
