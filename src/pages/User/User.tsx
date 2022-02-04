@@ -32,8 +32,7 @@ export default function User() {
 
   const getAccountData = async () => {
     if (client) {
-      const x = await client.getHeight();
-      console.log(x);
+      // const x = await client.getHeight();
     }
   }
 
