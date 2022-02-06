@@ -10,6 +10,7 @@ export function useKeplr() {
   const [active, setActive] = useState<boolean>(false);
   const [signer, setSigner] = useState<OfflineSigner>();
   const [client, setClient] = useState<SigningCosmosClient | SigningCosmWasmClient>();
+  const [addressPrefix, setAddressPrefix] = useState<string>("");
   // const [chainId, setChainId] = useState<string>();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ export function useKeplr() {
     const globalWindow:any = window;
     if (globalWindow.keplr) {
       const keplr = globalWindow.keplr;
-      const chainConfig = configs.uninet;
+      const chainConfig = configs.cliffnet;
       await keplr.experimentalSuggestChain(chainConfig);
       // console.log(configs.pebblenet);
       const chainId = chainConfig.chainId;
@@ -40,6 +41,7 @@ export function useKeplr() {
 
       // update state vars
       setAccount(accounts[0].address);
+      setAddressPrefix(chainConfig.addressPrefix);
       setSigner(offlineSigner);
       setClient(client);
       setActive(true);
@@ -50,6 +52,7 @@ export function useKeplr() {
 
   return { 
     activateBrowserWallet, 
+    addressPrefix,
     account,
     active,
     signer,
