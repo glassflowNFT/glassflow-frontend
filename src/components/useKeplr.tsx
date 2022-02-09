@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { OfflineSigner, SigningCosmosClient } from "@cosmjs/launchpad";
+import { OfflineSigner } from "@cosmjs/launchpad";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { configs } from "../config";
 
@@ -9,7 +9,7 @@ export function useKeplr() {
   const [account, setAccount] = useState<string>('');
   const [active, setActive] = useState<boolean>(false);
   const [signer, setSigner] = useState<OfflineSigner>();
-  const [client, setClient] = useState<SigningCosmosClient | SigningCosmWasmClient>();
+  const [client, setClient] = useState<SigningCosmWasmClient>();
   const [addressPrefix, setAddressPrefix] = useState<string>("");
   // const [chainId, setChainId] = useState<string>();
 
@@ -26,17 +26,17 @@ export function useKeplr() {
     const globalWindow:any = window;
     if (globalWindow.keplr) {
       const keplr = globalWindow.keplr;
-      const chainConfig = configs.cliffnet;
+      const chainConfig = configs.uninet;
       await keplr.experimentalSuggestChain(chainConfig);
-      // console.log(configs.pebblenet);
       const chainId = chainConfig.chainId;
       await keplr.enable(chainId);
-      const offlineSigner = keplr.getOfflineSigner(chainId);
+      const offlineSigner = await keplr.getOfflineSignerAuto(chainId);
       const accounts = await offlineSigner.getAccounts();
 
+      // setup client with rpc and signer
       const client = await SigningCosmWasmClient.connectWithSigner(
         chainConfig.rpc, 
-        accounts[0]
+        offlineSigner
       );
 
       // update state vars

@@ -6,6 +6,7 @@ import { Edit, Search } from "react-feather";
 // import useInterval from "../../components/useInterval";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
+import { calculateFee, GasPrice } from "@cosmjs/stargate";
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
@@ -59,6 +60,19 @@ export default function User() {
     )
   }
 
+  const buttonClicked = async () => {
+    if (!client) return;
+    const gasPrice = GasPrice.fromString("0.025ujunox");
+    const executeFee = calculateFee(300_000, gasPrice);
+    const result = await client.execute(
+      account,
+      'juno13wxll57yp7l6ansarjtgqg79gnv83wacl5pfsypj82femvrcszrq32wv3t', 
+      {increment: {}}, 
+      executeFee
+    );
+    console.log(result);
+  }
+
   return (
     <div className="user-wrapper page-wrapper">
       <section className="user-info-wrapper">
@@ -78,6 +92,10 @@ export default function User() {
         </section>
       </section>
       <section className="content-filter-wrapper">
+        <button 
+          className="primary-button"
+          onClick={buttonClicked}
+        >xyz</button>
         <button
           className={`content-filter ${
             selectedFilter === "owned" ? "active" : ""

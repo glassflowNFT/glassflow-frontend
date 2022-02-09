@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { ChevronDown, Image, PlusCircle } from "react-feather";
+import { useKeplr } from "../../components/useKeplr";
+import { useBetween } from 'use-between';
 import "./mint.css";
+import { calculateFee, GasPrice } from "@cosmjs/stargate";
 
 export default function Mint() {
 
   const [creators, setCreators] = useState<[string, number][]>([["", 100]]);
   const [showCollections, setShowCollections] = useState<boolean>(false);
   const [selectedCollection, setSelectedCollection] = useState<string>("No Collection");
+  const useSharedKeplr = () => useBetween(useKeplr);
+  const { account, client } = useSharedKeplr();
 
   // update any changes
   const updateCreators = (e: any, index: number, id: number) => {
@@ -50,6 +55,19 @@ export default function Mint() {
     let newCreators = [...creators];
     newCreators.push(["", 0]);
     setCreators(newCreators);
+  }
+
+  const createItem = async () => {
+    if (!client) return;
+    const gasPrice = GasPrice.fromString("0.0025ujunox");
+    const executeFee = calculateFee(300_000, gasPrice);
+    const result = await client.execute(
+      account,
+      '', 
+      { increment: {} }, 
+      executeFee
+    );
+    console.log(result);
   }
 
   return (
@@ -160,8 +178,12 @@ export default function Mint() {
         <span className="hint secondary">Initial price for the piece</span>
         <input placeholder="1" type="number" min="0"></input>
       </section>
-
-      <button className="primary-button">Create Item</button>
+      <button 
+        className="primary-button"
+        onClick={createItem}
+      >
+        Create Item
+      </button>
     </div>
   );
 }

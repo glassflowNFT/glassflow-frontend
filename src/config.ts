@@ -15,10 +15,11 @@ const local = {
 };
 
 const uninet = {
-  chainId: "uni",
+  chainId: "uni-2",
   chainName: "Uni",
-  rpc: "https://rpc-juno.nodes.guru/",
+  rpc: "https://rpc.uni.junomint.com:443/",
   rest: "https://rpc-juno.nodes.guru/rest",
+  addressPrefix: "juno",
   stakeCurrency: {
     coinDenom: "JUNOX",
     coinMinimalDenom: "ujunox",
