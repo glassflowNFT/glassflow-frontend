@@ -1,6 +1,6 @@
 import { generateSentences, generateWords } from "../../components/LoremIpsum";
 import gradient from 'random-gradient';
-import "./user.css";
+import "./collection.css";
 import { useEffect, useState } from "react";
 import { Edit } from "react-feather";
 // import useInterval from "../../components/useInterval";
@@ -15,13 +15,14 @@ const bgGradient = { background: gradient(count.toString()) };
 const words = generateWords(2);
 const sentence = generateSentences(5);
 
-export default function User() {
+export default function Collection() {
 
+  // eslint-disable-next-line
   const [selectedFilter, setSelectedFilter] = useState<string>("owned");
   // eslint-disable-next-line
   const [searchValue, setSearchValue] = useState<string>("");
+  // eslint-disable-next-line
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const userAddress = "juno198ydmld7696w02a85tgn3aw2y99uvdg75zjty7"
   const useSharedKeplr = () => useBetween(useKeplr);
   const { account, client } = useSharedKeplr();
   const navigate = useNavigate();
@@ -29,7 +30,6 @@ export default function User() {
   useEffect(() => {
     // check if the current user is the owner of this page
     // TODO: have user sign message to prove ownership
-    setIsOwner(account === userAddress)
     getAccountData()
     // eslint-disable-next-line
   }, [account, client]);
@@ -40,14 +40,6 @@ export default function User() {
       // const x = await client.getChainId()
       // console.log(x)
     }
-  }
-
-  const setFilter = (e: any) => {
-    setSelectedFilter(e.target.innerHTML.toLowerCase());
-  }
-
-  const userItemClicked = () => {
-    navigate("/asset/xyz");
   }
 
   /*
@@ -65,53 +57,48 @@ export default function User() {
   }
   */
 
+  const collectionItemClicked = () => {
+    navigate("/asset/xyz");
+  }
+
   return (
-    <div className="user-wrapper page-wrapper">
-      <section className="user-info-wrapper">
-        <div className="profile-wrapper" style={bgGradient}></div>
-        <section className="user-info">
+    <div className="collection-wrapper page-wrapper">
+      <section className="collection-info-wrapper">
+        <div className="collection-profile-wrapper" style={bgGradient}></div>
+        <section className="collection-info">
           <div>
-            <span className="user-name">
+            <span className="collection-name">
               {words} {isOwner && <Edit/>}
             </span>
-            <span className="user-address secondary">
-              ({userAddress})
-            </span>
           </div>
-          <p className="user-bio secondary">
+          <p className="collection-bio secondary">
             {sentence} {isOwner && <Edit/>}
           </p>
         </section>
       </section>
-      <section className="content-filter-wrapper">
-        <button
-          className={`content-filter ${
-            selectedFilter === "owned" ? "active" : ""
-          }`}
-          onClick={setFilter}
-        >
-          Owned
-        </button>
-        <button
-          className={`content-filter ${
-            selectedFilter === "created" ? "active" : ""
-          }`}
-          onClick={setFilter}
-        >
-          Created
-        </button>
-        <button
-          className={`content-filter ${
-            selectedFilter === "listed" ? "active" : ""
-          }`}
-          onClick={setFilter}
-        >
-          Listed
-        </button>
+      <section className="collection-stats-wrapper">
+        <div className="collection-creator">
+          <span className="stat-title">Created By</span>
+          <span className="stat-text secondary">0xd10c833f4305e1053a64bc738c550381f48104ca</span>
+        </div>
+        <div className="collection-stats">
+          <div className="collection-stat-container">
+            <span className="stat-title">123</span>
+            <span className="stat-text secondary">Items</span>
+          </div>
+          <div className="collection-stat-container">
+            <span className="stat-title">30</span>
+            <span className="stat-text secondary">Sales</span>
+          </div>
+          <div className="collection-stat-container">
+            <span className="stat-title">1.00</span>
+            <span className="stat-text secondary">Floor Price</span>
+          </div>
+        </div>
       </section>
       <div className="cards-container">
         <CardGallery
-          cardClicked={userItemClicked}
+          cardClicked={collectionItemClicked}
         />
       </div>
     </div>

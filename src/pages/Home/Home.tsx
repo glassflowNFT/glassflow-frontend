@@ -2,20 +2,25 @@ import './home.css';
 import { ChevronRight } from 'react-feather';
 import { generateSentences, generateWords } from '../../components/LoremIpsum';
 import gradient from 'random-gradient';
-
-
+import { useNavigate } from 'react-router';
 
 export default function Home() {
+  const navigate = useNavigate();
 
   const renderCollection = () => {
     const count = Math.round(Math.random() * (500 - 0) + 0);
     return(
-      <div className="collection" key={count}>
+      <div className="collection-preview" key={count}>
         <img src="https://lotgrafix.com/wp-content/uploads/2019/04/34-asana-color-gradient.jpg" alt="collection"></img>
-        <div className="collection-info">
+        <div className="collection-preview-info">
           <span className="collection-name">{generateSentences(1)}</span>
           <p className="collection-description secondary">{generateSentences(1)}</p>
-          <span className="collection-link">See Collection <ChevronRight/></span>
+          <span 
+            className="collection-link"
+            onClick={() => navigate("/collection/xyz")}
+          >
+            See Collection <ChevronRight/>
+          </span>
         </div>
       </div>
     );
@@ -25,7 +30,11 @@ export default function Home() {
     const count = Math.round(Math.random() * (500 - 0) + 0);
     const bgGradient = { background: gradient(count.toString()) };
     return (
-      <div className="artist" key={count}>
+      <div 
+        className="artist" 
+        key={count}
+        onClick={() => navigate("/user/xyz")}
+      >
         <div className="image-wrapper" style={bgGradient}>
           {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
         </div>
@@ -42,7 +51,9 @@ export default function Home() {
       <section className="hero-section page-section">
         <section className="call-to-action">
           <p>
-            {generateSentences(2)}
+            WE OFFER IMMUTABLE HISTORICAL CERTIFICATES, FUSE DIGITAL
+            ITEMS WITH TANGIBLE ART, AND CUSTOM COLLECTIONS WITH EVOLVING
+            UTILITIES
           </p>
           <button className="primary-button">
             Get Started <ChevronRight />
@@ -61,7 +72,7 @@ export default function Home() {
           <p className="secondary">
             {generateSentences(10)} 
           </p>
-          <button className="primary-button">
+          <button className="primary-button" onClick={() => navigate("/collections")}>
             View All Collections <ChevronRight />
           </button>
         </section>

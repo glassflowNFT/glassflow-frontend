@@ -12,6 +12,10 @@ import Support from './pages/Support/Support';
 import Search from './pages/Search/Search';
 import Footer from './components/Footer/Footer';
 import UserAuth from './components/UserAuth/UserAuth';
+import Collections from './pages/Collections/Collections';
+import Collection from './pages/Collection/Collection';
+// import ScrollTop from './components/ScrollTop/ScrollTop';
+import Asset from './pages/Asset/Asset';
 
 function App() {
   const navigate = useNavigate();
@@ -40,15 +44,19 @@ function App() {
       <Nav setShowAuth={setShowAuth}/>
       {showAuth && <UserAuth showAuth={showAuth} setShowAuth={setShowAuth}/>}
       <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/mint" element={<Mint/>} />
-          <Route path="/user/*" element={<User/>} />
-          <Route path="/support" element={<Support/>} />
-          <Route path="/search" element={<Search/>} />
-          <Route path="/verify" element={<Verification/>} />
-        </Routes>
-        <Footer/>
-      </div>
+        <Route path="/" element={<Home/>} />
+        <Route path="/mint" element={<Mint/>} />
+        <Route path="/user/*" element={<User/>} />
+        <Route path="/support" element={<Support/>} />
+        <Route path="/search" element={<Search/>} />
+        <Route path="/verify" element={<Verification/>} />
+        <Route path="/collections" element={<Collections/>} />
+        <Route path="/collection/*" element={<Collection/>} />
+        <Route path="/asset/*" element={<Asset/>} />
+      </Routes>
+      {/*<ScrollTop/>*/}
+      <Footer/>
+    </div>
   );
 }
 

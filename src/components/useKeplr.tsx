@@ -26,7 +26,7 @@ export function useKeplr() {
     const globalWindow:any = window;
     if (globalWindow.keplr) {
       const keplr = globalWindow.keplr;
-      const chainConfig = configs.uninet;
+      const chainConfig = configs.cliffnet;
       await keplr.experimentalSuggestChain(chainConfig);
       const chainId = chainConfig.chainId;
       await keplr.enable(chainId);

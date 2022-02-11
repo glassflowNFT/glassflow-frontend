@@ -1,0 +1,25 @@
+.scroll-top-button {
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
+  border-radius: 100%;
+  border: none;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  min-width: 50px;
+  min-height: 50px;
+  background: var(--blue-accent);
+  color: var(--almost-white);
+  z-index: 20;
+  cursor: pointer;
+  transition: all ease 0.3s;
+  opacity: 1;
+}
+
+.scroll-top-button:hover {
+  filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.25));
+  transform: translateY(3px);
+}
+
+.scroll-top-button.hidden {
+  opacity: 0;
+}

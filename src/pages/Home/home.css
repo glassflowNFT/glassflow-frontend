@@ -21,12 +21,13 @@
 
 .call-to-action {
   flex: 1;
+  margin-top: 2em;
 }
 
 .call-to-action p {
   margin-top: 0;
-  max-width: 100%;
-  font-size: 35pt;
+  max-width: 90%;
+  font-size: 25pt;
   font-family: 'Poppins Black', sans-serif;
 }
 
@@ -71,28 +72,28 @@
   display: grid;
 }
 
-.collections-wrapper .collection {
+.collections-wrapper .collection-preview {
   display: flex;
   max-width: 500px;
   margin: 1em 0;
   grid-gap: 1rem;
 }
 
-.collections-wrapper .collection .collection-info {
+.collections-wrapper .collection-preview .collection-preview-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.collections-wrapper .collection .collection-name {
+.collections-wrapper .collection-preview .collection-name {
   font-weight: bold;
 }
 
-.collections-wrapper .collection .collection-description {
+.collections-wrapper .collection-preview .collection-description {
   margin: 10px 0;
 }
 
-.collections-wrapper .collection .collection-link {
+.collections-wrapper .collection-preview .collection-link {
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -101,11 +102,11 @@
   transition: all ease 0.3s;
 }
 
-.collections-wrapper .collection .collection-link:hover {
+.collections-wrapper .collection-preview .collection-link:hover {
   transform: translateX(3px);
 }
 
-.collections-wrapper .collection img {
+.collections-wrapper .collection-preview img {
   width: 200px;
   height: 200px;
   border-radius: 10px;

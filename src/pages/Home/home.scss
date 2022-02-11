@@ -27,10 +27,11 @@
 
 .call-to-action {
   flex: 1;
+  margin-top: 2em;
   p {
     margin-top: 0;
-    max-width: 100%;
-    font-size: 35pt;
+    max-width: 90%;
+    font-size: 25pt;
     font-family: 'Poppins Black', sans-serif;
   }
   button {
@@ -71,12 +72,12 @@
   padding: 3em 0;
   display: grid;
   // grid-template-columns: auto auto auto;
-  .collection {
+  .collection-preview {
     display: flex;
     max-width: 500px;
     margin: 1em 0;
     grid-gap: 1rem;
-    .collection-info {
+    .collection-preview-info {
       display: flex;
       flex-direction: column;
       justify-content: center;

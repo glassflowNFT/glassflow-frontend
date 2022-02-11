@@ -56,15 +56,23 @@ export default function Signup(props: {setShowLogin: (show: boolean) => void}) {
           <div className="checkbox-wrapper">
             <div className="checkbox">
               <input type="checkbox"/>
-              <span className="secondary">I plan on buying glass pieces</span>
+              <span className="secondary">I plan to create cannabis orientated NFT collections</span>
             </div>
             <div className="checkbox">
               <input type="checkbox"/>
-              <span className="secondary">I plan on selling glass pieces</span>
+              <span className="secondary">Genetic Registration</span>
             </div>
             <div className="checkbox">
               <input type="checkbox"/>
-              <span className="secondary">I plan on reselling glass pieces</span>
+              <span className="secondary">I am an independent glass artist</span>
+            </div>
+            <div className="checkbox">
+              <input type="checkbox"/>
+              <span className="secondary">I own a business in cannabis</span>
+            </div>
+            <div className="checkbox">
+              <input type="checkbox"/>
+              <span className="secondary">I am a current partner of Glassflow</span>
             </div>
           </div>
         </section>

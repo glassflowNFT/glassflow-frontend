@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Home, PlusCircle, User, HelpCircle, Search, UserPlus } from 'react-feather';
+import { Home, PlusCircle, UserPlus, AlignLeft, HelpCircle, Search } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
@@ -16,7 +16,8 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
     let page = path.substring(1);
     if (page === "") page = "home";
     setCurrentPage(page);
-  }, []);
+  // eslint-disable-next-line
+  }, [window.location.pathname]);
 
   const linkClicked = (e: any) => {
     const tagName = e.target.tagName.toLowerCase();
@@ -33,6 +34,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
 
   const authClicked = (e: any) => {
     // show the user authentication modal
+    e.preventDefault();
     props.setShowAuth(true);
   }
 
@@ -62,11 +64,11 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
           </Link>
         </li>
         <li onClick={linkClicked}>
-          <Link
-            to="/user"
-            className={`${currentPage === "user" ? "active" : ""}`}
+          <Link 
+            to="/collections"
+            className={`${currentPage === "collections" ? "active" : ""}`}
           >
-            <User /> User 
+            <AlignLeft /> Collections 
           </Link>
         </li>
         <li onClick={linkClicked}>
@@ -86,11 +88,9 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
           </Link>
         </li>
         <li onClick={authClicked}>
-          <Link 
-            to={`/${currentPage === 'home' ? '/' : currentPage}`}
-          >
+          <a href="/">
             <UserPlus/> Login / Signup 
-          </Link>
+          </a>
         </li>
         <li onClick={connectWallet} className="connect-wallet-button">
           {account ? shortenAddress(account) : "Connect Wallet"}

@@ -1,7 +1,6 @@
 import Login from "../Login/Login";
 import { Modal } from '@material-ui/core'
 import "./userAuth.css"
-import { generateSentences } from "../LoremIpsum";
 import { useState } from "react";
 import Signup from "../Singup/Signup";
 
@@ -17,10 +16,19 @@ export default function UserAuth(props: {
       className="modal"
     >
       <div className="auth-wrapper fadeIn">
-        {showLogin ? <Login setShowLogin={setShowLogin}/> : <Signup setShowLogin={setShowLogin}/>}
+        {showLogin ? (
+          <Login setShowLogin={setShowLogin} />
+        ) : (
+          <Signup setShowLogin={setShowLogin} />
+        )}
         <section className="auth-right">
           <h1>GlassFlow</h1>
-          <p>{generateSentences(3)}</p>
+          <p>
+            NFT MINTING, GENETIC AUTHENTICITY, INCENTIVIZING GLASS ART
+            ECOSYSTEM. WE OFFER IMMUTABLE HISTORICAL CERTIFICATES, FUSE DIGITAL
+            ITEMS WITH TANGIBLE ART, AND CUSTOM COLLECTIONS WITH EVOLVING
+            UTILITIES
+          </p>
         </section>
       </div>
     </Modal>

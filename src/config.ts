@@ -41,10 +41,8 @@ const cliffnet = {
   chainId: "cliffnet-1",
   chainName: "Cliffnet",
   addressPrefix: "wasm",
-  rpc: "https://rpc.cliffnet.cosmwasm.com:443",
-  rest: "https://faucet.cliffnet.cosmwasm.com/status",
-  httpUrl: "https://lcd.pebblenet.cosmwasm.com",
-  faucetUrl: "https://faucet.cliffnet.cosmwasm.com",
+  rpc: "https://rpc.cliffnet.cosmwasm.com:443/",
+  rest: "https://lcd.cliffnet.cosmwasm.com/",
   bip44: {
     // You can only set the coin type of BIP44.
     // 'Purpose' is fixed to 44.
@@ -58,13 +56,9 @@ const cliffnet = {
     bech32PrefixConsAddr: "wasmvalcons",
     bech32PrefixConsPub: "wasmvalconspub"
   },
-  stakeCurrency: {
-    coinDenom: "ROCK",
-    coinMinimalDenom: "urock",
-    coinDecimals: 6
-  },
+  stakeCurrency: { coinDenom: "PEBBLE", coinMinimalDenom: "upebble", coinDecimals: 6 },
   currencies: [
-    { coinDenom: "ROCK", coinMinimalDenom: "urock", coinDecimals: 6 },
+    { coinDenom: "PEBBLE", coinMinimalDenom: "upebble", coinDecimals: 6 },
   ],
   feeCurrencies: [
     { coinDenom: "PEBBLE", coinMinimalDenom: "upebble", coinDecimals: 6 },
