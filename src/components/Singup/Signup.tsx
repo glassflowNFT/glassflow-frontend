@@ -1,11 +1,31 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Image } from "react-feather";
 
-export default function Signup(props: {setShowLogin: (show: boolean) => void}) {
+export default function Signup(props: { 
+  setShowLogin: (show: boolean) => void, 
+  userSignup: (email: string, password: string) => void 
+}) {
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
 
   const toggleAuthSection = (e: any) => {
     e.preventDefault();
     props.setShowLogin(true);
+  }
+
+  const signupClicked = () => {
+    props.userSignup(
+      email,
+      password
+    );
+  }
+
+  const inputUpdated = (set: (input: any) => void, value: string) => {
+    set(value);
   }
 
   return (
@@ -22,32 +42,56 @@ export default function Signup(props: {setShowLogin: (show: boolean) => void}) {
             <span>
               First Name <b>*</b>
             </span>
-            <input placeholder="Your first name"></input>
+            <input 
+              placeholder="Your first name"
+              value={firstName}
+              onChange={(e) => inputUpdated(setFirstName, e.target.value)}
+            ></input>
           </section>
           <section className="auth-field-section">
             <span>
               Last Name <b>*</b>
             </span>
-            <input placeholder="Your last name"></input>
+            <input 
+              placeholder="Your last name"
+              value={lastName}
+              onChange={(e) => inputUpdated(setLastName, e.target.value)}
+            ></input>
           </section>
         </section>
         <section className="auth-field-section">
           <span>
             Email <b>*</b>
           </span>
-          <input placeholder="your_email@email.com"></input>
+          <input 
+            placeholder="your_email@email.com" 
+            type="email"
+            onChange={(e) => inputUpdated(setEmail, e.target.value)}
+            value={email}
+          ></input>
         </section>
         <section className="auth-field-section">
           <span>
             Password <b>*</b><span className="secondary hint">must contain at least 8 characters and use one special character</span>
           </span>
-          <input placeholder="********"></input>
+          <input 
+            placeholder="********" 
+            type="password" 
+            onChange={(e) => inputUpdated(setPassword, e.target.value)}
+            value={password}
+          >
+          </input>
         </section>
         <section className="auth-field-section">
           <span>
             Profile Bio <b>*</b>
           </span>
-          <textarea placeholder="This will be displayed on your profile. Use this to describe who you are, what you do. Feel free to be creative as you want"></textarea>
+          <textarea 
+            placeholder="This will be displayed on your profile. Use this to describe who you are, what you do. Feel free to be creative as you want"
+            value={bio}
+            onChange={(e) => inputUpdated(setBio, e.target.value)}
+          >
+          </textarea>
         </section>
         <section className="auth-field-section">
           <span>
@@ -87,7 +131,7 @@ export default function Signup(props: {setShowLogin: (show: boolean) => void}) {
           </div>
           <span className="secondary hint">File types supported: JPG, JPEG, PNG</span>
         </section>
-        <button className="primary-button">Sign Up</button>
+        <button className="primary-button" onClick={signupClicked}>Sign Up</button>
         <a href="/" onClick={toggleAuthSection} className="toggle-auth">
           <span className="secondary">Already have an account? Login here</span>
         </a>
