@@ -3,7 +3,7 @@ import { Image } from "react-feather";
 
 export default function Signup(props: { 
   setShowLogin: (show: boolean) => void, 
-  userSignup: (email: string, password: string) => void 
+  userSignup: (email: string, password: string, firstName: string, lastName: string, bio: string) => void 
 }) {
 
   const [email, setEmail] = useState<string>("");
@@ -11,7 +11,15 @@ export default function Signup(props: {
   const [bio, setBio] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-
+  const choices = [
+    "I plan to create cannabis oriented NFT collections",
+    "I plan on using Genetic Registration",
+    "I am an independent glass artist",
+    "I own a business in cannabis",
+    "I am a current partner GlassFlow"
+  ];
+  const [choicesArray, setChoicesArray] = useState<boolean[]>([...new Array(choices.length).fill(false)])
+  
   const toggleAuthSection = (e: any) => {
     e.preventDefault();
     props.setShowLogin(true);
@@ -20,12 +28,24 @@ export default function Signup(props: {
   const signupClicked = () => {
     props.userSignup(
       email,
-      password
+      password,
+      firstName,
+      lastName,
+      bio
     );
   }
 
   const inputUpdated = (set: (input: any) => void, value: string) => {
     set(value);
+  }
+
+  const updateChoicesArray = (index: number) => {
+    // create copy of choices array
+    const newChoices = [...choicesArray];
+    // update selected choice
+    newChoices[index] = !newChoices[index];
+    // update state
+    setChoicesArray(newChoices);
   }
 
   return (
@@ -98,26 +118,21 @@ export default function Signup(props: {
             How do you plan on using GlassFlow?<b>*</b>
           </span>
           <div className="checkbox-wrapper">
-            <div className="checkbox">
-              <input type="checkbox"/>
-              <span className="secondary">I plan to create cannabis orientated NFT collections</span>
-            </div>
-            <div className="checkbox">
-              <input type="checkbox"/>
-              <span className="secondary">Genetic Registration</span>
-            </div>
-            <div className="checkbox">
-              <input type="checkbox"/>
-              <span className="secondary">I am an independent glass artist</span>
-            </div>
-            <div className="checkbox">
-              <input type="checkbox"/>
-              <span className="secondary">I own a business in cannabis</span>
-            </div>
-            <div className="checkbox">
-              <input type="checkbox"/>
-              <span className="secondary">I am a current partner of Glassflow</span>
-            </div>
+            {choices.map((text, index) => 
+              <div className="checkbox">
+                <input
+                  type="checkbox" 
+                  checked={choicesArray[index]}
+                  onClick={(e) => updateChoicesArray(index)}
+                />
+                <span 
+                  className="secondary"
+                  onClick={(e) => updateChoicesArray(index)}
+                >
+                  {text}
+                </span>
+              </div>
+            )}
           </div>
         </section>
         <section className="auth-field-section">

@@ -121,6 +121,10 @@
   outline: none;
 }
 
+.checkbox-wrapper .checkbox span {
+  cursor: pointer;
+}
+
 .file-selector-wrapper {
   width: 100%;
   position: relative;

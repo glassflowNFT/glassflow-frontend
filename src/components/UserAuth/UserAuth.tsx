@@ -3,7 +3,7 @@ import { Modal } from '@material-ui/core'
 import "./userAuth.css"
 import { useState } from "react";
 import Signup from "../Singup/Signup";
-import { auth } from "../../firebase-config";
+import { auth, db } from "../../firebase-config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -11,6 +11,8 @@ import {
   signOut,
 } from "firebase/auth";
 import { useSnackbar } from 'notistack';
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
+
 
 export default function UserAuth(props: {
   setShowAuth: (show: boolean) => void,
@@ -19,10 +21,17 @@ export default function UserAuth(props: {
 
   const { enqueueSnackbar } = useSnackbar();
   const [showLogin, setShowLogin] = useState<boolean>(true);
+  // const [userID, setUserID] = useState<string>("");
 
-  onAuthStateChanged(auth, (currentUser) => {
-    // setUser(currentUser);
-    console.log(currentUser)
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      // get db reference to current user
+      const docRef = doc(db, "users", `${user.uid}`);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        // console.log("Document data:", docSnap.data());
+      } 
+    }
   });
 
   const userLogOut = async () => {
@@ -55,18 +64,43 @@ export default function UserAuth(props: {
 
   // register the user using firebase auth
   // TODO: accept bio, first name, last name, photo, etc
-  const userSignup = async (email: string, password: string) => {
+  const userSignup = async (email: string, password: string, firstName: string, lastName: string, bio: string) => {
     try {
+      // create user account with email + password
       const user = await createUserWithEmailAndPassword(
         auth,
         email,
         password 
       );
-      console.log(user);
-      enqueueSnackbar('Successfully signed up' ,{
-        variant: "info"
-      });
-      props.setShowAuth(false);
+      if (user) {
+        // Add a new document in collection "cities"
+        await setDoc(doc(db, "users", `${user.user.uid}`), {
+          firstName,
+          lastName,
+          email,
+          bio,
+          displayName: `${firstName} ${lastName}`
+        });
+        enqueueSnackbar('Successfully signed up' ,{
+          variant: "info"
+        });
+        props.setShowAuth(false);
+        /*
+        //  
+        updateProfile(user.user, {
+          displayName: `${firstName} ${lastName}`,
+        }).then(() => {
+          enqueueSnackbar('Successfully signed up' ,{
+            variant: "info"
+          });
+        }).catch((error) => {
+          enqueueSnackbar('Sign up failed' ,{
+            variant: "error"
+          });
+          console.log(error);
+        });
+        */
+      }
     } catch (error: any) {
       enqueueSnackbar('Sign up failed' ,{
         variant: "error"

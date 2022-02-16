@@ -3,12 +3,36 @@ import { Home, PlusCircle, UserPlus, AlignLeft, HelpCircle, Search } from 'react
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
-import "./nav.css"
+import { useSnackbar } from 'notistack';
+import "./nav.css";
+import {
+  getAuth, onAuthStateChanged,
+} from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore"; 
+import { db } from "../../firebase-config";
 
 export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [currentPage, setCurrentPage] = useState<string>();
+  const [displayName, setDisplayName] = useState<string>("Login / Signup");
   const useSharedKeplr = () => useBetween(useKeplr);
   const { activateBrowserWallet, account } = useSharedKeplr();
+  const { enqueueSnackbar } = useSnackbar();
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, async (user) => {
+    // setUser(currentUser);
+    if (user) {
+      // grab user's data
+      // get db reference to current user
+      const docRef = doc(db, "users", `${user.uid}`);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setDisplayName(docSnap.data().displayName);
+      } 
+    } else {
+      setDisplayName("Login / Signup")
+    }
+  });
 
   useEffect(() => {
     // set current page when user first navigates to site
@@ -16,6 +40,12 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
     let page = path.substring(1);
     if (page === "") page = "home";
     setCurrentPage(page);
+
+    // grab user's data
+    if (auth.currentUser && auth.currentUser.displayName) {
+      // display user display name 
+      setDisplayName(auth.currentUser.displayName);
+    }
   // eslint-disable-next-line
   }, [window.location.pathname]);
 
@@ -43,7 +73,11 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   }
 
   const connectWallet = async () => {
-    await activateBrowserWallet();
+    await activateBrowserWallet().then(() => {
+      enqueueSnackbar('Successfully connected wallet' ,{
+        variant: "info"
+      });
+    });
   }
 
   return (
@@ -89,7 +123,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
         </li>
         <li onClick={authClicked}>
           <a href="/">
-            <UserPlus/> Login / Signup 
+            <UserPlus/> {displayName}
           </a>
         </li>
         <li onClick={connectWallet} className="connect-wallet-button">
