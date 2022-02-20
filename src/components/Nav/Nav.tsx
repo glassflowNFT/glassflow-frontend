@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Home, PlusCircle, UserPlus, AlignLeft, HelpCircle, Search } from 'react-feather';
+import { Home, PlusCircle, AlignLeft, Search, User, Compass } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
@@ -14,6 +14,7 @@ import { db } from "../../firebase-config";
 export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [currentPage, setCurrentPage] = useState<string>();
   const [displayName, setDisplayName] = useState<string>("Login / Signup");
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
   const { activateBrowserWallet, account } = useSharedKeplr();
   const { enqueueSnackbar } = useSnackbar();
@@ -28,9 +29,11 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setDisplayName(docSnap.data().displayName);
+        setUserLoggedIn(true);
       } 
     } else {
-      setDisplayName("Login / Signup")
+      setDisplayName("Login / Signup");
+      setUserLoggedIn(false);
     }
   });
 
@@ -64,8 +67,10 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
 
   const authClicked = (e: any) => {
     // show the user authentication modal
+    // only if the user isn't logged in
     e.preventDefault();
-    props.setShowAuth(true);
+    if (!userLoggedIn)
+      props.setShowAuth(true);
   }
 
   const shortenAddress = (addr: string) => {
@@ -107,10 +112,10 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
         </li>
         <li onClick={linkClicked}>
           <Link
-            to="/support"
-            className={`${currentPage === "support" ? "active" : ""}`}
+            to="/explore"
+            className={`${currentPage === "explore" ? "active" : ""}`}
           >
-            <HelpCircle /> Support
+            <Compass/> Explore 
           </Link>
         </li>
         <li onClick={linkClicked}>
@@ -122,9 +127,15 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
           </Link>
         </li>
         <li onClick={authClicked}>
-          <a href="/">
-            <UserPlus/> {displayName}
-          </a>
+          {userLoggedIn ?
+            <Link to={!userLoggedIn ? '/' : '/user/xyz'}>
+              <User/> {displayName}
+            </Link>
+          :
+            <a href={!userLoggedIn ? '/' : '/user/xyz'}>
+              <User/> {displayName}
+            </a>
+          }
         </li>
         <li onClick={connectWallet} className="connect-wallet-button">
           {account ? shortenAddress(account) : "Connect Wallet"}

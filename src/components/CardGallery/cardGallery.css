@@ -127,12 +127,12 @@
 }
 
 .content-wrapper .content .content-info .content-name {
-  margin-top: 1em;
   text-transform: capitalize;
 }
 
 .content-wrapper .content .content-info span {
   margin: 5px 0;
+  height: 15px;
 }
 
 .content-wrapper .content .content-info svg {

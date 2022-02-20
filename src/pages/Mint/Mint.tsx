@@ -4,14 +4,27 @@ import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
 import "./mint.css";
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
+import { configs } from "../../config";
+import { useSnackbar } from 'notistack';
+import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore"; 
+import { auth, db } from "../../firebase-config";
+import { onAuthStateChanged, User } from "@firebase/auth";
+import { uid } from 'uid';
+import { Modal } from "@material-ui/core";
 
 export default function Mint() {
 
   const [creators, setCreators] = useState<[string, number][]>([["", 100]]);
   const [showCollections, setShowCollections] = useState<boolean>(false);
-  const [selectedCollection, setSelectedCollection] = useState<string>("No Collection");
+  const [selectedCollection, setSelectedCollection] = useState<{
+    owner: string;
+    name: string;
+  }>({ owner: "", name: "Select a Collection" });
+  const [userCollections, setUserCollections] = useState<any[]>();
+  const [showCollectionModal, setShowCollectionModal] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { account, client, activateBrowserWallet } = useSharedKeplr();
+  const { account, client } = useSharedKeplr();
+  const { enqueueSnackbar } = useSnackbar();
 
   // form data
   const [name, setName] = useState<string>("");
@@ -20,6 +33,54 @@ export default function Mint() {
   const [numRepresentations, setNumRepresentations] = useState<number>(0);
   const [numCollectibles, setNumCollectibles] = useState<number>(0);
   const [initialAskPrice, setInitialAskPrice] = useState<number>(0);
+  const [user, setUser] = useState<User>();
+
+  // collection form data
+  const [collectionName, setCollectionName] = useState<string>("");
+  const [collectionDescription, setCollectionDescription] = useState<string>("");
+  const [collectionsLoaded, setCollectionsLoaded] = useState<boolean>(false);
+
+  const clearInputs = () => {
+    setName("");
+    setDescription("");
+    setExternalLink("");
+    setNumRepresentations(0);
+    setNumCollectibles(0);
+    setInitialAskPrice(0);
+    setCollectionName("");
+    setCollectionDescription("");
+  }
+
+  // update user state var when loaded
+  onAuthStateChanged(auth, async (user: User | null) => {
+    if (user) {
+      setUser(user);
+      // load collections if they haven't been loaded yet
+      if(!collectionsLoaded) loadUserCollections();
+    }
+  });
+
+  const loadUserCollections = async () => {
+    if (!user) return;
+
+    // create reference and query
+    const collectionsRef = collection(db, "collections");
+    const q = query(collectionsRef, where("owner", "==", user.uid))
+    // execute query
+    const querySnapshot = await getDocs(q);
+    // array to store loaded collections
+    let collections:any[] = [];
+    // iterate through query response 
+    querySnapshot.forEach((doc) => {
+      // add to list
+      if (doc.data())
+        collections.push(doc.data());
+    });
+
+    // update state
+    setUserCollections(collections);
+    setCollectionsLoaded(true);
+  }
 
   const updateFormData = (set: Dispatch<SetStateAction<any>>, value: any)=> {
     set(value);
@@ -41,22 +102,31 @@ export default function Mint() {
     setCreators(newCreators);
   }
 
-  const updateSelectedCollection = (e: any) => {
-    setSelectedCollection(e.target.innerHTML);
+  const updateSelectedCollection = (collection: {owner: string, name: string}) => {
+    setSelectedCollection(collection);
   }
 
   const getCollections = () => {
     if (showCollections)
     return(
       <div className="user-collections-wrapper">
-        <div className="user-collection" onClick={updateSelectedCollection}>No Collection</div>
-        <div className="user-collection" onClick={updateSelectedCollection}>Collection A</div>
-        <div className="user-collection" onClick={updateSelectedCollection}>Collection B</div>
-        <div className="user-collection" onClick={updateSelectedCollection}>Collection C</div>
-        <div className="user-collection" onClick={updateSelectedCollection}>Collection D</div>
-        <div className="user-collection">
+        {userCollections?.map((collection: any, index: number) => 
+          <div 
+            className="user-collection" 
+            onClick={() => updateSelectedCollection(collection)}
+            key={index}
+          >
+            {collection.name}
+          </div>
+        )}
+        <div 
+          className="user-collection"
+          onClick={() => setShowCollectionModal(true)}
+        >
           <PlusCircle/>
-          Create New Collection
+          <button className="new-collection-button">
+            Create New Collection
+          </button>
         </div>
       </div>
     );
@@ -69,27 +139,218 @@ export default function Mint() {
     setCreators(newCreators);
   }
 
+  /*
+  const uploadContract = async () => {
+
+    if (!client) return;
+    const gasPrice = GasPrice.fromString("0.05upebble");
+
+    // Upload contract
+    const uploadFee = calculateFee(2_500_000, gasPrice);
+    const uploadReceipt = await client.upload(
+      account, 
+      wasm, 
+      uploadFee, 
+      "Upload hackatom contract"
+    );
+    console.log("Upload succeeded. Receipt:", uploadReceipt);
+
+    return uploadReceipt.codeId;
+  }
+
+  */
+
+  const renderCollectionModal = () => {
+    return (
+      <Modal
+        open={showCollectionModal}
+        onClose={() => setShowCollectionModal(false)}
+        className="modal"
+      >
+        <div className="new-collection-wrapper fadeIn">
+        <div className="mint-header">
+          <h1>Create New Collection</h1>
+          <span className="secondary">
+            <b>*</b> Required Fields
+          </span>
+        </div>
+          <section className="auth-field-section mint-input-section">
+            <span>
+              Collection Logo Image <b>*</b>
+            </span>
+            <div className="file-selector-wrapper">
+              <input
+                className="file-selector"
+                type="file"
+                accept=".jpg, .jpeg, .png"
+              ></input>
+              <Image />
+            </div>
+            <span className="secondary hint">
+              File types supported: JPG, JPEG, PNG
+            </span>
+          </section>
+          <section className="auth-field-section mint-input-section">
+            <span>
+              Collection Banner Image <b>*</b>
+            </span>
+            <div className="file-selector-wrapper">
+              <input
+                className="file-selector"
+                type="file"
+                accept=".jpg, .jpeg, .png"
+              ></input>
+              <Image />
+            </div>
+            <span className="secondary hint">
+              File types supported: JPG, JPEG, PNG
+            </span>
+          </section>
+          <section className="mint-input-section">
+            <span>
+              Collection Name <b>*</b>
+            </span>
+            <span className="hint secondary">
+              Newly created NFTs will appear under this name
+            </span>
+            <input
+              placeholder="Collection name"
+              value={collectionName}
+              onChange={(e: any) => updateFormData(setCollectionName, e.target.value)}
+            ></input>
+          </section>
+          <section className="mint-input-section">
+            <span>Collection Description <b>*</b></span>
+            <span className="hint secondary">
+              The description will be included on the collection's page, and
+              will be displayed on asset pages that belong to the collection
+            </span>
+            <textarea
+              placeholder="Detailed description of your item"
+              value={collectionDescription}
+              onChange={(e: any) =>
+                updateFormData(setCollectionDescription, e.target.value)
+              }
+            ></textarea>
+          </section>
+          <button
+            className="create-collection primary-button"
+            onClick={createCollection}
+          >
+            Create New Collection
+          </button>
+        </div>
+      </Modal>
+    );
+  };
+
+  const createCollection = async() => {
+    // ask user to connect wallet before continuing
+    if (!account) {
+      enqueueSnackbar('Please connect your wallet to create a collection' ,{
+        variant: "error"
+      });
+      return;
+    }
+
+    // if no client, exit 
+    if (!client || !user) return;
+    // const gasPrice = GasPrice.fromString("0.0025ujunox");
+    // const executeFee = calculateFee(300_000, gasPrice);
+
+    try {
+      enqueueSnackbar('Confirm transaction in your wallet' ,{
+        variant: "info"
+      });
+      // TODO: deploy new contract and use ID returned from there
+      const uniqueId = uid();
+      await setDoc(doc(db, "collections", `${uniqueId}`), {
+        owner: user.uid,
+        name: collectionName
+      });
+      // update collection drowpdown
+      setSelectedCollection({
+        name: collectionName,
+        owner: user.uid
+      });
+      // reload loaded collections
+      loadUserCollections();
+      // close modal
+      setShowCollectionModal(false);
+      clearInputs();
+      enqueueSnackbar('Collection creation successful' ,{
+        variant: "success"
+      });
+    } catch (e: any) {
+      enqueueSnackbar('Collection creation failed' ,{
+        variant: "error"
+      });
+    }
+  }
+
   const createItem = async () => {
     // ask user to connect wallet before continuing
     if (!account) {
-      await activateBrowserWallet();
+      enqueueSnackbar('Please connect your wallet to mint an NFT' ,{
+        variant: "error"
+      });
       return;
     }
     // if no client, exit 
     if (!client) return;
     const gasPrice = GasPrice.fromString("0.0025ujunox");
     const executeFee = calculateFee(300_000, gasPrice);
-    const result = await client.execute(
-      account,
-      '', 
-      { increment: {} }, 
-      executeFee
-    );
-    console.log(result);
+
+    // setup royalties object
+    const royalties = creators.map((creator) => {
+      return {
+        "address": creator[0],
+        "royalty_rate": (creator[1] / 1000).toString()
+      }
+    });
+
+    // execute mint 
+    try {
+      enqueueSnackbar('Confirm transaction in your wallet' ,{
+        variant: "info"
+      });
+      const result = await client.execute(
+        account,
+        configs.contractAddresses.AUCTION_CONTRACT,
+        {
+          mint: {
+            collection: "1",
+            description: description,
+            externalLink: externalLink,
+            image_uri: "https://image/image.png",
+            init_price: initialAskPrice.toString(),
+            name: name,
+            num_nfts: numCollectibles.toString(),
+            num_real_repr: numRepresentations.toString(),
+            owner: account,
+            royalties: royalties
+          }
+        }, 
+        executeFee,
+        "",
+        []
+      );
+      console.log(result);
+      enqueueSnackbar('NFT creation successful' ,{
+        variant: "success"
+      });
+    } catch (e) {
+      console.log(e);
+      enqueueSnackbar('NFT creation failed' ,{
+        variant: "error"
+      });
+    }
+
   }
 
   return (
     <div className="mint-wrapper page-wrapper">
+      {renderCollectionModal()}
       <div className="mint-header">
         <h1>Mint New Item</h1>
         <span className="secondary">
@@ -155,7 +416,7 @@ export default function Mint() {
           className="collection-dropdown"
           onClick={() => setShowCollections(!showCollections)}
         >
-          <span>{selectedCollection}</span>
+          <span>{selectedCollection.name}</span>
           <ChevronDown />
           {getCollections()}
         </div>

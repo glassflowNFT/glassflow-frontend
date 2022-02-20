@@ -51,9 +51,7 @@ export default function Home() {
       <section className="hero-section page-section">
         <section className="call-to-action">
           <p>
-            WE OFFER IMMUTABLE HISTORICAL CERTIFICATES, FUSE DIGITAL
-            ITEMS WITH TANGIBLE ART, AND CUSTOM COLLECTIONS WITH EVOLVING
-            UTILITIES
+            NFT Minting & Cannabis Community Integration
           </p>
           <button className="primary-button">
             Get Started <ChevronRight />

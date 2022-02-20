@@ -16,6 +16,7 @@ import Collections from './pages/Collections/Collections';
 import Collection from './pages/Collection/Collection';
 // import ScrollTop from './components/ScrollTop/ScrollTop';
 import Asset from './pages/Asset/Asset';
+import Explore from './pages/Explore/Explore';
 
 function App() {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ function App() {
         <Route path="/" element={<Home/>} />
         <Route path="/mint" element={<Mint/>} />
         <Route path="/user/*" element={<User/>} />
+        <Route path="/explore" element={<Explore/>} />
         <Route path="/support" element={<Support/>} />
         <Route path="/search" element={<Search/>} />
         <Route path="/verify" element={<Verification/>} />

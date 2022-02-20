@@ -3,44 +3,21 @@
   margin: auto;
 }
 
-.mint-wrapper .mint-header {
-  margin-bottom: 1em;
-}
-
-.mint-wrapper .mint-header h1 {
-  margin-bottom: 5px;
-}
-
-.mint-wrapper .hint {
-  font-size: 0.7em;
-  display: block;
-  margin: 3px 0;
-}
-
 .mint-wrapper .primary-button {
   width: 100%;
   margin-bottom: 5em;
 }
 
-.mint-wrapper input, .mint-wrapper textarea {
-  height: 45px;
-  border-radius: 10px;
-  background: var(--input);
-  border: 1px solid var(--border-color);
-  padding-left: 1em;
-  width: 100%;
-  max-width: 100%;
+.mint-header {
+  margin-bottom: 1em;
 }
 
-.mint-wrapper textarea {
-  height: 80px;
-  padding-top: 1em;
-  font-family: 'Poppins', sans-serif;
-  min-width: 100%;
-  max-width: 100%;
+.mint-header h1 {
+  margin-bottom: 5px;
+  margin-top: 0;
 }
 
-.mint-wrapper b {
+.mint-header b {
   color: red;
   font-weight: normal;
 }
@@ -56,6 +33,14 @@
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 5px;
   overflow: hidden;
+}
+
+.user-collections-wrapper button {
+  background: white;
+  border: none;
+  font-size: 1em;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
 }
 
 .user-collections-wrapper .user-collection {
@@ -101,6 +86,39 @@
   margin-right: 1em;
 }
 
+.mint-input-section .hint {
+  font-size: 0.7em;
+  display: block;
+  margin: 3px 0;
+}
+
+.mint-input-section span {
+  display: block;
+}
+
+.mint-input-section input, .mint-input-section textarea {
+  height: 45px;
+  border-radius: 10px;
+  background: var(--input);
+  border: 1px solid var(--border-color);
+  padding-left: 1em;
+  width: 100%;
+  max-width: 100%;
+}
+
+.mint-input-section textarea {
+  height: 80px;
+  padding-top: 1em;
+  font-family: 'Poppins', sans-serif;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.mint-input-section b {
+  color: red;
+  font-weight: normal;
+}
+
 .creator-wrapper {
   display: flex;
   justify-content: space-between;
@@ -140,6 +158,21 @@
 
 .new-creator-button:hover {
   filter: brightness(90%);
+}
+
+.new-collection-wrapper {
+  width: 70%;
+  height: auto;
+  max-height: 80%;
+  background-color: var(--almost-white);
+  border-radius: 10px;
+  padding: 2em;
+  overflow-y: scroll;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.new-collection-wrapper .create-collection {
+  width: 100%;
 }
 
 @media screen and (max-width: 1600px) {

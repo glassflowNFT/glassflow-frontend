@@ -37,12 +37,15 @@ export default function UserAuth(props: {
   const userLogOut = async () => {
     signOut(auth);
     enqueueSnackbar('Successfully logged out' ,{
-      variant: "info"
+      variant: "success"
     });
   }
 
   // log the user in using firebase auth
   const userLogin = async (email: string, password: string) => {
+    enqueueSnackbar('Logging in' ,{
+      variant: "info"
+    });
     try {
       const user = await signInWithEmailAndPassword(
         auth,
@@ -51,7 +54,7 @@ export default function UserAuth(props: {
       );
       console.log(user);
       enqueueSnackbar('Successfully logged in' ,{
-        variant: "info"
+        variant: "success"
       });
       props.setShowAuth(false);
     } catch (error: any) {
@@ -82,24 +85,9 @@ export default function UserAuth(props: {
           displayName: `${firstName} ${lastName}`
         });
         enqueueSnackbar('Successfully signed up' ,{
-          variant: "info"
+          variant: "success"
         });
         props.setShowAuth(false);
-        /*
-        //  
-        updateProfile(user.user, {
-          displayName: `${firstName} ${lastName}`,
-        }).then(() => {
-          enqueueSnackbar('Successfully signed up' ,{
-            variant: "info"
-          });
-        }).catch((error) => {
-          enqueueSnackbar('Sign up failed' ,{
-            variant: "error"
-          });
-          console.log(error);
-        });
-        */
       }
     } catch (error: any) {
       enqueueSnackbar('Sign up failed' ,{

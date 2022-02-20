@@ -99,10 +99,16 @@ const pebblenet = {
   ],
 };
 
+const contractAddresses = {
+  AUCTION_CONTRACT: 'wasm1z488cw66xp43z9wrxpznueael436mfupenjzw2r76tdmezghl90seh9lqk',
+  CW721_CONTRACT: 'wasm1yymg0m85ysfje6dl805xr8kjtlk7krm82uked5lf9v9a9p6p9pqqarzpwm',
+}
+
 export const configs = { 
   local, 
   uninet, 
   pebblenet,
-  cliffnet
+  cliffnet,
+  contractAddresses
 };
 
