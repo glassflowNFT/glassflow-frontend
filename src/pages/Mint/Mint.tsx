@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChevronDown, Image, PlusCircle } from "react-feather";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
@@ -11,15 +11,16 @@ import { auth, db } from "../../firebase-config";
 import { onAuthStateChanged, User } from "@firebase/auth";
 import { uid } from 'uid';
 import { Modal } from "@material-ui/core";
+import { SELECTED_COLLECTION } from "../../interfaces";
 
 export default function Mint() {
 
   const [creators, setCreators] = useState<[string, number][]>([["", 100]]);
   const [showCollections, setShowCollections] = useState<boolean>(false);
-  const [selectedCollection, setSelectedCollection] = useState<{
-    owner: string;
-    name: string;
-  }>({ owner: "", name: "Select a Collection" });
+  const [selectedCollection, setSelectedCollection] = useState<SELECTED_COLLECTION>({ 
+    ownerWalletAddress: "", 
+    name: "Select a Collection" 
+  });
   const [userCollections, setUserCollections] = useState<any[]>();
   const [showCollectionModal, setShowCollectionModal] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
@@ -60,12 +61,21 @@ export default function Mint() {
     }
   });
 
+  useEffect(() => {
+    loadUserCollections();
+    setSelectedCollection({ 
+      ownerWalletAddress: "", 
+      name: "Select a Collection" 
+    })
+  // eslint-disable-next-line
+  }, [account]);
+
   const loadUserCollections = async () => {
     if (!user) return;
 
     // create reference and query
     const collectionsRef = collection(db, "collections");
-    const q = query(collectionsRef, where("owner", "==", user.uid))
+    const q = query(collectionsRef, where("ownerWalletAddress", "==", account))
     // execute query
     const querySnapshot = await getDocs(q);
     // array to store loaded collections
@@ -102,7 +112,7 @@ export default function Mint() {
     setCreators(newCreators);
   }
 
-  const updateSelectedCollection = (collection: {owner: string, name: string}) => {
+  const updateSelectedCollection = (collection: SELECTED_COLLECTION) => {
     setSelectedCollection(collection);
   }
 
@@ -134,6 +144,7 @@ export default function Mint() {
 
   // add a new creator + revenue share to the list
   const addNewCreator = () => {
+    if (creators.length >= 5) return;
     let newCreators = [...creators];
     newCreators.push(["", 0]);
     setCreators(newCreators);
@@ -265,13 +276,13 @@ export default function Mint() {
       // TODO: deploy new contract and use ID returned from there
       const uniqueId = uid();
       await setDoc(doc(db, "collections", `${uniqueId}`), {
-        owner: user.uid,
+        ownerWalletAddress: account,
         name: collectionName
       });
       // update collection drowpdown
       setSelectedCollection({
-        name: collectionName,
-        owner: user.uid
+        ownerWalletAddress: account,
+        name: collectionName
       });
       // reload loaded collections
       loadUserCollections();
@@ -408,7 +419,7 @@ export default function Mint() {
         ></textarea>
       </section>
       <section className="mint-input-section">
-        <span>Collection</span>
+        <span>Collection <b>*</b></span>
         <span className="hint secondary">
           This is the collection your item will be grouped with
         </span>

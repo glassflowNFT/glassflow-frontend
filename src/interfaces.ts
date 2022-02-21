@@ -8,3 +8,9 @@ export interface NFT_PREVIEW_DATA {
   tokenId: string,
   imageURL: string,
 }
+
+
+export interface SELECTED_COLLECTION {
+  ownerWalletAddress: string;
+  name: string;
+}
