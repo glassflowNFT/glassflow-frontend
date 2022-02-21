@@ -1,4 +1,3 @@
-import { generateSentences, generateWords } from "../../components/LoremIpsum";
 import gradient from 'random-gradient';
 import "./user.css";
 import { useEffect, useState } from "react";
@@ -9,11 +8,11 @@ import { useBetween } from 'use-between';
 // import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import CardGallery from "../../components/CardGallery/CardGallery";
 import { useNavigate } from 'react-router';
+import { db } from "../../firebase-config";
+import { doc, getDoc } from "firebase/firestore";
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
-const words = generateWords(2);
-const sentence = generateSentences(5);
 
 export default function User() {
 
@@ -25,21 +24,34 @@ export default function User() {
   const useSharedKeplr = () => useBetween(useKeplr);
   const { account, client } = useSharedKeplr();
   const navigate = useNavigate();
+  
+  // user profile data
+  const [displayName, setDisplayName] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
 
   useEffect(() => {
     // check if the current user is the owner of this page
     // TODO: have user sign message to prove ownership
     setIsOwner(account === userAddress)
-    getAccountData()
+    getUserData()
     // eslint-disable-next-line
   }, [account, client]);
 
-  const getAccountData = async () => {
-    if (client) {
-      // const x = await client.getHeight();
-      // const x = await client.getChainId()
-      // console.log(x)
-    }
+  const getUserData = async () => {
+    // const x = await client.getHeight();
+    // const x = await client.getChainId()
+    // console.log(x)
+    const path = window.location.pathname;
+    const uid = path.substring(path.lastIndexOf("/") + 1);
+    // get db reference to current user
+    const docRef = doc(db, "users", `${uid}`);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      setDisplayName(data.displayName);
+      setBio(data.bio);
+      // console.log("Document data:", docSnap.data());
+    } 
   }
 
   const setFilter = (e: any) => {
@@ -72,14 +84,13 @@ export default function User() {
         <section className="user-info">
           <div>
             <span className="user-name">
-              {words} {isOwner && <Edit/>}
+              {displayName} {isOwner && <Edit/>}
             </span>
             <span className="user-address secondary">
-              ({userAddress})
             </span>
           </div>
           <p className="user-bio secondary">
-            {sentence} {isOwner && <Edit/>}
+            {bio} {isOwner && <Edit/>}
           </p>
         </section>
       </section>

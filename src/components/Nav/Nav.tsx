@@ -15,6 +15,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [currentPage, setCurrentPage] = useState<string>();
   const [displayName, setDisplayName] = useState<string>("Login / Signup");
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
+  const [user, setUser] = useState<any>();
   const useSharedKeplr = () => useBetween(useKeplr);
   const { activateBrowserWallet, account } = useSharedKeplr();
   const { enqueueSnackbar } = useSnackbar();
@@ -30,6 +31,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
       if (docSnap.exists()) {
         setDisplayName(docSnap.data().displayName);
         setUserLoggedIn(true);
+        setUser(user);
       } 
     } else {
       setDisplayName("Login / Signup");
@@ -128,7 +130,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
         </li>
         <li onClick={authClicked}>
           {userLoggedIn ?
-            <Link to={!userLoggedIn ? '/' : '/user/xyz'}>
+            <Link to={`${user && user.uid ? `user/${user.uid}` : '/'}`}>
               <User/> {displayName}
             </Link>
           :

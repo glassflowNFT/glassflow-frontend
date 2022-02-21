@@ -24,7 +24,7 @@ export default function Mint() {
   const [userCollections, setUserCollections] = useState<any[]>();
   const [showCollectionModal, setShowCollectionModal] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { account, client } = useSharedKeplr();
+  const { account, client, activateBrowserWallet } = useSharedKeplr();
   const { enqueueSnackbar } = useSnackbar();
 
   // form data
@@ -131,7 +131,7 @@ export default function Mint() {
         )}
         <div 
           className="user-collection"
-          onClick={() => setShowCollectionModal(true)}
+          onClick={() => {activateBrowserWallet(); setShowCollectionModal(true)}}
         >
           <PlusCircle/>
           <button className="new-collection-button">
@@ -171,6 +171,50 @@ export default function Mint() {
 
   */
 
+  const validateCollectionInputs = (e: any) => {
+    // prevent refresh
+    e.preventDefault();
+    // check if form has been validated
+    let pass = e.target.checkValidity();
+    // set error message
+    let error = "Please fix all errors to continue"
+
+
+
+    if (pass) {
+      createCollection();
+    } else {
+      enqueueSnackbar(error, {
+        variant: "error"
+      });
+    }
+  }
+
+  // validate the input fields before executing mint
+  const validateItemInputs = (e: any) => {
+
+    // prevent refresh
+    e.preventDefault();
+
+    let pass = false;
+    let error = "Please fix all errors to continue"
+
+    // make sure user has selected a valid collection
+    if (selectedCollection.ownerWalletAddress === "") {
+      pass = false;
+      error = "Please select a valid collection or create a new one";
+    }
+
+    if (pass) {
+      createItem();
+    } else {
+      enqueueSnackbar(error, {
+        variant: "error"
+      });
+    }
+
+  }
+
   const renderCollectionModal = () => {
     return (
       <Modal
@@ -179,77 +223,84 @@ export default function Mint() {
         className="modal"
       >
         <div className="new-collection-wrapper fadeIn">
-        <div className="mint-header">
-          <h1>Create New Collection</h1>
-          <span className="secondary">
-            <b>*</b> Required Fields
-          </span>
-        </div>
-          <section className="auth-field-section mint-input-section">
-            <span>
-              Collection Logo Image <b>*</b>
-            </span>
-            <div className="file-selector-wrapper">
-              <input
-                className="file-selector"
-                type="file"
-                accept=".jpg, .jpeg, .png"
-              ></input>
-              <Image />
-            </div>
-            <span className="secondary hint">
-              File types supported: JPG, JPEG, PNG
-            </span>
-          </section>
-          <section className="auth-field-section mint-input-section">
-            <span>
-              Collection Banner Image <b>*</b>
-            </span>
-            <div className="file-selector-wrapper">
-              <input
-                className="file-selector"
-                type="file"
-                accept=".jpg, .jpeg, .png"
-              ></input>
-              <Image />
-            </div>
-            <span className="secondary hint">
-              File types supported: JPG, JPEG, PNG
-            </span>
-          </section>
-          <section className="mint-input-section">
-            <span>
-              Collection Name <b>*</b>
-            </span>
-            <span className="hint secondary">
-              Newly created NFTs will appear under this name
-            </span>
-            <input
-              placeholder="Collection name"
-              value={collectionName}
-              onChange={(e: any) => updateFormData(setCollectionName, e.target.value)}
-            ></input>
-          </section>
-          <section className="mint-input-section">
-            <span>Collection Description <b>*</b></span>
-            <span className="hint secondary">
-              The description will be included on the collection's page, and
-              will be displayed on asset pages that belong to the collection
-            </span>
-            <textarea
-              placeholder="Detailed description of your item"
-              value={collectionDescription}
-              onChange={(e: any) =>
-                updateFormData(setCollectionDescription, e.target.value)
-              }
-            ></textarea>
-          </section>
-          <button
-            className="create-collection primary-button"
-            onClick={createCollection}
+          <form 
+            onSubmit={validateCollectionInputs}
           >
-            Create New Collection
-          </button>
+          <div className="mint-header">
+            <h1>Create New Collection</h1>
+            <span className="secondary">
+              <b>*</b> Required Fields
+            </span>
+          </div>
+            <section className="auth-field-section mint-input-section">
+              <span>
+                Collection Logo Image <b>*</b>
+              </span>
+              <div className="file-selector-wrapper">
+                <input
+                  className="file-selector"
+                  type="file"
+                  required
+                  accept=".jpg, .jpeg, .png"
+                ></input>
+                <Image />
+              </div>
+              <span className="secondary hint">
+                File types supported: JPG, JPEG, PNG
+              </span>
+            </section>
+            <section className="auth-field-section mint-input-section">
+              <span>
+                Collection Banner Image <b>*</b>
+              </span>
+              <div className="file-selector-wrapper">
+                <input
+                  className="file-selector"
+                  type="file"
+                  required
+                  accept=".jpg, .jpeg, .png"
+                ></input>
+                <Image />
+              </div>
+              <span className="secondary hint">
+                File types supported: JPG, JPEG, PNG
+              </span>
+            </section>
+            <section className="mint-input-section">
+              <span>
+                Collection Name <b>*</b>
+              </span>
+              <span className="hint secondary">
+                Newly created NFTs will appear under this name
+              </span>
+              <input
+                placeholder="Collection name"
+                value={collectionName}
+                required
+                onChange={(e: any) => updateFormData(setCollectionName, e.target.value)}
+              ></input>
+            </section>
+            <section className="mint-input-section">
+              <span>Collection Description <b>*</b></span>
+              <span className="hint secondary">
+                The description will be included on the collection's page, and
+                will be displayed on asset pages that belong to the collection
+              </span>
+              <textarea
+                placeholder="Detailed description of your item"
+                required
+                value={collectionDescription}
+                onChange={(e: any) =>
+                  updateFormData(setCollectionDescription, e.target.value)
+                }
+              ></textarea>
+            </section>
+            <button
+              className="create-collection primary-button"
+            >
+              Create New Collection
+            </button>
+          </form>
         </div>
       </Modal>
     );
@@ -298,6 +349,8 @@ export default function Mint() {
       });
     }
   }
+
+
 
   const createItem = async () => {
     // ask user to connect wallet before continuing
@@ -368,141 +421,149 @@ export default function Mint() {
           <b>*</b> Required Fields
         </span>
       </div>
-      <section className="auth-field-section">
-        <span>Image or Video</span>
-        <div className="file-selector-wrapper">
-          <input
-            className="file-selector"
-            type="file"
-            accept=".jpg, .jpeg, .png"
-          ></input>
-          <Image />
-        </div>
-        <span className="secondary hint">
-          File types supported: JPG, JPEG, PNG
-        </span>
-      </section>
-      <section className="mint-input-section">
-        <span>
-          Name <b>*</b>
-        </span>
-        <input
-          placeholder="Item name"
-          value={name}
-          onChange={(e: any) => updateFormData(setName, e.target.value)}
-        ></input>
-      </section>
-      <section className="mint-input-section">
-        <span>External Link</span>
-        <span className="hint secondary">
-          This link will be displayed on the item’s detail page so that users
-          can learn more about your item. You are free to put any link to any
-          page or content that you see fit.
-        </span>
-        <input 
-          placeholder="https://link.com/path/to/data" 
-          type="url"
-          value={externalLink}
-          onChange={(e: any) => updateFormData(setExternalLink, e.target.value)}
-        ></input>
-      </section>
-      <section className="mint-input-section">
-        <span>Description</span>
-        <span className="hint secondary">
-          The description will be included on the item's detail page underneath
-          its image
-        </span>
-        <textarea 
-          placeholder="Detailed description of your item"
-          value={description}
-          onChange={(e: any) => updateFormData(setDescription, e.target.value)}
-        ></textarea>
-      </section>
-      <section className="mint-input-section">
-        <span>Collection <b>*</b></span>
-        <span className="hint secondary">
-          This is the collection your item will be grouped with
-        </span>
-        <div
-          className="collection-dropdown"
-          onClick={() => setShowCollections(!showCollections)}
-        >
-          <span>{selectedCollection.name}</span>
-          <ChevronDown />
-          {getCollections()}
-        </div>
-      </section>
-      <section className="mint-input-section">
-        <span>
-          Number of real piece representations <b>*</b>
-        </span>
-        <span className="hint secondary">
-          How many real world items are associated with this NFT
-        </span>
-        <input 
-          placeholder="1"
-          type="number" 
-          value={numRepresentations}
-          onChange={(e: any) => updateFormData(setNumRepresentations, e.target.value)}
-        ></input>
-      </section>
-      <section className="mint-input-section">
-        <span>
-          Number of collectable nfts (non representing real piece) <b>*</b>
-        </span>
-        <span className="hint secondary">How many NFTs should be created</span>
-        <input 
-          placeholder="1"
-          type="number" 
-          value={numCollectibles}
-          onChange={(e: any) => updateFormData(setNumCollectibles, e.target.value)}
-        ></input>
-      </section>
-      <section className="mint-input-section">
-        <span>
-          Creators <b>*</b>
-        </span>
-        <span className="hint secondary">
-          How many people were involved in the creation of this piece and what
-          is their revenue distribution percentage
-        </span>
-        {creators.map((_creator, index) => (
-          <div className="creator-wrapper">
+      <form onSubmit={validateItemInputs}>
+        <section className="auth-field-section">
+          <span>Image or Video <b>*</b></span>
+          <div className="file-selector-wrapper">
             <input
-              className="creator-input"
-              placeholder="Creator wallet address"
-              onChange={(e: any) => updateCreators(e, index, 0)}
+              className="file-selector"
+              required
+              type="file"
+              accept=".jpg, .jpeg, .png"
             ></input>
-            <input
-              className="revenue-input"
-              type="number"
-              min="0"
-              max="100"
-              placeholder="% Revenue distribution"
-              onChange={(e: any) => updateCreators(e, index, 1)}
-            ></input>
+            <Image />
           </div>
-        ))}
-        <button className="new-creator-button" onClick={addNewCreator}>
-          <PlusCircle /> Add new creator
+          <span className="secondary hint">
+            File types supported: JPG, JPEG, PNG
+          </span>
+        </section>
+        <section className="mint-input-section">
+          <span>
+            Name <b>*</b>
+          </span>
+          <input
+            placeholder="Item name"
+            required
+            value={name}
+            onChange={(e: any) => updateFormData(setName, e.target.value)}
+          ></input>
+        </section>
+        <section className="mint-input-section">
+          <span>External Link</span>
+          <span className="hint secondary">
+            This link will be displayed on the item’s detail page so that users
+            can learn more about your item. You are free to put any link to any
+            page or content that you see fit.
+          </span>
+          <input 
+            placeholder="https://link.com/path/to/data" 
+            type="url"
+            value={externalLink}
+            onChange={(e: any) => updateFormData(setExternalLink, e.target.value)}
+          ></input>
+        </section>
+        <section className="mint-input-section">
+          <span>Description <b>*</b></span>
+          <span className="hint secondary">
+            The description will be included on the item's detail page underneath
+            its image
+          </span>
+          <textarea 
+            placeholder="Detailed description of your item"
+            value={description}
+            onChange={(e: any) => updateFormData(setDescription, e.target.value)}
+          ></textarea>
+        </section>
+        <section className="mint-input-section">
+          <span>Collection <b>*</b></span>
+          <span className="hint secondary">
+            This is the collection your item will be grouped with
+          </span>
+          <div
+            className="collection-dropdown"
+            onClick={() => setShowCollections(!showCollections)}
+          >
+            <span>{selectedCollection.name}</span>
+            <ChevronDown />
+            {getCollections()}
+          </div>
+        </section>
+        <section className="mint-input-section">
+          <span>
+            Number of real piece representations <b>*</b>
+          </span>
+          <span className="hint secondary">
+            How many real world items are associated with this NFT
+          </span>
+          <input 
+            placeholder="1"
+            type="number" 
+            value={numRepresentations}
+            required
+            onChange={(e: any) => updateFormData(setNumRepresentations, e.target.value)}
+          ></input>
+        </section>
+        <section className="mint-input-section">
+          <span>
+            Number of collectable nfts (non representing real piece) <b>*</b>
+          </span>
+          <span className="hint secondary">How many NFTs should be created</span>
+          <input 
+            placeholder="1"
+            type="number" 
+            value={numCollectibles}
+            required
+            onChange={(e: any) => updateFormData(setNumCollectibles, e.target.value)}
+          ></input>
+        </section>
+        <section className="mint-input-section">
+          <span>
+            Creators <b>*</b>
+          </span>
+          <span className="hint secondary">
+            How many people were involved in the creation of this piece and what
+            is their revenue distribution percentage
+          </span>
+          {creators.map((_creator, index) => (
+            <div className="creator-wrapper">
+              <input
+                className="creator-input"
+                placeholder="Creator wallet address"
+                onChange={(e: any) => updateCreators(e, index, 0)}
+              ></input>
+              <input
+                className="revenue-input"
+                type="number"
+                min="0"
+                max="100"
+                placeholder="% Revenue distribution"
+                onChange={(e: any) => updateCreators(e, index, 1)}
+              ></input>
+            </div>
+          ))}
+          <button className="new-creator-button" onClick={addNewCreator}>
+            <PlusCircle /> Add new creator
+          </button>
+        </section>
+        <section className="mint-input-section">
+          <span>
+            Initial ask price <b>*</b>
+          </span>
+          <span className="hint secondary">Initial price for the piece</span>
+          <input 
+            placeholder="1" 
+            type="number" 
+            required
+            min="0"
+            value={initialAskPrice}
+            onChange={(e: any) => updateFormData(setInitialAskPrice, e.target.value)}
+          ></input>
+        </section>
+        <button className="primary-button">
+          Create Item
         </button>
-      </section>
-      <section className="mint-input-section">
-        <span>
-          Initial ask price <b>*</b>
-        </span>
-        <span className="hint secondary">Initial price for the piece</span>
-        <input 
-          placeholder="1" 
-          type="number" 
-          min="0"
-          value={initialAskPrice}
-          onChange={(e: any) => updateFormData(setInitialAskPrice, e.target.value)}
-        ></input>
-      </section>
-      <button className="primary-button" onClick={createItem}>
-        Create Item
-      </button>
+
+      </form>
     </div>
   );
 }

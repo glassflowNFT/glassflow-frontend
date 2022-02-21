@@ -19,7 +19,7 @@ export default function Footer() {
             <li><a href="/">Careers</a></li>
           </ul>
           <ul>
-            <li className="footer-first">Privary &amp; Terms</li>
+            <li className="footer-first">Privacy &amp; Terms</li>
             <li><a href="/">Terms of use</a></li>
             <li><a href="/">Privacy policy</a></li>
             <li><a href="/">Information we collect</a></li>
