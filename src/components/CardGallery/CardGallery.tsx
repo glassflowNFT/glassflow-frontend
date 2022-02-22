@@ -82,6 +82,12 @@ export default function CardGallery (props: {cardClicked: (e: any) => void, item
             <ChevronDown/>
           </span>
         </div>
+        <div className="side-filter-item">
+          <span className="side-filter-item-header">
+            Category 
+            <ChevronDown/>
+          </span>
+        </div>
       </div>
       <section className="content-wrapper">
         {renderCards()}

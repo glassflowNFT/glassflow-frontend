@@ -1,15 +1,16 @@
 import gradient from 'random-gradient';
 import "./user.css";
 import { useEffect, useState } from "react";
-import { Edit } from "react-feather";
+import { HelpCircle } from "react-feather";
 // import useInterval from "../../components/useInterval";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
 // import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import CardGallery from "../../components/CardGallery/CardGallery";
 import { useNavigate } from 'react-router';
-import { db } from "../../firebase-config";
+import { auth, db } from "../../firebase-config";
 import { doc, getDoc } from "firebase/firestore";
+import ReactTooltip from "react-tooltip";
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
@@ -20,7 +21,6 @@ export default function User() {
   // eslint-disable-next-line
   const [searchValue, setSearchValue] = useState<string>("");
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const userAddress = "juno198ydmld7696w02a85tgn3aw2y99uvdg75zjty7"
   const useSharedKeplr = () => useBetween(useKeplr);
   const { account, client } = useSharedKeplr();
   const navigate = useNavigate();
@@ -28,12 +28,13 @@ export default function User() {
   // user profile data
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
+  // eslint-disable-next-line
+  const [rewardAvailable, setRewardAvailable] = useState<boolean>(false);
 
   useEffect(() => {
     // check if the current user is the owner of this page
     // TODO: have user sign message to prove ownership
-    setIsOwner(account === userAddress)
-    getUserData()
+    getUserData();
     // eslint-disable-next-line
   }, [account, client]);
 
@@ -46,6 +47,9 @@ export default function User() {
     // get db reference to current user
     const docRef = doc(db, "users", `${uid}`);
     const docSnap = await getDoc(docRef);
+    if (auth) {
+      setIsOwner(auth.currentUser?.uid === uid)
+    }
     if (docSnap.exists()) {
       const data = docSnap.data();
       setDisplayName(data.displayName);
@@ -77,6 +81,23 @@ export default function User() {
   }
   */
 
+  const renderRewardsButton = () => {
+    return(
+      <div className="user-reward-wrapper">
+        <ReactTooltip id='rewards-tool-tip'>
+          <span>Users that create new collections are given rewards</span>
+        </ReactTooltip>
+        <button 
+          className="primary-button"
+          disabled={!rewardAvailable}
+        >
+          {rewardAvailable ? 'Claim Reward' : 'No Rewards Available'}
+        </button>
+        <HelpCircle data-tip data-for='rewards-tool-tip'/>
+      </div>
+    );
+  }
+
   return (
     <div className="user-wrapper page-wrapper">
       <section className="user-info-wrapper">
@@ -84,14 +105,13 @@ export default function User() {
         <section className="user-info">
           <div>
             <span className="user-name">
-              {displayName} {isOwner && <Edit/>}
-            </span>
-            <span className="user-address secondary">
+              {displayName} 
             </span>
           </div>
           <p className="user-bio secondary">
-            {bio} {isOwner && <Edit/>}
+            {bio}
           </p>
+          {isOwner && renderRewardsButton()}
         </section>
       </section>
       <section className="content-filter-wrapper">
