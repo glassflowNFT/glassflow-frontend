@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Twitter } from "react-feather";
+import { Link } from "react-router-dom";
 import "./footer.css";
 
 export default function Footer() {
@@ -15,7 +16,7 @@ export default function Footer() {
           <ul>
             <li className="footer-first">Company</li>
             <li><a href="/">About Us</a></li>
-            <li><a href="/">Support</a></li>
+            <li><Link to="support">Support</Link></li>
             <li><a href="/">Careers</a></li>
           </ul>
           <ul>

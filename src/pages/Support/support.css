@@ -1,0 +1,42 @@
+.support-wrapper {
+  padding-bottom: 5em;
+}
+
+.support-wrapper .accordion-header {
+  border-radius: 10px;
+  overflow: hidden;
+  color: var(--blue-accent);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 1em;
+  padding-left: 0;
+}
+
+.support-wrapper .accordion-header svg {
+  margin-left: 10px;
+  width: 20px;
+}
+
+.support-wrapper h1 {
+  color: var(--blue-accent);
+  font-size: 35pt;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.support-wrapper .faq-section-header {
+  margin-bottom: 0;
+}
+
+.support-wrapper .accordion-content {
+  height: 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.support-wrapper .accordion-content.open {
+  height: auto;
+  background: var(--input);
+  padding: 1em;
+}
