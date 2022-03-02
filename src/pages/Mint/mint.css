@@ -5,6 +5,9 @@
 
 .mint-wrapper .primary-button {
   width: 100%;
+}
+
+.mint-wrapper form {
   margin-bottom: 5em;
 }
 
@@ -23,37 +26,50 @@
 }
 
 .user-collections-wrapper {
-  position: absolute;
-  background: white;
-  left: 0;
-  top: 100%;
   display: flex;
   flex-direction: column;
   width: 100%;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  margin-bottom: 15em;
   border-radius: 5px;
-  overflow: hidden;
 }
 
 .user-collections-wrapper button {
-  background: white;
   border: none;
   font-size: 1em;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
+  margin-top: 10px;
+}
+
+.user-collections-wrapper button svg {
+  margin-right: 10px;
+}
+
+.user-collections-wrapper .user-collections-container {
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .user-collections-wrapper .user-collection {
-  background: white;
-  height: 40px;
+  background: var(--input);
+  border-radius: 10px;
+  margin: 10px 0;
+  transition: all ease 0.3s;
+  border: 1px solid var(--border-color);
+  height: 60px;
   display: flex;
   align-items: center;
   padding-left: 1em;
   color: black;
+  cursor: pointer;
 }
 
 .user-collections-wrapper .user-collection:hover {
-  filter: brightness(90%);
+  filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.25));
+}
+
+.user-collections-wrapper .user-collection:active {
+  transform: translateY(3px);
 }
 
 .user-collections-wrapper .user-collection svg {
@@ -173,6 +189,29 @@
 
 .new-collection-wrapper .create-collection {
   width: 100%;
+}
+
+.mint-steps {
+  display: flex;
+  margin-bottom: 1em;
+}
+
+.mint-steps .mint-step {
+  display: flex;
+}
+
+.mint-steps .mint-step span {
+  cursor: pointer;
+}
+
+.mint-steps .mint-step span.active {
+  color: var(--blue-accent);
+}
+
+.mint-steps .mint-step svg {
+  margin: 0 1em;
+  width: 20px;
+  transform: translateY(-1px);
 }
 
 @media screen and (max-width: 1600px) {

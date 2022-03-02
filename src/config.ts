@@ -100,7 +100,7 @@ const pebblenet = {
 };
 
 const contractAddresses = {
-  AUCTION_CONTRACT: 'wasm1z488cw66xp43z9wrxpznueael436mfupenjzw2r76tdmezghl90seh9lqk',
+  AUCTION_CONTRACT: 'wasm1dy8rzv9fvaehucjt0yzgs44tgpju5pc3fppd22k80pvnum4td98qel0ah7',
   CW721_CONTRACT: 'wasm1yymg0m85ysfje6dl805xr8kjtlk7krm82uked5lf9v9a9p6p9pqqarzpwm',
 }
 

@@ -8,7 +8,6 @@ import { NFT_PREVIEW_DATA } from "../../interfaces";
 export default function CardGallery (props: {cardClicked: (e: any) => void, items?: NFT_PREVIEW_DATA[]}) {
 
   // const [selectedFilter, setSelectedFilter] = useState<string>("owned");
-  // eslint-disable-next-line
   const [searchValue, setSearchValue] = useState<string>("");
   const [showFilter, setShowFilter] = useState<boolean>(true);
 
@@ -34,23 +33,25 @@ export default function CardGallery (props: {cardClicked: (e: any) => void, item
         </div>
       )
     } else {
-      return props.items.map((item, index) => 
-        <div
-          className="content"
-          key={index}
-          onClick={() => props.cardClicked(item)}
-        >
-          <div className="image-wrapper" style={bgGradient}>
-            {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
-          </div>
-          <div className="content-info">
-            <span className="content-collection">{item.collection}</span>
-            <span className="content-name secondary">{item.name}</span>
-          </div>
-        </div>
-      );
+      return props.items.map((item, index) =>  {
+        return(
+          (item.name.toLowerCase().indexOf(searchValue.toLowerCase())) > -1 &&
+            <div
+              className="content"
+              key={index}
+              onClick={() => props.cardClicked(item)}
+            >
+              <div className="image-wrapper" style={bgGradient}>
+                {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
+              </div>
+              <div className="content-info">
+                <span className="content-collection">{item.collection}</span>
+                <span className="content-name secondary">{item.name}</span>
+              </div>
+            </div>
+        )
+      });
     }
-  // eslint-disable-next-line
   };
 
   return (

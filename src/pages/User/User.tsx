@@ -9,25 +9,26 @@ import { useBetween } from 'use-between';
 import CardGallery from "../../components/CardGallery/CardGallery";
 import { useNavigate } from 'react-router';
 import { auth, db } from "../../firebase-config";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import ReactTooltip from "react-tooltip";
+import { configs } from '../../config';
+import { NFT_PREVIEW_DATA } from '../../interfaces';
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
 
 export default function User() {
 
-  const [selectedFilter, setSelectedFilter] = useState<string>("owned");
-  // eslint-disable-next-line
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [selectedFilter, setSelectedFilter] = useState<"owned" | "created" | "listed">("owned");
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { account, client } = useSharedKeplr();
+  const { account, client, readOnlyClient } = useSharedKeplr();
   const navigate = useNavigate();
   
   // user profile data
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
+  const [items, setItems] = useState<NFT_PREVIEW_DATA[]>([]);
   // eslint-disable-next-line
   const [rewardAvailable, setRewardAvailable] = useState<boolean>(false);
 
@@ -35,8 +36,9 @@ export default function User() {
     // check if the current user is the owner of this page
     // TODO: have user sign message to prove ownership
     getUserData();
+    getUserItems();
     // eslint-disable-next-line
-  }, [account, client]);
+  }, [account, client, readOnlyClient]);
 
   const getUserData = async () => {
     // const x = await client.getHeight();
@@ -66,20 +68,66 @@ export default function User() {
     navigate("/asset/xyz");
   }
 
-  /*
-  const buttonClicked = async () => {
-    if (!client) return;
-    const gasPrice = GasPrice.fromString("0.025ujunox");
-    const executeFee = calculateFee(300_000, gasPrice);
-    const result = await client.execute(
-      account,
-      'wasm1u5c8xtefpdyhfdrzquhhepc7jqacmrahndczn3', 
-      {increment: {}}, 
-      executeFee
-    );
-    console.log(result);
+  const getUserItems = async () => {
+
+    if (!readOnlyClient) return;
+
+    let collections:any[] = [];
+    let nfts:NFT_PREVIEW_DATA[] = [];
+    // get all collections
+    const collectionsRef = collection(db, "collections");
+    const q = query(collectionsRef, where("collectionAddress", "!=", ""))
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // add to list
+      if (doc.data())
+        collections.push(doc.data());
+    });
+
+    // iterate through all tokens that are returned
+    for (const collection of collections) {
+      // get all saved NFTs
+      const result = await readOnlyClient.queryContractSmart(
+        configs.contractAddresses.AUCTION_CONTRACT, 
+        {
+          "all_tokens": { 
+            "nft_addr": collection.collectionAddress
+          }
+        }
+      );
+      if (result.length > 0) {
+        for (const tokenId of result) {
+          // query contract for NFTs in all collections
+          const queryResult = await readOnlyClient.queryContractSmart(
+            configs.contractAddresses.AUCTION_CONTRACT,
+            {
+              query_nft_info: {
+                token_id: tokenId,
+                nft_addr: collection.collectionAddress
+              }
+            }
+          )
+          console.log(queryResult)
+          // filter by owned NFTs
+          if (queryResult.owner === account) {
+            // add new NFT data to preview array
+            nfts.push({
+              name: queryResult.extension.name,
+              description: queryResult.extension.description,
+              imageURL: queryResult.image_url,
+              collection: collection.name,
+              address: collection.collectionAddress,
+              tokenId: tokenId,
+              owner: queryResult.owner
+            });
+          }
+        }
+      }
+    }
+
+    setItems(nfts);
+
   }
-  */
 
   const renderRewardsButton = () => {
     return(
@@ -143,6 +191,7 @@ export default function User() {
       <div className="cards-container">
         <CardGallery
           cardClicked={userItemClicked}
+          items={items}
         />
       </div>
     </div>

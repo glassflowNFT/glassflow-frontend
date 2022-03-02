@@ -9,7 +9,6 @@ import Nav from './components/Nav/Nav';
 import Mint from './pages/Mint/Mint';
 import User from './pages/User/User';
 import Support from './pages/Support/Support';
-import Search from './pages/Search/Search';
 import Footer from './components/Footer/Footer';
 import UserAuth from './components/UserAuth/UserAuth';
 import Collections from './pages/Collections/Collections';
@@ -50,7 +49,6 @@ function App() {
         <Route path="/user/*" element={<User/>} />
         <Route path="/explore" element={<Explore/>} />
         <Route path="/support" element={<Support/>} />
-        <Route path="/search" element={<Search/>} />
         <Route path="/verify" element={<Verification/>} />
         <Route path="/collections" element={<Collections/>} />
         <Route path="/collection/*" element={<Collection/>} />

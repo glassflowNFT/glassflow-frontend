@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Home, PlusCircle, AlignLeft, Search, User, Compass } from 'react-feather';
+import { Home, PlusCircle, AlignLeft, User, Compass } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
@@ -118,14 +118,6 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
             className={`${currentPage === "explore" ? "active" : ""}`}
           >
             <Compass/> Explore 
-          </Link>
-        </li>
-        <li onClick={linkClicked}>
-          <Link 
-            to="/search"
-            className={`${currentPage === "search" ? "active" : ""}`}
-          >
-            <Search /> Search
           </Link>
         </li>
         <li onClick={authClicked}>

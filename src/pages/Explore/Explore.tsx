@@ -5,59 +5,80 @@ import { useBetween } from 'use-between';
 import { useEffect, useState } from "react";
 import { configs } from "../../config";
 import { NFT_PREVIEW_DATA } from "../../interfaces";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebase-config";
 
 export default function Explore() {
   const navigate = useNavigate();
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { client } = useSharedKeplr();
+  const { client, readOnlyClient } = useSharedKeplr();
   const [items, setItems] = useState<NFT_PREVIEW_DATA[]>([]);
 
   useEffect(() => {
     fetchItems();
   // eslint-disable-next-line
-  }, [client]);
+  }, [client, readOnlyClient]);
 
   const collectionClicked = (item: any) => {
-    navigate(`/asset/${item.tokenId}`);
+    navigate(`/asset/${item.address}/${item.tokenId}`);
   }
 
   const fetchItems = async () => {
-    // TODO: use public RPC if user doesn't have wallet setup
-    if (!client) return;
 
-    // get all saved NFTs
-    const result = await client.queryContractSmart(
-      configs.contractAddresses.AUCTION_CONTRACT, 
-      {
-        "all_tokens": { }
-      }
-    );
+    if (!readOnlyClient) return;
 
-    let previewData:NFT_PREVIEW_DATA[] = [];
+    let collections:any[] = [];
+    let nfts:NFT_PREVIEW_DATA[] = [];
+
+    // get all collections
+    const collectionsRef = collection(db, "collections");
+    const q = query(collectionsRef, where("collectionAddress", "!=", ""))
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // add to list
+      if (doc.data())
+        collections.push(doc.data());
+    });
 
     // iterate through all tokens that are returned
-    // TODO: make this asynchronous
-    for (const item of result) {
-      const queryResult = await client.queryContractSmart(
-        configs.contractAddresses.AUCTION_CONTRACT,
+    for (const collection of collections) {
+      // get all saved NFTs
+      const result = await readOnlyClient.queryContractSmart(
+        configs.contractAddresses.AUCTION_CONTRACT, 
         {
-          query_nft_info: {
-            token_id: item
+          "all_tokens": { 
+            "nft_addr": collection.collectionAddress
           }
         }
-      )
-      // add new NFT data to preview array
-      previewData.push({
-        name: queryResult.extension.name,
-        description: queryResult.extension.description,
-        imageURL: queryResult.image_url,
-        collection: queryResult.extension.collection,
-        tokenId: item
-      });
+      );
+      if (result.length > 0) {
+        for (const tokenId of result) {
+          // query contract for NFTs in all collections
+          const queryResult = await readOnlyClient.queryContractSmart(
+            configs.contractAddresses.AUCTION_CONTRACT,
+            {
+              query_nft_info: {
+                token_id: tokenId,
+                nft_addr: collection.collectionAddress
+              }
+            }
+          )
+          // add new NFT data to preview array
+          nfts.push({
+            name: queryResult.extension.name,
+            description: queryResult.extension.description,
+            imageURL: queryResult.image_url,
+            collection: collection.name,
+            address: collection.collectionAddress,
+            tokenId: tokenId,
+            owner: queryResult.owner
+          });
+        }
+      }
     }
 
-    // update state
-    setItems(previewData);
+    // update state var
+    setItems(nfts);
   }
 
   return(

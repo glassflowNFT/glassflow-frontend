@@ -1,4 +1,3 @@
-import { generateSentences, generateWords } from "../../components/LoremIpsum";
 import gradient from 'random-gradient';
 import "./collection.css";
 import { useEffect, useState } from "react";
@@ -9,13 +8,19 @@ import { useBetween } from 'use-between';
 // import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import CardGallery from "../../components/CardGallery/CardGallery";
 import { useNavigate } from 'react-router';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase-config";
+import { configs } from "../../config";
+import { NFT_PREVIEW_DATA } from "../../interfaces";
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
-const words = generateWords(2);
-const sentence = generateSentences(5);
 
 export default function Collection() {
+
+  const useSharedKeplr = () => useBetween(useKeplr);
+  const { account, client, readOnlyClient } = useSharedKeplr();
+  const navigate = useNavigate();
 
   // eslint-disable-next-line
   const [selectedFilter, setSelectedFilter] = useState<string>("owned");
@@ -23,42 +28,83 @@ export default function Collection() {
   const [searchValue, setSearchValue] = useState<string>("");
   // eslint-disable-next-line
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const useSharedKeplr = () => useBetween(useKeplr);
-  const { account, client } = useSharedKeplr();
-  const navigate = useNavigate();
+  const [collectionName, setCollectionName] = useState<string>();
+  const [collectionDescription, setCollectionDescription] = useState<string>();
+  const [collectionOwner, setCollectionOwner] = useState<string>();
+  // eslint-disable-next-line
+  const [collectionAddress, setCollectionAddress] = useState<string>();
+  const [collectionItems, setCollectionItems] = useState<NFT_PREVIEW_DATA[]>([]);
 
   useEffect(() => {
     // check if the current user is the owner of this page
     // TODO: have user sign message to prove ownership
-    getAccountData()
+    getCollectionData()
     // eslint-disable-next-line
-  }, [account, client]);
+  }, [account, client, readOnlyClient]);
 
-  const getAccountData = async () => {
-    if (client) {
-      // const x = await client.getHeight();
-      // const x = await client.getChainId()
-      // console.log(x)
+  const getCollectionData = async () => {
+    let path = window.location.pathname.split("/");
+    const address = path[path.length-1];
+
+    // load collection data from db
+    const docRef = doc(db, "collections", address);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+
+      //
+      loadCollectionItems(data);
+
+      // update state vars
+      setCollectionName(data.name);
+      setCollectionAddress(data.collectionAddress);
+      setCollectionDescription(data.collectionDescription);
+      setCollectionOwner(data.ownerWalletAddress);
     }
   }
 
-  /*
-  const buttonClicked = async () => {
-    if (!client) return;
-    const gasPrice = GasPrice.fromString("0.025ujunox");
-    const executeFee = calculateFee(300_000, gasPrice);
-    const result = await client.execute(
-      account,
-      'wasm1u5c8xtefpdyhfdrzquhhepc7jqacmrahndczn3', 
-      {increment: {}}, 
-      executeFee
+  const loadCollectionItems = async (collection: any) => {
+    if (!readOnlyClient) return;
+    let nfts:NFT_PREVIEW_DATA[] = [];
+    const result = await readOnlyClient.queryContractSmart(
+      configs.contractAddresses.AUCTION_CONTRACT, 
+      {
+        "all_tokens": { 
+          "nft_addr": collection.collectionAddress
+        }
+      }
     );
-    console.log(result);
-  }
-  */
+    if (result.length > 0) {
+      for (const tokenId of result) {
+        // query contract for NFTs in all collections
+        const queryResult = await readOnlyClient.queryContractSmart(
+          configs.contractAddresses.AUCTION_CONTRACT,
+          {
+            query_nft_info: {
+              token_id: tokenId,
+              nft_addr: collection.collectionAddress
+            }
+          }
+        )
+        // add new NFT data to preview array
+        nfts.push({
+          name: queryResult.extension.name,
+          description: queryResult.extension.description,
+          imageURL: queryResult.image_url,
+          collection: collection.name,
+          address: collection.collectionAddress,
+          tokenId: tokenId,
+          owner: queryResult.owner
+        });
+      }
+    }
 
-  const collectionItemClicked = () => {
-    navigate("/asset/xyz");
+    // update state vars
+    setCollectionItems(nfts);
+  }
+
+  const collectionItemClicked = (item: any) => {
+    navigate(`/asset/${item.address}/${item.tokenId}`);
   }
 
   return (
@@ -68,22 +114,22 @@ export default function Collection() {
         <section className="collection-info">
           <div>
             <span className="collection-name">
-              {words} {isOwner && <Edit/>}
+              {collectionName} {isOwner && <Edit/>}
             </span>
           </div>
           <p className="collection-bio secondary">
-            {sentence} {isOwner && <Edit/>}
+            {collectionDescription} {isOwner && <Edit/>}
           </p>
         </section>
       </section>
       <section className="collection-stats-wrapper">
         <div className="collection-creator">
           <span className="stat-title">Created By</span>
-          <span className="stat-text secondary">0xd10c833f4305e1053a64bc738c550381f48104ca</span>
+          <span className="stat-text secondary">{collectionOwner}</span>
         </div>
         <div className="collection-stats">
           <div className="collection-stat-container">
-            <span className="stat-title">123</span>
+            <span className="stat-title">{collectionItems.length}</span>
             <span className="stat-text secondary">Items</span>
           </div>
           <div className="collection-stat-container">
@@ -99,6 +145,7 @@ export default function Collection() {
       <div className="cards-container">
         <CardGallery
           cardClicked={collectionItemClicked}
+          items={collectionItems}
         />
       </div>
     </div>
