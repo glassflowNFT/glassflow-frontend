@@ -11,6 +11,7 @@ import { auth, db } from "../../firebase-config";
 import { onAuthStateChanged, User } from "@firebase/auth";
 import { Modal } from "@material-ui/core";
 import { SELECTED_COLLECTION } from "../../interfaces";
+import { promptWalletConnect } from "../../helpers/utils";
 
 // placeholder for when no collection is selected
 const NO_COLLECTION = {
@@ -27,7 +28,7 @@ export default function Mint() {
   const [userCollections, setUserCollections] = useState<any[]>();
   const [showCollectionModal, setShowCollectionModal] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { account, client, activateBrowserWallet } = useSharedKeplr();
+  const { account, client } = useSharedKeplr();
   const { enqueueSnackbar } = useSnackbar();
 
   // form data
@@ -115,6 +116,14 @@ export default function Mint() {
     setCreators(newCreators);
   }
 
+  const createCollectionClicked = () => {
+    if (client) {
+      setShowCollectionModal(true);
+    } else {
+      promptWalletConnect(enqueueSnackbar);
+    }
+  }
+
   const getCollections = () => {
     const collectionSelected = (collection: SELECTED_COLLECTION) => {
       setSelectedCollection(collection);
@@ -140,10 +149,7 @@ export default function Mint() {
           ))}
         </div>
         <button
-          onClick={() => {
-            activateBrowserWallet();
-            setShowCollectionModal(true);
-          }}
+          onClick={createCollectionClicked}
           className="primary-button"
         >
           <PlusCircle />

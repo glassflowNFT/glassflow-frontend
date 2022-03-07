@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Home, PlusCircle, AlignLeft, User, Compass } from 'react-feather';
+import { Home, PlusCircle, AlignLeft, User, Compass, CreditCard, HelpCircle, Settings } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
@@ -10,14 +10,16 @@ import {
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore"; 
 import { db } from "../../firebase-config";
+import { shortenAddress } from '../../helpers/utils';
 
 export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [currentPage, setCurrentPage] = useState<string>();
   const [displayName, setDisplayName] = useState<string>("Login / Signup");
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<any>();
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { activateBrowserWallet, account } = useSharedKeplr();
+  const { activateBrowserWallet, account, chainConfig } = useSharedKeplr();
   const { enqueueSnackbar } = useSnackbar();
   const auth = getAuth();
 
@@ -75,16 +77,46 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
       props.setShowAuth(true);
   }
 
-  const shortenAddress = (addr: string) => {
-      return `${addr.substring(0, 10)}...${addr.substring(addr.length - 5, addr.length - 1)}`
-  }
-
   const connectWallet = async () => {
     await activateBrowserWallet().then(() => {
       enqueueSnackbar('Successfully connected wallet' ,{
         variant: "info"
       });
     });
+  }
+
+  const renderDropdown = () => {
+    return(
+      <div className="dropdown-wrapper" onClick={() => setShowDropdown(!showDropdown)}>
+        Menu
+        <div className={`dropdown-items-wrapper ${showDropdown ? 'active' : ''}`}>
+          <div className="dropdown-item" onClick={authClicked}>
+            <User/>
+            {userLoggedIn ?
+              <Link to={`${user && user.uid ? `user/${user.uid}` : '/'}`}>
+                {displayName}
+              </Link>
+            :
+              <a href={!userLoggedIn ? '/' : '/user/xyz'}>
+                {displayName}
+              </a>
+            }
+          </div>
+          <div className="dropdown-item">
+            <HelpCircle/>
+            <Link to="/support">FAQ</Link>
+          </div>
+          <div className="dropdown-item">
+            <Settings/>
+            <Link to="/support">Settings</Link>
+          </div>
+          <div onClick={connectWallet} className="dropdown-item">
+            <CreditCard/>
+            {account ? shortenAddress(account, chainConfig.addressPrefix) : "Connect Wallet"}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -120,20 +152,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
             <Compass/> Explore 
           </Link>
         </li>
-        <li onClick={authClicked}>
-          {userLoggedIn ?
-            <Link to={`${user && user.uid ? `user/${user.uid}` : '/'}`}>
-              <User/> {displayName}
-            </Link>
-          :
-            <a href={!userLoggedIn ? '/' : '/user/xyz'}>
-              <User/> {displayName}
-            </a>
-          }
-        </li>
-        <li onClick={connectWallet} className="connect-wallet-button">
-          {account ? shortenAddress(account) : "Connect Wallet"}
-        </li>
+        {renderDropdown()}
       </ul>
     </nav>
   );

@@ -1,4 +1,4 @@
-import { AlignLeft, Clock, Info, Star, Tag } from 'react-feather';
+import { AlignLeft, Clock, DollarSign, Info, Star, Tag } from 'react-feather';
 import { generateSentences } from '../../components/LoremIpsum';
 import gradient from 'random-gradient';
 import Accordion from './Accordion';
@@ -11,7 +11,8 @@ import { useKeplr } from '../../components/useKeplr';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { calculateFee, GasPrice } from '@cosmjs/stargate';
-import { shortenAddress } from '../../helpers/utils';
+import { promptWalletConnect, shortenAddress } from '../../helpers/utils';
+import { useSnackbar } from 'notistack';
 
 export default function Asset() {
 
@@ -20,6 +21,7 @@ export default function Asset() {
   const navigate = useNavigate();
   const useSharedKeplr = () => useBetween(useKeplr);
   const { client, account, readOnlyClient, chainConfig } = useSharedKeplr();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [assetName, setAssetName] = useState<string>();
   const [assetDescription, setAssetDescription] = useState<string>();
@@ -29,12 +31,12 @@ export default function Asset() {
   const [assetCollectionId, setAssetCollectionId] = useState<string>("");
   const [assetOwner, setAssetOwner] = useState<string>();
   const [assetListed, setAssetListed] = useState<boolean>();
-  // eslint-disable-next-line
-  const [assetListingPrice, setAssetListingPrice] = useState<string>();
+  const [assetListingPrice, setAssetListingPrice] = useState<{amount: string, info:{native_token: any}}>();
+  const [assetListingPriceInput, setAssetListingPriceInput] = useState<string>();
+  const [auctionId, setAuctionId] = useState<string>();
 
   useEffect(() => {
     loadAssetData();
-    getAuctionItems();
   // eslint-disable-next-line
   }, [readOnlyClient]);
 
@@ -71,26 +73,52 @@ export default function Asset() {
     // update state vars
     setAssetName(query.extension.name);
     setAssetDescription(query.extension.description);
-    setAssetOwner(query.owner);
+    if (query.owner !== configs.contractAddresses.AUCTION_CONTRACT)
+      setAssetOwner(query.owner);
     setAssetListed(query.is_listing);
     setAssetListingPrice(query.listing_price);
     setAssetCollectionId(id);
+    getAuctionData();
   }
 
-  const getAuctionItems = async() => {
+  const getAuctionData = async() => {
     if (!readOnlyClient) return;
+
+    const path = window.location.pathname.split("/");
+    const currentId = path[path.length - 1];
+
     // const client = await CosmWasmClient.connect(rpcEndpoint);
-	  const query_result = await readOnlyClient.queryContractSmart(
+	  const auctionIds = await readOnlyClient.queryContractSmart(
       configs.contractAddresses.AUCTION_CONTRACT, 
       {
-          "all_auction_ids": { }
-      } );
-	  console.info("query result", query_result);
+        "all_auction_ids": { }
+      } 
+    );
+
+    for (const id of auctionIds) {
+      const auctionQuery = await readOnlyClient.queryContractSmart(
+        configs.contractAddresses.AUCTION_CONTRACT,
+        {
+          "resolve_listing": {
+            id: id
+          }
+        }
+      )
+      // found the correct listing
+      if (auctionQuery.token_id === currentId) {
+        setAssetOwner(auctionQuery.seller);
+        setAuctionId(id);
+        return;
+      }
+    }
   }
 
   const placeListing = async () => {
 
-    if (!client) return;
+    if (!client) 
+      return promptWalletConnect(enqueueSnackbar);
+    else if (!assetListingPriceInput || assetListingPriceInput === "") 
+      return enqueueSnackbar('Please enter a valid listing price', {variant: "error"});
 
     const gasPrice = GasPrice.fromString("0.05upebble");
     const executeFee = calculateFee(400_000, gasPrice);
@@ -117,7 +145,7 @@ export default function Asset() {
         place_listing: {
           id: assetCollectionId,  //nft address
           minimum_bid: {
-              amount: "12000",
+              amount: assetListingPriceInput,
               info: {
                 native_token: {
                     denom: "upebble"
@@ -134,22 +162,102 @@ export default function Asset() {
     console.log("res: ", create_result);
   }
 
+
+  const bidListing = async () => {
+
+    if (!client) return promptWalletConnect(enqueueSnackbar);
+
+    const gasPrice = GasPrice.fromString("0.05upebble");
+
+    const executeFee = calculateFee(400_000, gasPrice);
+    const create_result = await client.execute(
+        account, 
+        configs.contractAddresses.AUCTION_CONTRACT,  
+        {
+            bid_listing: {
+                listing_id: "AUCTION.1",  //nft address
+                bid_price: {
+                    amount: "20000",
+                    info: {
+                        // token: {
+                        //     contract_addr: "terraxxx"
+                        // },
+                        native_token: {
+                            denom: "upebble"
+                        }
+                    },                   
+                },
+            }
+        },
+        executeFee,
+        "",
+        [{denom: "upebble", amount: "20000"}]
+    );
+    console.log("res: ", create_result);
+  }
+
+  const removeListing = async () => {
+
+    if (!client) return promptWalletConnect(enqueueSnackbar);
+
+    const gasPrice = GasPrice.fromString("0.05upebble");
+    const executeFee = calculateFee(400_000, gasPrice);
+
+    const create_result = await client.execute(
+      account,
+      configs.contractAddresses.AUCTION_CONTRACT,  
+      {
+        withdraw_listing: {
+          listing_id: auctionId,  //nft address
+        }
+      },
+      executeFee,
+      "",
+      []
+    );
+    console.log("res: ", create_result);
+  }
+
   const renderOfferButton = () => {
     let text = '';
-    console.log(assetOwner)
+    let action;
     if (assetOwner === account) {
       text = assetListed ? 'Remove Listing' : 'Create Listing';
+      action = assetListed ? () => removeListing() : () => placeListing();
     } else {
       text = 'Place Bid';
+      action = () => bidListing();
     }
     return(
       <button 
         className="primary-button"
-        onClick={placeListing}
+        onClick={action}
       >
         {text}
       </button>
     )
+  }
+
+  const renderListingPriceInfo = () => {
+    if (assetOwner === account && !assetListed) {
+      return (
+        <input 
+          placeholder='Insert Listing Price'
+          className="listing-price-input"
+          value={assetListingPriceInput}
+          onChange={(e) => setAssetListingPriceInput(e.target.value)}
+        ></input>
+      );
+    } else {
+      const priceText = assetListingPrice 
+        ? `${assetListingPrice.amount} ${assetListingPrice.info.native_token.denom}`
+        : 'No listing price available';
+      return (
+        <span className="secondary">
+          {priceText}
+        </span>
+      )
+    }
   }
 
   return(
@@ -198,15 +306,12 @@ export default function Asset() {
           </div> 
         </section>
         <Accordion
-          icon={<Tag/>}
-          title="Highest Offer"
+          icon={<DollarSign/>}
+          title="Listing Info"
           startOpen={true}
         >
           <div className="item-offer-wrapper">
-            <span className="secondary">
-              12.34 $XYZ
-            </span>
-            
+            {renderListingPriceInfo()}            
             {renderOfferButton()}
           </div>
         </Accordion>
