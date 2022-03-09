@@ -12,6 +12,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { shortenAddress } from '../../helpers/utils';
 
+
 export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [currentPage, setCurrentPage] = useState<string>();
   const [displayName, setDisplayName] = useState<string>("Login / Signup");
