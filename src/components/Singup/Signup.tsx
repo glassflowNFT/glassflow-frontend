@@ -1,29 +1,42 @@
 import { Fragment, useState } from "react";
 import { Image } from "react-feather";
 
-export default function Signup(props: { 
-  setShowLogin: (show: boolean) => void, 
-  userSignup: (email: string, password: string, firstName: string, lastName: string, bio: string) => void 
+export default function Signup(props: {
+  setShowLogin: (show: boolean) => void;
+  userSignup: (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    bio: string,
+    businessName: string,
+    licenseNumber: string,
+    phoneNumber: string 
+  ) => void;
 }) {
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
+  const [businessName, setBusinessName] = useState<string>("");
+  const [licenseNumber, setLicenseNumber] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const choices = [
     "I plan to create cannabis oriented NFT collections",
     "I plan on using Genetic Registration",
     "I am an independent glass artist",
     "I own a business in cannabis",
-    "I am a current partner GlassFlow"
+    "I am a current partner GlassFlow",
   ];
-  const [choicesArray, setChoicesArray] = useState<boolean[]>([...new Array(choices.length).fill(false)])
-  
+  const [choicesArray, setChoicesArray] = useState<boolean[]>([
+    ...new Array(choices.length).fill(false),
+  ]);
+
   const toggleAuthSection = (e: any) => {
     e.preventDefault();
     props.setShowLogin(true);
-  }
+  };
 
   const signupClicked = () => {
     props.userSignup(
@@ -31,13 +44,16 @@ export default function Signup(props: {
       password,
       firstName,
       lastName,
-      bio
+      bio,
+      businessName,
+      licenseNumber,
+      phoneNumber
     );
-  }
+  };
 
   const inputUpdated = (set: (input: any) => void, value: string) => {
     set(value);
-  }
+  };
 
   const updateChoicesArray = (index: number) => {
     // create copy of choices array
@@ -46,7 +62,7 @@ export default function Signup(props: {
     newChoices[index] = !newChoices[index];
     // update state
     setChoicesArray(newChoices);
-  }
+  };
 
   return (
     <Fragment>
@@ -62,7 +78,7 @@ export default function Signup(props: {
             <span>
               First Name <b>*</b>
             </span>
-            <input 
+            <input
               placeholder="Your first name"
               value={firstName}
               onChange={(e) => inputUpdated(setFirstName, e.target.value)}
@@ -72,7 +88,7 @@ export default function Signup(props: {
             <span>
               Last Name <b>*</b>
             </span>
-            <input 
+            <input
               placeholder="Your last name"
               value={lastName}
               onChange={(e) => inputUpdated(setLastName, e.target.value)}
@@ -83,8 +99,8 @@ export default function Signup(props: {
           <span>
             Email <b>*</b>
           </span>
-          <input 
-            placeholder="your_email@email.com" 
+          <input
+            placeholder="your_email@email.com"
             type="email"
             onChange={(e) => inputUpdated(setEmail, e.target.value)}
             value={email}
@@ -92,61 +108,100 @@ export default function Signup(props: {
         </section>
         <section className="auth-field-section">
           <span>
-            Password <b>*</b><span className="secondary hint">must contain at least 8 characters and use one special character</span>
+            Password <b>*</b>
+            <span className="secondary hint">
+              must contain at least 8 characters and use one special character
+            </span>
           </span>
-          <input 
-            placeholder="********" 
-            type="password" 
+          <input
+            placeholder="********"
+            type="password"
             onChange={(e) => inputUpdated(setPassword, e.target.value)}
             value={password}
-          >
-          </input>
+          ></input>
         </section>
         <section className="auth-field-section">
           <span>
             Profile Bio <b>*</b>
           </span>
-          <textarea 
+          <textarea
             placeholder="This will be displayed on your profile. Use this to describe who you are, what you do. Feel free to be creative as you want"
             value={bio}
             onChange={(e) => inputUpdated(setBio, e.target.value)}
-          >
-          </textarea>
+          ></textarea>
         </section>
         <section className="auth-field-section">
           <span>
             How do you plan on using GlassFlow?<b>*</b>
           </span>
           <div className="checkbox-wrapper">
-            {choices.map((text, index) => 
+            {choices.map((text, index) => (
               <div className="checkbox">
                 <input
-                  type="checkbox" 
+                  type="checkbox"
                   checked={choicesArray[index]}
                   onClick={(e) => updateChoicesArray(index)}
                 />
-                <span 
+                <span
                   className="secondary"
                   onClick={(e) => updateChoicesArray(index)}
                 >
                   {text}
                 </span>
               </div>
-            )}
+            ))}
           </div>
         </section>
         <section className="auth-field-section">
           <span>
             Photo ID
-            <span className="secondary hint">If you would like to become a verified user you are required to submit a photo of your government-issued ID</span>
+            <span className="secondary hint">
+              If you would like to become a verified user you are required to
+              submit a photo of your government-issued ID
+            </span>
           </span>
           <div className="file-selector-wrapper">
-            <input className="file-selector" type="file" accept=".jpg, .jpeg, .png"></input>
-            <Image/>
+            <input
+              className="file-selector"
+              type="file"
+              accept=".jpg, .jpeg, .png"
+            ></input>
+            <Image />
           </div>
-          <span className="secondary hint">File types supported: JPG, JPEG, PNG</span>
+          <span className="secondary hint">
+            File types supported: JPG, JPEG, PNG
+          </span>
         </section>
-        <button className="primary-button" onClick={signupClicked}>Sign Up</button>
+        <section className="auth-field-section">
+          <span>Business Name</span>
+          <input
+            placeholder="The name of your business"
+            type="text"
+            onChange={(e) => inputUpdated(setBusinessName, e.target.value)}
+            value={businessName}
+          />
+        </section>
+        <section className="auth-field-section">
+          <span>Business Tax ID Number / Business License Number</span>
+          <input
+            placeholder="The legally isued license number for your business"
+            type="text"
+            onChange={(e) => inputUpdated(setLicenseNumber, e.target.value)}
+            value={licenseNumber}
+          />
+        </section>
+        <section className="auth-field-section">
+          <span>Phone Number</span>
+          <input
+            placeholder="Phone number"
+            type="text"
+            onChange={(e) => inputUpdated(setPhoneNumber, e.target.value)}
+            value={phoneNumber}
+          />
+        </section>
+        <button className="primary-button" onClick={signupClicked}>
+          Sign Up
+        </button>
         <a href="/" onClick={toggleAuthSection} className="toggle-auth">
           <span className="secondary">Already have an account? Login here</span>
         </a>

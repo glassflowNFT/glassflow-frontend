@@ -38,7 +38,7 @@ export default function Asset() {
   useEffect(() => {
     loadAssetData();
   // eslint-disable-next-line
-  }, [readOnlyClient]);
+  }, [readOnlyClient, navigate]);
 
   const loadAssetData = async () => {
 

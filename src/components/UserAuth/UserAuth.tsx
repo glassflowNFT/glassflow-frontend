@@ -66,8 +66,16 @@ export default function UserAuth(props: {
   }
 
   // register the user using firebase auth
-  // TODO: accept bio, first name, last name, photo, etc
-  const userSignup = async (email: string, password: string, firstName: string, lastName: string, bio: string) => {
+  const userSignup = async (
+    email: string, 
+    password: string, 
+    firstName: string, 
+    lastName: string, 
+    bio: string,
+    businessName: string,
+    licenseNumber: string,
+    phoneNumber: string 
+  ) => {
     try {
       // create user account with email + password
       const user = await createUserWithEmailAndPassword(
@@ -82,7 +90,10 @@ export default function UserAuth(props: {
           lastName,
           email,
           bio,
-          displayName: `${firstName} ${lastName}`
+          displayName: `${firstName} ${lastName}`,
+          businessName,
+          licenseNumber,
+          phoneNumber
         });
         enqueueSnackbar('Successfully signed up' ,{
           variant: "success"

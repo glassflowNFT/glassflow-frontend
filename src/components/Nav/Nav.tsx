@@ -11,6 +11,7 @@ import {
 import { doc, getDoc } from "firebase/firestore"; 
 import { db } from "../../firebase-config";
 import { shortenAddress } from '../../helpers/utils';
+import Search from '../Search/Search';
 
 
 export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
@@ -122,7 +123,8 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
 
   return (
     <nav className="nav-wrapper">
-      <a href="/" className="site-title">GlassFlow</a>
+      <Link to="/" className="site-title">GlassFlow</Link>
+      <Search/>
       <ul>
         <li onClick={linkClicked}>
           <Link to="/" className={`${currentPage === "home" ? "active" : ""}`}>
