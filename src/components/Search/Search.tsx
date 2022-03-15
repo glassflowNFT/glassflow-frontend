@@ -1,5 +1,5 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Search as SearchIcon } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { useBetween } from "use-between";
@@ -14,6 +14,7 @@ export default function Search() {
   const navigate = useNavigate();
   const useSharedKeplr = () => useBetween(useKeplr);
   const [items, setItems] = useState<any[]>([]);
+  const [collections, setCollections] = useState<any[]>([]);
   const [inputFocus, setInputFocus] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const { readOnlyClient } = useSharedKeplr();
@@ -34,6 +35,9 @@ export default function Search() {
       if (doc.data())
         collections.push(doc.data());
     });
+
+    // update collection state
+    setCollections(collections);
 
     // iterate through all tokens that are returned
     for (const collection of collections) {
@@ -79,7 +83,7 @@ export default function Search() {
   useEffect(() => {
     fetchItems();
   // eslint-disable-next-line
-  }, []);
+  }, [readOnlyClient]);
 
   const itemClicked = (item: any) => {
     // extract id and address
@@ -90,30 +94,61 @@ export default function Search() {
     navigate(`/asset/${address}/${tokenId}`);
   }
 
+  const collectionClicked = (collection: any) => {
+    // clear search input
+    setSearchValue("");
+    navigate(`/collection/${collection.collectionAddress}`);
+  }
+
+  const onBlur = () => {
+    setTimeout(() => {
+      setInputFocus(false);
+    }, 500);
+  }
+
   return (
     <div className="top-search-wrapper">
       <SearchIcon />
       <input
         placeholder="Search for item or collections names"
         onFocus={() => setInputFocus(true)}
-        onBlur={() => setInputFocus(false)}
+        onBlur={onBlur}
         onInput={(e: any) => setSearchValue(e.target.value)}
         value={searchValue}
       />
-      {(inputFocus || searchValue !== "") &&
-        <div className="search-results-wrapper">
-          {items.map((item: any, index: number) => (
-            item.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 && searchValue !== "" &&
-            <div 
-              className="search-result" 
-              key={index}
-              onClick={() => itemClicked(item)}
-            >
-              {item.name}
-            </div>
-          ))}
-        </div>
-      }
+      <div className="search-results-wrapper">
+        {(inputFocus && searchValue !== "") &&
+          <Fragment>
+            <section className="search-collections-section">
+              <span className="search-section-header">Collections</span>
+              {collections.map((collection: any, index: number) => (
+                collection.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 && searchValue !== "" &&
+                <div 
+                  className="search-result" 
+                  key={index}
+                  onClick={() => collectionClicked(collection)}
+                >
+                  {collection.name}
+                </div>
+              ))}
+            </section>
+            <section className="search-collections-section">
+              <span className="search-section-header">Items</span>
+              {items.map((item: any, index: number) => (
+                item.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 && searchValue !== "" &&
+                <div 
+                  className="search-result" 
+                  key={index}
+                  onClick={() => itemClicked(item)}
+                >
+                  {item.name}
+                </div>
+              ))}
+            </section>
+          </Fragment>
+        }
+      </div>
+
     </div>
   );
 }

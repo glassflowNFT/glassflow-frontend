@@ -22,13 +22,14 @@ export default function User() {
   const [selectedFilter, setSelectedFilter] = useState<"owned" | "created" | "listed">("owned");
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { account, client, readOnlyClient } = useSharedKeplr();
+  const { account, readOnlyClient } = useSharedKeplr();
   const navigate = useNavigate();
   
   // user profile data
   const [displayName, setDisplayName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [items, setItems] = useState<NFT_PREVIEW_DATA[]>([]);
+  const [primaryWallet, setPrimaryWallet] = useState<string>();
   // eslint-disable-next-line
   const [rewardAvailable, setRewardAvailable] = useState<boolean>(false);
 
@@ -36,9 +37,13 @@ export default function User() {
     // check if the current user is the owner of this page
     // TODO: have user sign message to prove ownership
     getUserData();
-    getUserItems();
     // eslint-disable-next-line
-  }, [account, client, readOnlyClient]);
+  }, [account, readOnlyClient]);
+
+  useEffect(() => {
+    getUserItems();
+  // eslint-disable-next-line
+  }, [primaryWallet]);
 
   const getUserData = async () => {
     // const x = await client.getHeight();
@@ -55,8 +60,8 @@ export default function User() {
     if (docSnap.exists()) {
       const data = docSnap.data();
       setDisplayName(data.displayName);
+      setPrimaryWallet(data.primaryWallet);
       setBio(data.bio);
-      // console.log("Document data:", docSnap.data());
     } 
   }
 
@@ -107,9 +112,9 @@ export default function User() {
               }
             }
           )
-          console.log(queryResult)
+          console.log(queryResult.primaryWallet)
           // filter by owned NFTs
-          if (queryResult.owner === account) {
+          if (queryResult.owner === primaryWallet) {
             // add new NFT data to preview array
             nfts.push({
               name: queryResult.extension.name,
