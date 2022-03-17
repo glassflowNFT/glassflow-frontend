@@ -94,3 +94,33 @@
   display: flex;
   justify-content: center;
 }
+
+@media (max-width: 1000px) {
+  .collection-info-wrapper {
+    padding: 0 1em !important;
+  }
+  .collection-stats-wrapper {
+    padding: 0 1em !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .collection-stats-wrapper {
+    flex-direction: column;
+    height: auto;
+    padding: 0.5em 0 !important;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 1em !important;
+  }
+  .collection-stats-wrapper .collection-stats {
+    margin-top: 1em;
+  }
+  .collection-stats-wrapper .collection-stats span {
+    text-align: left;
+  }
+  .collection-stats-wrapper .collection-stats div {
+    margin-left: 0;
+    margin-right: 3em;
+  }
+}

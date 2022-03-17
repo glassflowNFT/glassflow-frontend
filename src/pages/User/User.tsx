@@ -45,6 +45,24 @@ export default function User() {
   // eslint-disable-next-line
   }, [primaryWallet]);
 
+  /*
+  const x = async () => {
+    if (!client) return;
+    const provider = new CosmosProvider({
+      chains: [],
+      rpc: {
+        custom: {
+          [chainConfig.chainId]: chainConfig.rpc
+        }
+      },
+      client: {
+        name: chainConfig.chainName,
+      } 
+    });
+    await provider.connect();
+  }
+  */
+
   const getUserData = async () => {
     // const x = await client.getHeight();
     // const x = await client.getChainId()
@@ -112,7 +130,7 @@ export default function User() {
               }
             }
           )
-          console.log(queryResult.primaryWallet)
+          // console.log(queryResult.primaryWallet)
           // filter by owned NFTs
           if (queryResult.owner === primaryWallet) {
             // add new NFT data to preview array

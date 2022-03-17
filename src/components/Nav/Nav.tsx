@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Home, PlusCircle, AlignLeft, User, Compass, CreditCard, HelpCircle, Settings } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
@@ -58,6 +58,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   // eslint-disable-next-line
   }, [window.location.pathname]);
 
+  /*
   const linkClicked = (e: any) => {
     const tagName = e.target.tagName.toLowerCase();
     // get the link element
@@ -70,6 +71,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
     const page = el.innerText.toLowerCase();
     setCurrentPage(page);
   }
+  */
 
   const authClicked = (e: any) => {
     // show the user authentication modal
@@ -92,6 +94,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
       <div className="dropdown-wrapper" onClick={() => setShowDropdown(!showDropdown)}>
         Menu
         <div className={`dropdown-items-wrapper ${showDropdown ? 'active' : ''}`}>
+          {renderNavLinks()}
           <div className="dropdown-item" onClick={authClicked}>
             <User/>
             {userLoggedIn ?
@@ -121,40 +124,45 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
     )
   }
 
+  const renderNavLinks = () => {
+    return(
+      <Fragment>
+        <Link 
+          to="/" 
+          className={`dropdown-item multi ${currentPage === "home" ? "active" : ""}`}
+        >
+          <Home /> Home
+        </Link>
+        <Link
+          to="/mint"
+          className={`dropdown-item multi ${currentPage === "mint" ? "active" : ""}`}
+        >
+          <PlusCircle /> Mint
+        </Link>
+        <Link 
+          to="/collections"
+          className={`dropdown-item multi ${currentPage === "collections" ? "active" : ""}`}
+        >
+          <AlignLeft /> Collections 
+        </Link>
+        <Link
+          to="/explore"
+          className={`dropdown-item multi ${currentPage === "explore" ? "active" : ""}`}
+        >
+          <Compass/> Explore 
+        </Link>
+      </Fragment>
+    );
+  }
+
   return (
     <nav className="nav-wrapper">
       <Link to="/" className="site-title">GlassFlow</Link>
       <Search/>
       <ul>
-        <li onClick={linkClicked}>
-          <Link to="/" className={`${currentPage === "home" ? "active" : ""}`}>
-            <Home /> Home
-          </Link>
-        </li>
-        <li onClick={linkClicked}>
-          <Link
-            to="/mint"
-            className={`${currentPage === "mint" ? "active" : ""}`}
-          >
-            <PlusCircle /> Mint
-          </Link>
-        </li>
-        <li onClick={linkClicked}>
-          <Link 
-            to="/collections"
-            className={`${currentPage === "collections" ? "active" : ""}`}
-          >
-            <AlignLeft /> Collections 
-          </Link>
-        </li>
-        <li onClick={linkClicked}>
-          <Link
-            to="/explore"
-            className={`${currentPage === "explore" ? "active" : ""}`}
-          >
-            <Compass/> Explore 
-          </Link>
-        </li>
+        <div className="nav-links-wrapper">
+          {renderNavLinks()} 
+        </div>
         {renderDropdown()}
       </ul>
     </nav>

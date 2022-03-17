@@ -260,9 +260,40 @@ export default function Asset() {
     }
   }
 
+  const renderAssetInfo = () => {
+    return(
+      <section className="asset-info-wrapper">
+        <div>
+          <span 
+            className="asset-info-title asset-collection-link"
+            onClick={() => navigate(`/collection/${assetCollectionAddress}`)}
+          >
+            {assetCollectionName}
+          </span>
+          <span 
+            className="asset-info-text"
+          >
+            {assetName}
+          </span>
+        </div> 
+        <div className="asset-info-right">
+          <span 
+            className="asset-info-title">Owner</span>
+          <span 
+            className="asset-info-text asset-owner-link"
+            onClick={() => navigate("/user/xyz")}
+          >
+            {shortenAddress(assetOwner || "", chainConfig.addressPrefix)}
+          </span>
+        </div> 
+      </section>
+    );
+  }
+
   return(
     <div className="asset-wrapper page-wrapper">
       <section className="asset-left">
+        {renderAssetInfo()} 
         <div className="asset-image-wrapper" style={bgGradient}></div>
         <Accordion
           icon={<Star/>}
@@ -280,31 +311,7 @@ export default function Asset() {
         </Accordion>
       </section>
       <section className="asset-right">
-        <section className="asset-info-wrapper">
-          <div>
-            <span 
-              className="asset-info-title asset-collection-link"
-              onClick={() => navigate(`/collection/${assetCollectionAddress}`)}
-            >
-              {assetCollectionName}
-            </span>
-            <span 
-              className="asset-info-text"
-            >
-              {assetName}
-            </span>
-          </div> 
-          <div className="asset-info-right">
-            <span 
-              className="asset-info-title">Owner</span>
-            <span 
-              className="asset-info-text asset-owner-link"
-              onClick={() => navigate("/user/xyz")}
-            >
-              {shortenAddress(assetOwner || "", chainConfig.addressPrefix)}
-            </span>
-          </div> 
-        </section>
+        {renderAssetInfo()} 
         <Accordion
           icon={<DollarSign/>}
           title="Listing Info"

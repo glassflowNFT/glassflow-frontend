@@ -11,6 +11,16 @@
     font-size: 20pt;
     text-decoration: none;
   }
+  button {
+    background: inherit;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    padding: 0;
+  }
+  a {
+    text-decoration: none;
+  }
 }
 
 .dropdown-wrapper {
@@ -42,6 +52,14 @@
     flex-direction: column;
     border-radius: 10px;
   }
+  .multi {
+    display: none;
+  }
+}
+
+.nav-links-wrapper {
+  margin-right: 1em;
+  display: flex;
 }
 
 .dropdown-item {
@@ -96,5 +114,23 @@
         color: var(--blue-accent);
       }
     }
+  }
+}
+
+@media (max-width: 1200px) { 
+  .nav-links-wrapper {
+    display: none;
+  }
+  ul {
+    width: auto !important;
+  }
+  .dropdown-items-wrapper .multi{
+    display: flex;
+  }
+}
+
+@media (max-width: 1000px) {
+  .nav-wrapper {
+    padding: 0 1em;
   }
 }
