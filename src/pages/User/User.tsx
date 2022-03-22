@@ -87,8 +87,8 @@ export default function User() {
     setSelectedFilter(e.target.innerHTML.toLowerCase());
   }
 
-  const userItemClicked = () => {
-    navigate("/asset/xyz");
+  const userItemClicked = (item: any) => {
+    navigate(`/asset/${item.address}/${item.tokenId}`);
   }
 
   const getUserItems = async () => {

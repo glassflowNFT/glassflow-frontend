@@ -124,3 +124,19 @@
     margin-right: 3em;
   }
 }
+
+@media (max-width: 500px) {
+  .collection-info-wrapper {
+    flex-direction: column;
+    margin-top: 1em !important;
+  }
+  .collection-profile-wrapper {
+    margin-right: 0 !important;
+  }
+  .collection-info {
+    margin-top: 2em;
+  }
+  .collection-stats-wrapper {
+    margin-top: 1em;
+  }
+}

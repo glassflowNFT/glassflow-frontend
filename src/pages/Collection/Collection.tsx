@@ -12,6 +12,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { configs } from "../../config";
 import { NFT_PREVIEW_DATA } from "../../interfaces";
+import { shortenAddress } from '../../helpers/utils';
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
@@ -19,7 +20,7 @@ const bgGradient = { background: gradient(count.toString()) };
 export default function Collection() {
 
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { account, client, readOnlyClient } = useSharedKeplr();
+  const { account, client, readOnlyClient, chainConfig } = useSharedKeplr();
   const navigate = useNavigate();
 
   // eslint-disable-next-line
@@ -125,7 +126,7 @@ export default function Collection() {
       <section className="collection-stats-wrapper">
         <div className="collection-creator">
           <span className="stat-title">Created By</span>
-          <span className="stat-text secondary">{collectionOwner}</span>
+          <span className="stat-text secondary">{shortenAddress(collectionOwner || "", chainConfig.addressPrefix)}</span>
         </div>
         <div className="collection-stats">
           <div className="collection-stat-container">

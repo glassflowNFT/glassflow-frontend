@@ -178,3 +178,15 @@
     display: none;
   }
 }
+
+@media (max-width: 450px) {
+  .content-wrapper {
+    justify-content: center;
+  }
+  .content {
+    max-width: 90% !important;
+    min-width: 90% !important;
+    margin-bottom: 1em;
+    margin-left: 0 !important;
+  }
+}

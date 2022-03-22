@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Home, PlusCircle, AlignLeft, User, Compass, CreditCard, HelpCircle, Settings } from 'react-feather';
+import { Home, PlusCircle, AlignLeft, User, Compass, CreditCard, HelpCircle, Settings, LogOut } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
 import { useSnackbar } from 'notistack';
 import "./nav.css";
 import {
-  getAuth, onAuthStateChanged,
+  getAuth, onAuthStateChanged, signOut,
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore"; 
 import { db } from "../../firebase-config";
@@ -81,11 +81,23 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
       props.setShowAuth(true);
   }
 
+  const userLogOut = async () => {
+    signOut(auth);
+    enqueueSnackbar('Successfully logged out' ,{
+      variant: "success"
+    });
+  }
+
   const connectWallet = async () => {
-    await activateBrowserWallet().then(() => {
-      enqueueSnackbar('Successfully connected wallet' ,{
-        variant: "info"
-      });
+    await activateBrowserWallet().then((err: string) => {
+      if (!err)
+        enqueueSnackbar('Successfully connected wallet' ,{
+          variant: "info"
+        });
+      else 
+        enqueueSnackbar(err ,{
+          variant: "error"
+        });
     });
   }
 
@@ -111,10 +123,21 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
             <HelpCircle/>
             <Link to="/support">FAQ</Link>
           </div>
-          <div className="dropdown-item">
-            <Settings/>
-            <Link to="/support">Settings</Link>
-          </div>
+          {user &&
+            <div className="dropdown-item">
+              <Settings/>
+              <Link to="/settings">Settings</Link>
+            </div>
+          }
+          {user &&
+            <div 
+              className="dropdown-item"
+              onClick={userLogOut}
+            >
+              <LogOut/>
+              <Link to="/settings">Logout</Link>
+            </div>
+          }
           <div onClick={connectWallet} className="dropdown-item">
             <CreditCard/>
             {account ? shortenAddress(account, chainConfig.addressPrefix) : "Connect Wallet"}
@@ -157,14 +180,23 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
 
   return (
     <nav className="nav-wrapper">
-      <Link to="/" className="site-title">GlassFlow</Link>
-      <Search/>
-      <ul>
-        <div className="nav-links-wrapper">
-          {renderNavLinks()} 
+      <div className="nav-wrapper-large">
+        <Link to="/" className="site-title">GlassFlow</Link>
+        <div className="nav-search-wrapper">
+          <Search/>
         </div>
-        {renderDropdown()}
-      </ul>
+        <ul>
+          <div className="nav-links-wrapper">
+            {renderNavLinks()} 
+          </div>
+          {renderDropdown()}
+        </ul>
+      </div>
+      <div className="nav-wrapper-small">
+        <div className="nav-search-wrapper">
+          <Search/>
+        </div>
+      </div>
     </nav>
   );
 }

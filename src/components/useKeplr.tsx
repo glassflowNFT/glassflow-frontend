@@ -31,6 +31,7 @@ export function useKeplr() {
   // activate kepler
   const activateBrowserWallet = async () => { 
 
+    let err = "";
     // get injected keplr instance
     const globalWindow:any = window;
     if (globalWindow.keplr) {
@@ -55,6 +56,10 @@ export function useKeplr() {
       setActive(true);
 
       console.log("keplr activated");
+      return err;
+    } else {
+      err = "Please install Keplr wallet"
+      return err;
     }
   }
 

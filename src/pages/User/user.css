@@ -184,3 +184,21 @@
   top: 50%;
   color: var(--blue-accent);
 }
+
+@media (max-width: 1000px) {
+  .user-info-wrapper {
+    padding: 0 1em !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .user-info-wrapper {
+    flex-direction: column;
+  }
+  .profile-wrapper {
+    margin-right: 0 !important;
+  }
+  .user-info {
+    margin-top: 2em;
+  }
+}

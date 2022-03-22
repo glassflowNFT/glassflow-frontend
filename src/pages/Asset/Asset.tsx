@@ -33,6 +33,7 @@ export default function Asset() {
   const [assetListed, setAssetListed] = useState<boolean>();
   const [assetListingPrice, setAssetListingPrice] = useState<{amount: string, info:{native_token: any}}>();
   const [assetListingPriceInput, setAssetListingPriceInput] = useState<string>();
+  const [assetBidPriceInput, setAssetBidPriceInput] = useState<string>();
   const [auctionId, setAuctionId] = useState<string>();
 
   useEffect(() => {
@@ -177,7 +178,7 @@ export default function Asset() {
             bid_listing: {
                 listing_id: "AUCTION.1",  //nft address
                 bid_price: {
-                    amount: "20000",
+                    amount: assetBidPriceInput,
                     info: {
                         // token: {
                         //     contract_addr: "terraxxx"
@@ -255,6 +256,12 @@ export default function Asset() {
       return (
         <span className="secondary">
           {priceText}
+          <input 
+            placeholder='Insert Bid Price'
+            className="listing-price-input"
+            value={assetBidPriceInput}
+            onChange={(e) => setAssetBidPriceInput(e.target.value)}
+          ></input>
         </span>
       )
     }
