@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Home, PlusCircle, AlignLeft, User, Compass, CreditCard, HelpCircle, Settings, LogOut } from 'react-feather';
+import { Home, PlusCircle, AlignLeft, User, Compass, CreditCard, HelpCircle, Settings, LogOut, Zap } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
@@ -173,6 +173,12 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
           className={`dropdown-item multi ${currentPage === "explore" ? "active" : ""}`}
         >
           <Compass/> Explore 
+        </Link>
+        <Link
+          to="/genetics"
+          className={`dropdown-item multi ${currentPage === "genetics" ? "active" : ""}`}
+        >
+          <Zap/> Genetics
         </Link>
       </Fragment>
     );

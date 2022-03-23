@@ -16,6 +16,8 @@ import Collection from './pages/Collection/Collection';
 // import ScrollTop from './components/ScrollTop/ScrollTop';
 import Asset from './pages/Asset/Asset';
 import Explore from './pages/Explore/Explore';
+import Settings from './pages/Settings/Settings';
+import Genetics from './pages/Genetics/Genetics';
 
 function App() {
   const navigate = useNavigate();
@@ -48,10 +50,12 @@ function App() {
         <Route path="/mint" element={<Mint/>} />
         <Route path="/user/*" element={<User/>} />
         <Route path="/explore" element={<Explore/>} />
+        <Route path="/genetics" element={<Genetics/>} />
         <Route path="/support" element={<Support/>} />
         <Route path="/verify" element={<Verification/>} />
         <Route path="/collections" element={<Collections/>} />
         <Route path="/collection/*" element={<Collection/>} />
+        <Route path="/settings" element={<Settings/>} />
         <Route path="/asset/*" element={<Asset/>} />
       </Routes>
       {/*<ScrollTop/>*/}

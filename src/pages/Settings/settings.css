@@ -1,0 +1,51 @@
+.settings-wrapper b {
+  color: red;
+  font-weight: normal;
+}
+
+.settings-wrapper .primary-button {
+  width: 100%;
+}
+
+.settings-edit-section {
+  margin-bottom: 2em;
+}
+
+.settings-field-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.settings-field-section .hint {
+  font-size: 0.7em;
+  display: block;
+  margin: 3px 0;
+}
+
+.settings-field-section.double {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 0em;
+}
+
+.settings-field-section.double .settings-field-section {
+  width: 48%;
+}
+
+.settings-field-section input, .settings-field-section textarea {
+  height: 45px;
+  border-radius: 10px;
+  background: var(--input);
+  border: none;
+  padding-left: 1em;
+  border: 1px solid var(--border-color);
+}
+
+.settings-field-section textarea {
+  height: 80px;
+  padding-top: 1em;
+  font-family: 'Poppins', sans-serif;
+}

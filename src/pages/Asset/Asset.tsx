@@ -105,6 +105,7 @@ export default function Asset() {
           }
         }
       )
+      console.log(auctionQuery)
       // found the correct listing
       if (auctionQuery.token_id === currentId) {
         setAssetOwner(auctionQuery.seller);
@@ -175,26 +176,27 @@ export default function Asset() {
         account, 
         configs.contractAddresses.AUCTION_CONTRACT,  
         {
-            bid_listing: {
-                listing_id: "AUCTION.1",  //nft address
-                bid_price: {
-                    amount: assetBidPriceInput,
-                    info: {
-                        // token: {
-                        //     contract_addr: "terraxxx"
-                        // },
-                        native_token: {
-                            denom: "upebble"
-                        }
-                    },                   
-                },
-            }
+          bid_listing: {
+            listing_id: auctionId,  //nft address
+            bid_price: {
+              amount: assetBidPriceInput,
+              info: {
+                  // token: {
+                  //     contract_addr: "terraxxx"
+                  // },
+                  native_token: {
+                      denom: "upebble"
+                  }
+              },                   
+            },
+        }
         },
         executeFee,
         "",
-        [{denom: "upebble", amount: "20000"}]
+        [{denom: "upebble", amount: assetBidPriceInput || "0"}]
     );
     console.log("res: ", create_result);
+    loadAssetData();
   }
 
   const removeListing = async () => {
@@ -217,6 +219,7 @@ export default function Asset() {
       []
     );
     console.log("res: ", create_result);
+    loadAssetData();
   }
 
   const renderOfferButton = () => {
@@ -256,12 +259,14 @@ export default function Asset() {
       return (
         <span className="secondary">
           {priceText}
-          <input 
-            placeholder='Insert Bid Price'
-            className="listing-price-input"
-            value={assetBidPriceInput}
-            onChange={(e) => setAssetBidPriceInput(e.target.value)}
-          ></input>
+          {assetOwner !== account &&
+            <input 
+              placeholder='Insert Bid Price'
+              className="listing-price-input"
+              value={assetBidPriceInput}
+              onChange={(e) => setAssetBidPriceInput(e.target.value)}
+            />
+          }
         </span>
       )
     }
