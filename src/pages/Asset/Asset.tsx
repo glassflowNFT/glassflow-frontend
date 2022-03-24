@@ -105,7 +105,7 @@ export default function Asset() {
           }
         }
       )
-      console.log(auctionQuery)
+      // console.log(auctionQuery)
       // found the correct listing
       if (auctionQuery.token_id === currentId) {
         setAssetOwner(auctionQuery.seller);

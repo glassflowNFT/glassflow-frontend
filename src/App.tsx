@@ -18,6 +18,7 @@ import Asset from './pages/Asset/Asset';
 import Explore from './pages/Explore/Explore';
 import Settings from './pages/Settings/Settings';
 import Genetics from './pages/Genetics/Genetics';
+import Certificate from './pages/Certificate/Certificate';
 
 function App() {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ function App() {
         <Route path="/verify" element={<Verification/>} />
         <Route path="/collections" element={<Collections/>} />
         <Route path="/collection/*" element={<Collection/>} />
+        <Route path="/certificate/*" element={<Certificate/>} />
         <Route path="/settings" element={<Settings/>} />
         <Route path="/asset/*" element={<Asset/>} />
       </Routes>

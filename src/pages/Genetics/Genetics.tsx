@@ -20,7 +20,7 @@ export default function Genetics() {
   }, [client, readOnlyClient]);
 
   const collectionClicked = (item: any) => {
-    navigate(`/asset/${item.address}/${item.tokenId}`);
+    navigate(`/certificate/${item.address}/${item.tokenId}`);
   }
 
   const fetchItems = async () => {

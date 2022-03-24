@@ -8,11 +8,12 @@ import { useBetween } from 'use-between';
 // import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import CardGallery from "../../components/CardGallery/CardGallery";
 import { useNavigate } from 'react-router';
-import { auth, db } from "../../firebase-config";
+import { auth, db, storage } from "../../firebase-config";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import ReactTooltip from "react-tooltip";
 import { configs } from '../../config';
 import { NFT_PREVIEW_DATA } from '../../interfaces';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
@@ -30,6 +31,7 @@ export default function User() {
   const [bio, setBio] = useState<string>("");
   const [items, setItems] = useState<NFT_PREVIEW_DATA[]>([]);
   const [primaryWallet, setPrimaryWallet] = useState<string>();
+  const [profilePicture, setProfilePicture] = useState<string>();
   // eslint-disable-next-line
   const [rewardAvailable, setRewardAvailable] = useState<boolean>(false);
 
@@ -45,24 +47,6 @@ export default function User() {
   // eslint-disable-next-line
   }, [primaryWallet]);
 
-  /*
-  const x = async () => {
-    if (!client) return;
-    const provider = new CosmosProvider({
-      chains: [],
-      rpc: {
-        custom: {
-          [chainConfig.chainId]: chainConfig.rpc
-        }
-      },
-      client: {
-        name: chainConfig.chainName,
-      } 
-    });
-    await provider.connect();
-  }
-  */
-
   const getUserData = async () => {
     // const x = await client.getHeight();
     // const x = await client.getChainId()
@@ -77,8 +61,16 @@ export default function User() {
     }
     if (docSnap.exists()) {
       const data = docSnap.data();
-      setDisplayName(data.displayName);
+      setDisplayName(`${data.firstName} ${data.lastName}`);
       setPrimaryWallet(data.primaryWallet);
+
+      // download profile URL from db
+      if (data.profilePicture) {
+        getDownloadURL(ref(storage, `${data.profilePicture}`))
+        .then((url) => {
+          setProfilePicture(url);
+        });
+      }
       setBio(data.bio);
     } 
   }
@@ -172,7 +164,14 @@ export default function User() {
   return (
     <div className="user-wrapper page-wrapper">
       <section className="user-info-wrapper">
-        <div className="profile-wrapper" style={bgGradient}></div>
+        <div className="profile-wrapper" style={bgGradient}>
+          {profilePicture &&
+            <img
+              src={profilePicture}
+              alt="profile"
+            />
+          }
+        </div>
         <section className="user-info">
           <div>
             <span className="user-name">

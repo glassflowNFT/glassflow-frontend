@@ -33,7 +33,10 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
       const docRef = doc(db, "users", `${user.uid}`);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setDisplayName(docSnap.data().displayName);
+        // setDisplayName(docSnap.data().displayName);
+        const firstName = docSnap.data().firstName;
+        const lastName = docSnap.data().lastName;
+        setDisplayName(`${firstName} ${lastName}`);
         setUserLoggedIn(true);
         setUser(user);
       } 
@@ -53,7 +56,9 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
     // grab user's data
     if (auth.currentUser && auth.currentUser.displayName) {
       // display user display name 
-      setDisplayName(auth.currentUser.displayName);
+      // TODO: set display name as "firstName lastName"
+      // setDisplayName(auth.currentUser.displayName);
+      // setDisplayName(`${auth.currentUser.firstName} ${auth.currentUser.lastName}`);
     }
   // eslint-disable-next-line
   }, [window.location.pathname]);

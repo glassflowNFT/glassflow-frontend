@@ -1,9 +1,17 @@
 import { useState } from "react";
 import { Image } from "react-feather";
+import { doc, updateDoc } from "firebase/firestore"; 
 import "./settings.css";
+import { onAuthStateChanged } from "@firebase/auth";
+import { auth, db, storage } from "../../firebase-config";
+import { useSnackbar } from "notistack";
+import { ref, uploadBytes } from "firebase/storage";
+import { CircularProgress } from "@mui/material";
+import { uid } from "uid";
 
 export default function Settings() {
 
+  const { enqueueSnackbar } = useSnackbar();
   const [email, setEmail] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
@@ -11,13 +19,80 @@ export default function Settings() {
   const [businessName, setBusinessName] = useState<string>("");
   const [licenseNumber, setLicenseNumber] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [user, setUser] = useState<any>();
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [profilePicture, setProfilePicture] = useState<string>("");
 
   const inputUpdated = (set: (input: any) => void, value: string) => {
     set(value);
   };
 
-  const saveChanges = async() => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setUser(user);
+    }
+  });
 
+  const profilePictureUpdated = (e: any) => {
+    // grab file from file selector
+    const file = e.target.files[0];
+
+    // setup file reference 
+    const fileUid = uid();
+    const fileName = `profiles/${user.uid}_${fileUid}_profile`;
+    const storageRef = ref(storage, fileName);
+    setUploading(true);
+    uploadBytes(storageRef, file)
+    .then(() => {
+      setUploading(false);
+      setProfilePicture(fileName);
+    })
+    .catch((e) => {
+      console.log(e);
+      setUploading(false);
+    })
+  }
+
+  const saveChanges = () => {
+    const stateVars = [
+      [email, "email"],
+      [bio, "bio"],
+      [firstName, "firstName"],
+      [lastName, "lastName"],
+      [businessName, "businessName"],
+      [licenseNumber, "licenseNumber"],
+      [phoneNumber, "phoneNumber"],
+      [profilePicture, "profilePicture"]
+    ];
+
+    let newData:any = {};
+
+    // check if the var has been updated
+    for (const data of stateVars) {
+      if (data[0] !== "") {
+        newData[`${data[1]}`] = data[0];
+      }
+    }
+
+    enqueueSnackbar('Saving changes' ,{
+      variant: "info",
+      persist: false
+    });
+
+    // update user data
+    updateDoc(doc(db, "users", `${user.uid}`), newData)
+    .then(() => {
+      enqueueSnackbar('Changes saved' ,{
+        variant: "success",
+        persist: false
+      });
+    })
+    .catch((e: any) => {
+      enqueueSnackbar('Failed to save changes' ,{
+        variant: "error",
+        persist: false
+      });
+    });
   }
 
   return(
@@ -32,8 +107,9 @@ export default function Settings() {
               className="file-selector"
               type="file"
               accept=".jpg, .jpeg, .png"
+              onChange={(e) => profilePictureUpdated(e)}
             ></input>
-            <Image />
+            {!uploading ? <Image /> : <CircularProgress/>}
           </div>
           <span className="secondary hint">
             File types supported: JPG, JPEG, PNG

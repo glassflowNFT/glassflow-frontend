@@ -90,7 +90,7 @@ export default function UserAuth(props: {
           lastName,
           email,
           bio,
-          displayName: `${firstName} ${lastName}`,
+          // displayName: `${firstName} ${lastName}`,
           businessName,
           licenseNumber,
           phoneNumber
