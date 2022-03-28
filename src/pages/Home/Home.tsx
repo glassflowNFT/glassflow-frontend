@@ -3,6 +3,7 @@ import { ChevronRight } from 'react-feather';
 import { generateSentences, generateWords } from '../../components/LoremIpsum';
 import gradient from 'random-gradient';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -53,9 +54,11 @@ export default function Home() {
           <p>
             NFT Minting & Cannabis Community Integration
           </p>
-          <button className="primary-button">
-            Get Started <ChevronRight />
-          </button>
+            <Link to={"genesis"}>
+              <button className="primary-button">
+                  Genesis Launch<ChevronRight />
+              </button>
+            </Link>
         </section>
         <section className="hero-image">
           <img

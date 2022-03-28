@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image } from "react-feather";
-import { doc, updateDoc } from "firebase/firestore"; 
+import { doc, getDoc, updateDoc } from "firebase/firestore"; 
 import "./settings.css";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth, db, storage } from "../../firebase-config";
 import { useSnackbar } from "notistack";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { CircularProgress } from "@mui/material";
 import { uid } from "uid";
 
@@ -22,6 +22,8 @@ export default function Settings() {
   const [user, setUser] = useState<any>();
   const [uploading, setUploading] = useState<boolean>(false);
   const [profilePicture, setProfilePicture] = useState<string>("");
+  const [profileSrc, setProfileSrc] = useState<string>("");
+  const [currentProfilePicture, setCurrentProfilePicture] = useState<string>("");
 
   const inputUpdated = (set: (input: any) => void, value: string) => {
     set(value);
@@ -33,9 +35,35 @@ export default function Settings() {
     }
   });
 
+  useEffect(() => {
+    if (user) getUserData();
+  // eslint-disable-next-line
+  }, [user]);
+
+  const getUserData = async () => {
+    // get db reference to current user
+    const docRef = doc(db, "users", `${user.uid}`);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      // download profile URL from db
+      if (data.profilePicture) {
+        getDownloadURL(ref(storage, `${data.profilePicture}`))
+        .then((url) => {
+          setCurrentProfilePicture(url);
+        });
+      }
+    } 
+  }
+
   const profilePictureUpdated = (e: any) => {
     // grab file from file selector
     const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      setProfileSrc(e.target.result);
+    }
+    reader.readAsDataURL(file);
 
     // setup file reference 
     const fileUid = uid();
@@ -95,25 +123,48 @@ export default function Settings() {
     });
   }
 
-  return(
+  return (
     <div className="settings-wrapper page-wrapper">
       <h1>Settings</h1>
       <p className="secondary">Here you can update info about your account</p>
       <section className="settings-edit-section">
-        <section className="settings-field-section">
-          <span>Profile Picture</span>
-          <div className="file-selector-wrapper">
-            <input
-              className="file-selector"
-              type="file"
-              accept=".jpg, .jpeg, .png"
-              onChange={(e) => profilePictureUpdated(e)}
-            ></input>
-            {!uploading ? <Image /> : <CircularProgress/>}
-          </div>
-          <span className="secondary hint">
-            File types supported: JPG, JPEG, PNG
-          </span>
+        <section className="settings-field-section double">
+          <section className="settings-field-section current-profile">
+            <span>Current Profile Picture</span>
+            <div className="current-profile-wrapper">
+              <img
+                className="current-profile-picture"
+                src={currentProfilePicture}
+                alt="current-profile"
+              />
+            </div>
+          </section>
+          <section className="settings-field-section new-profile">
+            <span>Upload New Profile Picture</span>
+            <div className="file-selector-wrapper">
+              <input
+                className="file-selector"
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                onChange={(e) => profilePictureUpdated(e)}
+              ></input>
+              {!uploading ? <Image /> : <CircularProgress />}
+              {profileSrc !== "" ? (
+                <div className="new-profile-wrapper">
+                  <img
+                    className="new-profile-picture"
+                    src={profileSrc}
+                    alt="new-profile"
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+            <span className="secondary hint">
+              File types supported: JPG, JPEG, PNG
+            </span>
+          </section>
         </section>
         <section className="settings-field-section double">
           <section className="settings-field-section">
@@ -205,10 +256,7 @@ export default function Settings() {
             value={phoneNumber}
           />
         </section>
-        <button 
-          className="primary-button"
-          onClick={saveChanges}
-        >
+        <button className="primary-button" onClick={saveChanges}>
           Save Changes
         </button>
       </section>
