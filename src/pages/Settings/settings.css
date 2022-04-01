@@ -11,6 +11,10 @@
   margin-bottom: 6em;
 }
 
+.user-verification-button {
+  background: #278327;
+}
+
 .current-profile {
   flex: 3;
 }

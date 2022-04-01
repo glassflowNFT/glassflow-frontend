@@ -84,17 +84,20 @@ export default function UserAuth(props: {
         password 
       );
       if (user) {
-        // Add a new document in collection "cities"
-        await setDoc(doc(db, "users", `${user.user.uid}`), {
+        const userData = {
           firstName,
           lastName,
           email,
           bio,
-          // displayName: `${firstName} ${lastName}`,
           businessName,
           licenseNumber,
-          phoneNumber
-        });
+          phoneNumber,
+          uid: user.user.uid
+        }
+        // Add a new document in collection "users"
+        await setDoc(doc(db, "users", `${user.user.uid}`), userData);
+        // add new document in request collection for admins
+        await setDoc(doc(db, "requests", `${user.user.uid}`), userData);
         enqueueSnackbar('Successfully signed up' ,{
           variant: "success"
         });

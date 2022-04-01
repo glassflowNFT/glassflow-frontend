@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Image } from "react-feather";
-import { doc, getDoc, updateDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; 
 import "./settings.css";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth, db, storage } from "../../firebase-config";
@@ -8,6 +8,7 @@ import { useSnackbar } from "notistack";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { CircularProgress } from "@mui/material";
 import { uid } from "uid";
+import { REQUEST_DATA } from "../../helpers/interfaces";
 
 export default function Settings() {
 
@@ -24,6 +25,7 @@ export default function Settings() {
   const [profilePicture, setProfilePicture] = useState<string>("");
   const [profileSrc, setProfileSrc] = useState<string>("");
   const [currentProfilePicture, setCurrentProfilePicture] = useState<string>("");
+  const [fetchedUserData, setFetchedUserData] = useState<any>();
 
   const inputUpdated = (set: (input: any) => void, value: string) => {
     set(value);
@@ -46,6 +48,7 @@ export default function Settings() {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = docSnap.data();
+      setFetchedUserData(data);
       // download profile URL from db
       if (data.profilePicture) {
         getDownloadURL(ref(storage, `${data.profilePicture}`))
@@ -120,6 +123,25 @@ export default function Settings() {
         variant: "error",
         persist: false
       });
+    });
+  }
+
+  const requestVerification = async () => {
+    const requestData:REQUEST_DATA = {
+      bio: fetchedUserData.bio,
+      businessName: fetchedUserData.businessName,
+      email: fetchedUserData.email,
+      firstName: fetchedUserData.firstName,
+      lastName: fetchedUserData.lastName,
+      licenseNumber: fetchedUserData.licenseNumber,
+      phoneNumber: fetchedUserData.phoneNumber,
+      uid: fetchedUserData.uid
+    }
+    // send request to request db
+    await setDoc(doc(db, "requests", `${fetchedUserData.uid}`), requestData);
+    enqueueSnackbar('Request sent. Please wait until an admin approves or rejects your request' ,{
+      variant: "success",
+      persist: false
     });
   }
 
@@ -255,6 +277,11 @@ export default function Settings() {
             onChange={(e) => inputUpdated(setPhoneNumber, e.target.value)}
             value={phoneNumber}
           />
+        </section>
+        <section className="settings-field-section">
+          <button className="primary-button user-verification-button" onClick={requestVerification}>
+            Request User Verification
+          </button>
         </section>
         <button className="primary-button" onClick={saveChanges}>
           Save Changes

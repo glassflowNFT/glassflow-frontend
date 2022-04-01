@@ -20,6 +20,7 @@ import Settings from './pages/Settings/Settings';
 import Genetics from './pages/Genetics/Genetics';
 import Certificate from './pages/Certificate/Certificate';
 import Genesis from './pages/Genesis/Genesis';
+import AdminVerification from './pages/AdminVerification/AdminVerification';
 
 function App() {
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ function App() {
         <Route path="/settings" element={<Settings/>} />
         <Route path="/genesis" element={<Genesis/>} />
         <Route path="/asset/*" element={<Asset/>} />
+        <Route path="/admin/verification" element={<AdminVerification/>} />
       </Routes>
       {/*<ScrollTop/>*/}
       <Footer/>
