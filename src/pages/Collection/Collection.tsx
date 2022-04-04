@@ -34,7 +34,7 @@ export default function Collection() {
   const [collectionOwner, setCollectionOwner] = useState<string>();
   // eslint-disable-next-line
   const [collectionAddress, setCollectionAddress] = useState<string>();
-  const [collectionItems, setCollectionItems] = useState<NFT_PREVIEW_DATA[]>([]);
+  const [collectionItems, setCollectionItems] = useState<NFT_PREVIEW_DATA[]>();
 
   useEffect(() => {
     // check if the current user is the owner of this page
@@ -130,7 +130,7 @@ export default function Collection() {
         </div>
         <div className="collection-stats">
           <div className="collection-stat-container">
-            <span className="stat-title">{collectionItems.length}</span>
+            <span className="stat-title">{collectionItems ? collectionItems.length : 0}</span>
             <span className="stat-text secondary">Items</span>
           </div>
           <div className="collection-stat-container">

@@ -1,20 +1,42 @@
-import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../../firebase-config";
+import { auth, db } from "../../firebase-config";
 import gradient from 'random-gradient';
 import "./adminVerification.css";
 import { useSnackbar } from "notistack";
 import { REQUEST_DATA } from "../../helpers/interfaces";
+import { onAuthStateChanged } from "@firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminVerification() {
 
   const [verificationRequests, setVerificationRequests] = useState<any>([]);
+  const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false);
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRequests();
   // eslint-disable-next-line
   }, []);
+
+  onAuthStateChanged(auth, async (user) => {
+    // setUser(currentUser);
+    if (user) {
+      // grab user's data
+      // get db reference to current user
+      const docRef = doc(db, "users", `${user.uid}`);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        // verify that the user can view the page
+        if (docSnap.data().isAdmin && docSnap.data().isAdmin === true) {
+          setUserIsAdmin(true);
+        } else {
+          navigate("/");
+        }
+      } 
+    }
+  });
 
   const fetchRequests = async () => {
 
@@ -116,9 +138,8 @@ export default function AdminVerification() {
         page, please contact a site admin
       </p>
       <section className="requests-wrapper">
-        {renderRequests()}
-
-        {verificationRequests.length === 0 && 
+        {userIsAdmin && renderRequests()}
+        {userIsAdmin && verificationRequests.length === 0 && 
           <span className="requests-notice">
             No Requests Available
           </span>

@@ -12,7 +12,7 @@ export default function Explore() {
   const navigate = useNavigate();
   const useSharedKeplr = () => useBetween(useKeplr);
   const { client, readOnlyClient } = useSharedKeplr();
-  const [items, setItems] = useState<NFT_PREVIEW_DATA[]>([]);
+  const [items, setItems] = useState<NFT_PREVIEW_DATA[]>();
 
   useEffect(() => {
     fetchItems();

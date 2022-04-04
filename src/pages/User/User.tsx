@@ -1,7 +1,7 @@
 import gradient from 'random-gradient';
 import "./user.css";
 import { useEffect, useState } from "react";
-import { HelpCircle } from "react-feather";
+import { CheckCircle, HelpCircle } from "react-feather";
 // import useInterval from "../../components/useInterval";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
@@ -176,6 +176,10 @@ export default function User() {
           <div>
             <span className="user-name">
               {displayName} 
+              <ReactTooltip id='verified-tool-tip'>
+                <span>This user has been verified</span>
+              </ReactTooltip>
+              <CheckCircle data-tip data-for='verified-tool-tip'/>
             </span>
           </div>
           <p className="user-bio secondary">

@@ -1,9 +1,9 @@
-import { generateWords } from "../../components/LoremIpsum";
 import gradient from 'random-gradient';
 import "./cardGallery.css";
 import { useState } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, Filter, Search } from "react-feather";
 import { NFT_PREVIEW_DATA } from "../../interfaces";
+import { CircularProgress } from "@material-ui/core";
 
 export default function CardGallery (props: {cardClicked: (e: any) => void, items?: NFT_PREVIEW_DATA[]}) {
 
@@ -17,21 +17,15 @@ export default function CardGallery (props: {cardClicked: (e: any) => void, item
     // const words = generateWords(2);
     // render fake data for now if no items are passed in
     if (!props.items) {
-      return [...Array(5)].map(() =>
+      return(
         <div 
-          className="content" 
+          className="gallery-load-icon" 
           key={count}
           onClick={props.cardClicked}
         >
-          <div className="image-wrapper" style={bgGradient}>
-            {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
-          </div>
-          <div className="content-info">
-            <span className="content-name">{generateWords(2)}</span>
-            {/*<span className="content-bio secondary">{generateSentences(1)}</span>*/}
-          </div>
+          <CircularProgress/>
         </div>
-      )
+      );
     } else {
       return props.items.map((item, index) =>  {
         return(

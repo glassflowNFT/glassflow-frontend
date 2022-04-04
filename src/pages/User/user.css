@@ -163,6 +163,11 @@
   text-transform: capitalize;
 }
 
+.user-info .user-name svg {
+  width: 18px;
+  transform: translate(2px, 7px);
+}
+
 .user-info .user-address {
   padding-left: 0.5em;
   font-size: 0.9em;

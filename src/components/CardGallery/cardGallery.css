@@ -88,10 +88,18 @@
   justify-content: space-between;
 }
 
+.gallery-load-icon {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .content-wrapper {
   display: flex;
   flex-wrap: wrap;
   padding-top: 1.5em;
+  width: 100%;
 }
 
 .content-wrapper .content {

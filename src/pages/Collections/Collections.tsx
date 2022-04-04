@@ -11,7 +11,7 @@ export default function Collections() {
   const navigate = useNavigate();
   const useSharedKeplr = () => useBetween(useKeplr);
   const { client, readOnlyClient } = useSharedKeplr();
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<any[]>();
 
   const collectionClicked = (item: any) => {
     navigate(`/collection/${item.collectionAddress}`);
