@@ -43,6 +43,25 @@
   filter: brightness(70%);
 }
 
+.user-follow-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.user-follow-wrapper button {
+  height: 30px;
+}
+
+.user-follow-wrapper button.following {
+  background: white;
+  border: 2px solid var(--blue-accent);
+  color: var(--blue-accent);
+}
+
+.user-follow-wrapper button:disabled {
+  filter: brightness(70%);
+}
+
 .content-filter-wrapper {
   height: 60px;
   width: 100%;

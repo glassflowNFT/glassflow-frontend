@@ -9,7 +9,7 @@ import { useBetween } from 'use-between';
 import CardGallery from "../../components/CardGallery/CardGallery";
 import { useNavigate } from 'react-router';
 import { auth, db, storage } from "../../firebase-config";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, updateDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import ReactTooltip from "react-tooltip";
 import { configs } from '../../config';
 import { NFT_PREVIEW_DATA } from '../../interfaces';
@@ -20,8 +20,6 @@ const bgGradient = { background: gradient(count.toString()) };
 
 export default function User() {
 
-  const [selectedFilter, setSelectedFilter] = useState<"owned" | "created" | "listed">("owned");
-  const [isOwner, setIsOwner] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
   const { account, readOnlyClient } = useSharedKeplr();
   const navigate = useNavigate();
@@ -32,37 +30,63 @@ export default function User() {
   const [items, setItems] = useState<NFT_PREVIEW_DATA[]>([]);
   const [primaryWallet, setPrimaryWallet] = useState<string>();
   const [profilePicture, setProfilePicture] = useState<string>();
+  const [selectedFilter, setSelectedFilter] = useState<"owned" | "created" | "listed">("owned");
+  const [isOwner, setIsOwner] = useState<boolean>(false);
   // eslint-disable-next-line
   const [rewardAvailable, setRewardAvailable] = useState<boolean>(false);
+  const [userClient, setUserClient] = useState<any>();
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [following, setFollowing] = useState<string[]>([]);
+  const [pageOwnerId, setPageOwnerId] = useState<string>();
 
   useEffect(() => {
     // check if the current user is the owner of this page
     // TODO: have user sign message to prove ownership
     getUserData();
+    getClientData();
     // eslint-disable-next-line
-  }, [account, readOnlyClient]);
+  }, [account, readOnlyClient, userClient]);
 
   useEffect(() => {
     getUserItems();
   // eslint-disable-next-line
   }, [primaryWallet]);
 
+  // get the data for the client
+  const getClientData = async () =>{
+    if (!userClient) return;
+    const docRef = doc(db, "users", `${userClient.uid}`);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      // extract data
+      const data = docSnap.data();
+      // get page owner's uid
+      const path = window.location.pathname;
+      const uid = path.substring(path.lastIndexOf("/") + 1);
+      // check if the user is following the owner of this page
+      if (data.following.includes(uid))
+        setIsFollowing(true);
+      setFollowing(data.following);
+    } 
+  }
+
+  // get the data for the user that owns the page
   const getUserData = async () => {
-    // const x = await client.getHeight();
-    // const x = await client.getChainId()
-    // console.log(x)
     const path = window.location.pathname;
     const uid = path.substring(path.lastIndexOf("/") + 1);
+    setPageOwnerId(uid);
     // get db reference to current user
     const docRef = doc(db, "users", `${uid}`);
     const docSnap = await getDoc(docRef);
     if (auth) {
       setIsOwner(auth.currentUser?.uid === uid)
+      setUserClient(auth.currentUser);
     }
     if (docSnap.exists()) {
       const data = docSnap.data();
       setDisplayName(`${data.firstName} ${data.lastName}`);
       setPrimaryWallet(data.primaryWallet);
+      
 
       // download profile URL from db
       if (data.profilePicture) {
@@ -139,8 +163,31 @@ export default function User() {
         }
       }
     }
-
     setItems(nfts);
+  }
+
+  const followButtonClicked = async () => {
+    if (!pageOwnerId) return;
+
+    // get the index for the page owner if it exists
+    let newFollowing = [...following];
+    const followerIndex = newFollowing.indexOf(pageOwnerId);
+
+    // remove or add page owner ID from client's follow array
+    if (isFollowing) {
+      newFollowing.splice(followerIndex, 1);
+      setIsFollowing(false);
+    } else {
+      newFollowing.push(pageOwnerId);
+      setIsFollowing(true);
+    }
+
+    // update db
+    await updateDoc(doc(db, "users", `${userClient.uid}`), {
+      following: newFollowing
+    })
+
+    getClientData();
 
   }
 
@@ -157,6 +204,19 @@ export default function User() {
           {rewardAvailable ? 'Claim Reward' : 'No Rewards Available'}
         </button>
         <HelpCircle data-tip data-for='rewards-tool-tip'/>
+      </div>
+    );
+  }
+
+  const renderFollowButton = () => {
+    return(
+      <div className="user-follow-wrapper">
+        <button 
+          className={`primary-button ${isFollowing ? 'following' : ''}`}
+          onClick={followButtonClicked}
+        >
+          {isFollowing ? "Following" : "Follow"}
+        </button>
       </div>
     );
   }
@@ -186,6 +246,7 @@ export default function User() {
             {bio}
           </p>
           {isOwner && renderRewardsButton()}
+          {!isOwner && renderFollowButton()}
         </section>
       </section>
       <section className="content-filter-wrapper">
