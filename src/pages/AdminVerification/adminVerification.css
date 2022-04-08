@@ -1,4 +1,4 @@
-.requests-notice {
+.notice {
   font-weight: bold;
   width: 100%;
   display: flex;
@@ -11,7 +11,7 @@
   border-radius: 10px;
 }
 
-.verification-request {
+.verification-request, .user-report {
   background: white;
   padding: 1em;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -20,34 +20,36 @@
   display: flex;
 }
 
-.verification-request .verification-request-data {
+.verification-request .verification-request-data, .verification-request .report-data, .user-report .verification-request-data, .user-report .report-data {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.verification-request .verification-request-image-wrapper {
+.verification-request .verification-request-image-wrapper, .user-report .verification-request-image-wrapper {
   height: 230px;
   width: 230px;
+  min-width: 230px;
+  min-height: 230px;
   background: red;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 10px;
   margin-right: 1em;
 }
 
-.verification-request .verification-request-section {
+.verification-request .verification-request-section, .user-report .verification-request-section {
   margin-bottom: 0.5em;
 }
 
-.verification-request .verification-request-action-section {
+.verification-request .verification-request-action-section, .user-report .verification-request-action-section {
   display: flex;
 }
 
-.verification-request .verification-request-action-section button {
+.verification-request .verification-request-action-section button, .user-report .verification-request-action-section button {
   margin-right: 1em;
   width: 150px;
 }
 
-.verification-request .verification-request-action-section button:last-child {
+.verification-request .verification-request-action-section button:last-child, .user-report .verification-request-action-section button:last-child {
   background-color: #771515;
 }

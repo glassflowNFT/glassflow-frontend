@@ -9,11 +9,14 @@ import { useBetween } from 'use-between';
 import CardGallery from "../../components/CardGallery/CardGallery";
 import { useNavigate } from 'react-router';
 import { auth, db, storage } from "../../firebase-config";
-import { collection, updateDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, updateDoc, doc, getDoc, getDocs, query, where, setDoc } from "firebase/firestore";
 import ReactTooltip from "react-tooltip";
 import { configs } from '../../config';
 import { NFT_PREVIEW_DATA } from '../../interfaces';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { Modal } from '@material-ui/core';
+import { uid } from "uid";
+import { useSnackbar } from 'notistack';
 
 const count = Math.round(Math.random() * (500 - 0) + 0);
 const bgGradient = { background: gradient(count.toString()) };
@@ -23,6 +26,7 @@ export default function User() {
   const useSharedKeplr = () => useBetween(useKeplr);
   const { account, readOnlyClient } = useSharedKeplr();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   
   // user profile data
   const [displayName, setDisplayName] = useState<string>("");
@@ -38,6 +42,8 @@ export default function User() {
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [following, setFollowing] = useState<string[]>([]);
   const [pageOwnerId, setPageOwnerId] = useState<string>();
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+  const [reportDescription, setReportDescription] = useState<string>("");
 
   useEffect(() => {
     // check if the current user is the owner of this page
@@ -208,21 +214,82 @@ export default function User() {
     );
   }
 
+  const renderReportButton = () => {
+    return(
+      <button 
+        className={`primary-button report-user-button`}
+        onClick={() => setShowReportModal(true)}
+      >
+        Report User
+      </button>
+    );
+  }
+
   const renderFollowButton = () => {
     return(
-      <div className="user-follow-wrapper">
-        <button 
-          className={`primary-button ${isFollowing ? 'following' : ''}`}
-          onClick={followButtonClicked}
-        >
-          {isFollowing ? "Following" : "Follow"}
-        </button>
-      </div>
+      <button 
+        className={`primary-button follow-user-button ${isFollowing ? 'following' : ''}`}
+        onClick={followButtonClicked}
+      >
+        {isFollowing ? "Following" : "Follow"}
+      </button>
     );
+  }
+
+  const submitUserReport = async() => {
+    // generate unique ID for the report
+    const id = uid();
+    // create data
+    const reportData = {
+      reportId: id,
+      submitter: userClient?.uid,
+      reportedUser: pageOwnerId,
+      reportDescription: reportDescription
+    }
+    // save the data in the reports db
+    setDoc(doc(db, "reports", id), reportData)
+    .then(() => {
+      enqueueSnackbar(`Report successfully submitted. Your report ID is: ${id}` ,{
+        variant: "success"
+      });
+      setReportDescription("");
+      setShowReportModal(false);
+    })
+    .catch(() => {
+      enqueueSnackbar(`User report failed. Please contact a site admin` ,{
+        variant: "error"
+      });
+    });
+  }
+
+  const renderReportModal = () => {
+    return (
+      <Modal
+        open={showReportModal}
+        onClose={() => setShowReportModal(false)}
+        className="modal fade-in"
+      >
+        <div className="user-report-modal fade-in">
+          <span>Please describe the reason for this report</span>
+          <textarea 
+            className="report-description"
+            onInput={(e:any) => setReportDescription(e.target.value)}
+            value={reportDescription}
+          />
+          <button 
+            className="primary-button"
+            onClick={submitUserReport}
+          >
+            Submit Report
+          </button>
+        </div>
+      </Modal>
+    )
   }
 
   return (
     <div className="user-wrapper page-wrapper">
+      {renderReportModal()}
       <section className="user-info-wrapper">
         <div className="profile-wrapper" style={bgGradient}>
           {profilePicture &&
@@ -246,7 +313,10 @@ export default function User() {
             {bio}
           </p>
           {isOwner && renderRewardsButton()}
-          {!isOwner && renderFollowButton()}
+          <div className="user-action-buttons">
+            {!isOwner && renderFollowButton()}
+            {!isOwner && renderReportButton()}
+          </div>
         </section>
       </section>
       <section className="content-filter-wrapper">

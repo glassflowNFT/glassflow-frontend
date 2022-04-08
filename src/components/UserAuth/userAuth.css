@@ -1,8 +1,4 @@
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 .auth-wrapper {
   background: var(--almost-white);

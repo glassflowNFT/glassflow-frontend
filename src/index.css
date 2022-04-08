@@ -21,6 +21,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .secondary {
   color: var(--secondary-text);
 }

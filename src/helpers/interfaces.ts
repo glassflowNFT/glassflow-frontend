@@ -8,3 +8,10 @@ export interface REQUEST_DATA {
   phoneNumber: string,
   uid: string
 }
+
+export interface REPORT_DATA {
+  reportId: string,
+  submitter: string,
+  reportedUser: string,
+  reportDescription: string
+}
