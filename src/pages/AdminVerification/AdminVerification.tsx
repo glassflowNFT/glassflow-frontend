@@ -36,7 +36,9 @@ export default function AdminVerification() {
         } else {
           navigate("/");
         }
-      } 
+      }
+    } else {
+      navigate("/");
     }
   });
 

@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Home, PlusCircle, AlignLeft, User, Compass, CreditCard, HelpCircle, Settings, LogOut, Zap } from 'react-feather';
+import { Home, PlusCircle, AlignLeft, User, Compass, CreditCard, HelpCircle, Settings, LogOut, Zap, UserCheck } from 'react-feather';
 import { Link } from "react-router-dom";
 import { useKeplr } from "../../components/useKeplr";
 import { useBetween } from 'use-between';
@@ -20,6 +20,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<any>();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
   const { activateBrowserWallet, account, chainConfig } = useSharedKeplr();
   const { enqueueSnackbar } = useSnackbar();
@@ -39,6 +40,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
         setDisplayName(`${firstName} ${lastName}`);
         setUserLoggedIn(true);
         setUser(user);
+        if (docSnap.data().isAdmin && docSnap.data().isAdmin === true) setIsAdmin(true);
       } 
     } else {
       setDisplayName("Login / Signup");
@@ -128,6 +130,12 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
             <HelpCircle/>
             <Link to="/support">FAQ</Link>
           </div>
+          {isAdmin && 
+            <div className="dropdown-item">
+              <UserCheck/>
+              <Link to="/admin/verification">Admin</Link>
+            </div>
+          }
           {user &&
             <div className="dropdown-item">
               <Settings/>
