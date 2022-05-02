@@ -117,7 +117,7 @@ export default function Asset() {
 
   const placeListing = async () => {
 
-    if (!client) 
+    if (!client || !account) 
       return promptWalletConnect(enqueueSnackbar);
     else if (!assetListingPriceInput || assetListingPriceInput === "") 
       return enqueueSnackbar('Please enter a valid listing price', {variant: "error"});
@@ -167,7 +167,7 @@ export default function Asset() {
 
   const bidListing = async () => {
 
-    if (!client) return promptWalletConnect(enqueueSnackbar);
+    if (!client || !account) return promptWalletConnect(enqueueSnackbar);
 
     const gasPrice = GasPrice.fromString("0.05upebble");
 
@@ -201,7 +201,7 @@ export default function Asset() {
 
   const removeListing = async () => {
 
-    if (!client) return promptWalletConnect(enqueueSnackbar);
+    if (!client || !account) return promptWalletConnect(enqueueSnackbar);
 
     const gasPrice = GasPrice.fromString("0.05upebble");
     const executeFee = calculateFee(400_000, gasPrice);

@@ -67,7 +67,7 @@ export default function CardGallery (props: {cardClicked: (e: any) => void, item
         </div>
         <div className="side-filter-item">
           <span className="side-filter-item-header">
-            Status 
+            Collections 
             <ChevronDown/>
           </span>
         </div>

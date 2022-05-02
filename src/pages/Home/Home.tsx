@@ -54,11 +54,11 @@ export default function Home() {
           <p>
             NFT Minting & Cannabis Community Integration
           </p>
-            <Link to={"genesis"}>
-              <button className="primary-button">
-                  Genesis Launch<ChevronRight />
-              </button>
-            </Link>
+          <Link to={"genesis"}>
+            <button className="primary-button">
+                Genesis Launch<ChevronRight />
+            </button>
+          </Link>
         </section>
         <section className="hero-image">
           <img

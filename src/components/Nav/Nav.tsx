@@ -22,7 +22,7 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const useSharedKeplr = () => useBetween(useKeplr);
-  const { activateBrowserWallet, account, chainConfig } = useSharedKeplr();
+  const { activateBrowserWallet, account, chainConfig, disconnect } = useSharedKeplr();
   const { enqueueSnackbar } = useSnackbar();
   const auth = getAuth();
 
@@ -96,16 +96,23 @@ export default function Nav(props: {setShowAuth: (show: boolean) => void}) {
   }
 
   const connectWallet = async () => {
-    await activateBrowserWallet().then((err: string) => {
-      if (!err)
-        enqueueSnackbar('Successfully connected wallet' ,{
-          variant: "info"
-        });
-      else 
-        enqueueSnackbar(err ,{
-          variant: "error"
-        });
-    });
+    if (!account) {
+      await activateBrowserWallet().then((err: string) => {
+        if (!err)
+          enqueueSnackbar('Successfully connected wallet' ,{
+            variant: "info"
+          });
+        else 
+          enqueueSnackbar(err ,{
+            variant: "error"
+          });
+      });
+    } else {
+      disconnect();
+      enqueueSnackbar('Successfully disconnected wallet' ,{
+        variant: "info"
+      });
+    }
   }
 
   const renderDropdown = () => {

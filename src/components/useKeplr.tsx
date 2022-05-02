@@ -6,11 +6,11 @@ import { configs } from "../config";
 export function useKeplr() {
 
   // state vars
-  const [account, setAccount] = useState<string>('');
+  const [account, setAccount] = useState<string | undefined>('');
   const [active, setActive] = useState<boolean>(false);
-  const [signer, setSigner] = useState<OfflineSigner>();
+  const [signer, setSigner] = useState<OfflineSigner | undefined>();
   const [client, setClient] = useState<SigningCosmWasmClient>();
-  const [addressPrefix, setAddressPrefix] = useState<string>("");
+  const [addressPrefix, setAddressPrefix] = useState<string | undefined>("");
   const [readOnlyClient, setReadOnlyClient] = useState<CosmWasmClient>();
   const chainConfig = configs.cliffnet;
 
@@ -26,6 +26,15 @@ export function useKeplr() {
     // setup client for reading chain data without connected wallet
     const readOnlyClient = await CosmWasmClient.connect(chainConfig.rpc);
     setReadOnlyClient(readOnlyClient);
+  }
+
+  const disconnect = async () => {
+    // update state vars
+    setAccount(undefined);
+    setAddressPrefix(undefined);
+    setSigner(undefined);
+    setClient(undefined);
+    setActive(false); 
   }
 
   // activate kepler
@@ -65,6 +74,7 @@ export function useKeplr() {
 
   return { 
     activateBrowserWallet, 
+    disconnect,
     addressPrefix,
     account,
     active,

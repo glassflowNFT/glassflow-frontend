@@ -31,6 +31,10 @@
   font-family: 'Poppins Black', sans-serif;
 }
 
+.call-to-action a {
+  text-decoration: none;
+}
+
 .call-to-action button {
   width: auto;
   height: 80px;

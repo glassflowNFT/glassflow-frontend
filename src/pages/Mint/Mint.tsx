@@ -213,7 +213,10 @@ export default function Mint() {
   }
 
   const deployCollection = async():Promise<string> => {
-    if (!client) return "";
+    if (!client || !account) {
+      promptWalletConnect(enqueueSnackbar);
+      return ""
+    }
     // Upload contract
     const gasPrice = GasPrice.fromString("0.05upebble");
     const instantiateFee = calculateFee(500_000, gasPrice);
