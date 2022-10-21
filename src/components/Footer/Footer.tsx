@@ -15,7 +15,7 @@ export default function Footer() {
           </ul>
           <ul>
             <li className="footer-first">Company</li>
-            <li><a href="/">About Us</a></li>
+            <li><a href="https://discover-defi.gitbook.io/welcome-to-gitbook/whats-to-come/messages-from-our-team">About Us</a></li>
             <li><Link to="support">Support</Link></li>
             <li><a href="/">Careers</a></li>
           </ul>

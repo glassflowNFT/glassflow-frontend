@@ -4,8 +4,8 @@
 }
 
 .footer-top {
-  color: white;
-  background: var(--blue-accent);
+  color: rgb(83, 22, 180);
+  background: var(--red-accent);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -98,6 +98,7 @@
   .footer-bottom {
     flex-direction: column;
     padding: 1em 1em;
+    color: rgb(159, 59, 59);
   }
   .footer-socials {
     width: 100%;

@@ -122,7 +122,7 @@ export default function Asset() {
     else if (!assetListingPriceInput || assetListingPriceInput === "") 
       return enqueueSnackbar('Please enter a valid listing price', {variant: "error"});
 
-    const gasPrice = GasPrice.fromString("0.05upebble");
+    const gasPrice = GasPrice.fromString("0.05upersyx");
     const executeFee = calculateFee(400_000, gasPrice);
 
     // transfer ownership to auction contract
@@ -150,7 +150,7 @@ export default function Asset() {
               amount: assetListingPriceInput,
               info: {
                 native_token: {
-                    denom: "upebble"
+                    denom: "upersyx"
                 }
               },
           },
@@ -169,7 +169,7 @@ export default function Asset() {
 
     if (!client || !account) return promptWalletConnect(enqueueSnackbar);
 
-    const gasPrice = GasPrice.fromString("0.05upebble");
+    const gasPrice = GasPrice.fromString("0.05upersyx");
 
     const executeFee = calculateFee(400_000, gasPrice);
     const create_result = await client.execute(
@@ -185,7 +185,7 @@ export default function Asset() {
                   //     contract_addr: "terraxxx"
                   // },
                   native_token: {
-                      denom: "upebble"
+                      denom: "upersyx"
                   }
               },                   
             },
@@ -193,7 +193,7 @@ export default function Asset() {
         },
         executeFee,
         "",
-        [{denom: "upebble", amount: assetBidPriceInput || "0"}]
+        [{denom: "upersyx", amount: assetBidPriceInput || "0"}]
     );
     console.log("res: ", create_result);
     loadAssetData();
@@ -203,7 +203,7 @@ export default function Asset() {
 
     if (!client || !account) return promptWalletConnect(enqueueSnackbar);
 
-    const gasPrice = GasPrice.fromString("0.05upebble");
+    const gasPrice = GasPrice.fromString("0.05upersyx");
     const executeFee = calculateFee(400_000, gasPrice);
 
     const create_result = await client.execute(

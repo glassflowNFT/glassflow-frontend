@@ -1,6 +1,6 @@
 .top-search-wrapper {
   width: 100%;
-  background: var(--input);
+  background: var(--background-color);
   margin: 0 1em;
   display: flex;
   align-items: center;

@@ -12,7 +12,7 @@ export function useKeplr() {
   const [client, setClient] = useState<SigningCosmWasmClient>();
   const [addressPrefix, setAddressPrefix] = useState<string | undefined>("");
   const [readOnlyClient, setReadOnlyClient] = useState<CosmWasmClient>();
-  const chainConfig = configs.cliffnet;
+  const chainConfig = configs.athena1;
 
   useEffect(() => {
     setup();

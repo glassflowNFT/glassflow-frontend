@@ -1,114 +1,107 @@
 const local = {
-  chainId: "testing",
-  chainName: "Testing",
-  addressPrefix: "wasm",
-  rpcUrl: "http://localhost:26659",
-  httpUrl: "http://localhost:1317",
-  faucetUrl: "http://localhost:8000",
-  feeToken: "ucosm",
-  stakingToken: "uatom",
+  chainId: "athena-1",
+  chainName: "terpnet",
+  addressPrefix: "terp",
+  rpcUrl: "https://rpc-terp.zenchainlabs.io/",
+  httpUrl: "https://api-terp.zenchainlabs.io/",
+  faucetUrl: "",
+  feeToken: "upersyx",
+  stakingToken: "uterpx",
   coinMap: {
-    ucosm: { denom: "COSM", fractionalDigits: 6 },
-    uatom: { denom: "ATOM", fractionalDigits: 6 },
+    uterpx: { denom: "TERPX", fractionalDigits: 6 },
+    upersyx: { denom: "PERSYX", fractionalDigits: 6 },
   },
-  gasPrice: 0.025,
+  gasPrice: 0.0333,
 };
 
-const uninet = {
-  chainId: "uni-2",
-  chainName: "Uni",
-  rpc: "https://rpc.uni.junomint.com:443/",
-  rest: "https://rpc-juno.nodes.guru/rest",
-  addressPrefix: "juno",
-  stakeCurrency: {
-    coinDenom: "JUNOX",
-    coinMinimalDenom: "ujunox",
-    coinDecimals: 6
+const testnet = {
+  chainId: "athena-1",
+  chainName: "Terp Network",
+  addressPrefix: "terp",
+  rpcUrl: "https://rpc-terp.zenchainlabs.io/",
+  httpUrl: "https://api-terp.zenchainlabs.io/",
+  faucetUrl: "",
+  feeToken: "upersyx",
+  stakingToken: "uterpx",
+  coinMap: {
+    uterpx: { denom: "TERPX", fractionalDigits: 6 },
+    upersyx: { denom: "PERSYX", fractionalDigits: 6 },
   },
-  currencies: [{
-    coinDenom: "JUNOX",
-    coinMinimalDenom: "ujunox",
-    coinDecimals: 6
-  }],
-  feeCurrencies: [{
-    coinDenom: "JUNOX",
-    coinMinimalDenom: "ujunox",
-    coinDecimals: 6
-  }],
+  gasPrice: 0.0333,
 };
 
-const cliffnet = {
-  chainId: "cliffnet-1",
-  chainName: "Cliffnet",
-  addressPrefix: "wasm",
-  rpc: "https://rpc.cliffnet.cosmwasm.com:443/",
-  rest: "https://lcd.cliffnet.cosmwasm.com/",
+const athena1 = {
+  chainId: "athena-1",
+  chainName: "Terp Network",
+  addressPrefix: "terp",
+  rpc: "https://rpc-terp.zenchainlabs.io/",
+  rest:"https://api-terp.zenchainlabs.io/",
   bip44: {
     // You can only set the coin type of BIP44.
     // 'Purpose' is fixed to 44.
     coinType: 118,
   },
   bech32Config: {
-    bech32PrefixAccAddr: "wasm",
-    bech32PrefixAccPub: "wasmpub",
-    bech32PrefixValAddr: "wasmvaloper",
-    bech32PrefixValPub: "wasmvaloperpub",
-    bech32PrefixConsAddr: "wasmvalcons",
-    bech32PrefixConsPub: "wasmvalconspub"
+    bech32PrefixAccAddr: "terp",
+    bech32PrefixAccPub: "terppub",
+    bech32PrefixValAddr: "terpvaloper",
+    bech32PrefixValPub: "terpvaloperpub",
+    bech32PrefixConsAddr: "terpvalcons",
+    bech32PrefixConsPub: "terpvalconspub"
   },
-  stakeCurrency: { coinDenom: "PEBBLE", coinMinimalDenom: "upebble", coinDecimals: 6 },
+  stakeCurrency: { coinDenom: "PERSYX", coinMinimalDenom: "upersyx", coinDecimals: 6 },
   currencies: [
-    { coinDenom: "PEBBLE", coinMinimalDenom: "upebble", coinDecimals: 6 },
+    { coinDenom: "TERPX", coinMinimalDenom: "upersyx", coinDecimals: 6 },
   ],
   feeCurrencies: [
-    { coinDenom: "PEBBLE", coinMinimalDenom: "upebble", coinDecimals: 6 },
+    { coinDenom: "PERSYX", coinMinimalDenom: "upersyx", coinDecimals: 6 },
   ],
 };
 
 const pebblenet = {
-  chainId: "pebblenet-1",
-  chainName: "Pebblenet",
-  addressPrefix: "wasm",
+  chainId: "athena-1",
+  chainName: "Terp NEtwork ",
+  addressPrefix: "terp",
   rpc: "https://rpc.pebblenet.cosmwasm.com",
-  rest: "https://rpc.pebblenet.cosmwasm.com/rest",
-  httpUrl: "https://lcd.pebblenet.cosmwasm.com",
-  faucetUrl: "https://faucet.pebblenet.cosmwasm.com",
+  rest: "https://terp.api.bccnodes.com/",
+  httpUrl: "https://terp.api.bccnodes.com/",
+  faucetUrl: "",
   bip44: {
     // You can only set the coin type of BIP44.
     // 'Purpose' is fixed to 44.
     coinType: 118,
   },
   bech32Config: {
-    bech32PrefixAccAddr: "cosmos",
-    bech32PrefixAccPub: "cosmospub",
-    bech32PrefixValAddr: "cosmosvaloper",
-    bech32PrefixValPub: "cosmosvaloperpub",
-    bech32PrefixConsAddr: "cosmosvalcons",
-    bech32PrefixConsPub: "cosmosvalconspub"
+    bech32PrefixAccAddr: "terp",
+    bech32PrefixAccPub: "terppub",
+    bech32PrefixValAddr: "terpvaloper",
+    bech32PrefixValPub: "terpvaloperpub",
+    bech32PrefixConsAddr: "terpvalcons",
+    bech32PrefixConsPub: "terpvalconspub"
   },
   stakeCurrency: {
-    coinDenom: "JUNOX",
-    coinMinimalDenom: "ujunox",
+    coinDenom: "TERPX",
+    coinMinimalDenom: "uterpx",
     coinDecimals: 6
   },
   currencies: [
-    { coinDenom: "ROCK", coinMinimalDenom: "urock", coinDecimals: 6 },
+    { coinDenom: "TERPX", coinMinimalDenom: "uterpx", coinDecimals: 6 },
   ],
   feeCurrencies: [
-    { coinDenom: "PEBBLE", coinMinimalDenom: "upebble", coinDecimals: 6 },
+    { coinDenom: "PERSYX", coinMinimalDenom: "upersyx", coinDecimals: 6 },
   ],
 };
 
 const contractAddresses = {
-  AUCTION_CONTRACT: 'wasm1dy8rzv9fvaehucjt0yzgs44tgpju5pc3fppd22k80pvnum4td98qel0ah7',
-  CW721_CONTRACT: 'wasm1yymg0m85ysfje6dl805xr8kjtlk7krm82uked5lf9v9a9p6p9pqqarzpwm',
+  AUCTION_CONTRACT: '',
+  CW721_CONTRACT: '',
 }
 
 export const configs = { 
   local, 
-  uninet, 
+  testnet, 
+  athena1,
   pebblenet,
-  cliffnet,
   contractAddresses
 };
 

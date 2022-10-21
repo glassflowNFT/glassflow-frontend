@@ -1,11 +1,11 @@
 :root {
-  --blue-accent: #5874B0;
+  --blue-accent: #33d3ff;
   --red-accent: #D1495B;
-  --almost-white: #FEFFFE;
+  --almost-white: #60cdeb;
   --almost-black: #242423;
-  --secondary-text: #373737;
-  --border-color: #9F9F9F;
-  --input: #F2F4F8;
+  --secondary-text: #c480ff;
+  --border-color: #c8c8c8;
+  --input: #0103047a;
 }
 
 
@@ -13,6 +13,7 @@
 .App {
   width: 100%;
   height: auto;
+  --background-color: #323232; 
 }
 
 .App-logo {
@@ -34,11 +35,12 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(153, 192, 28);
 }
 
 .App-link {
   color: #61dafb;
+ background-color: #323232; 
 }
 
 @keyframes App-logo-spin {

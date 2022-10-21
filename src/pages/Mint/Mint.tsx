@@ -218,7 +218,7 @@ export default function Mint() {
       return ""
     }
     // Upload contract
-    const gasPrice = GasPrice.fromString("0.05upebble");
+    const gasPrice = GasPrice.fromString("0.05upersyx");
     const instantiateFee = calculateFee(500_000, gasPrice);
     const codeId = 301;
     const msg:any = { 
