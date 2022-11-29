@@ -45,8 +45,8 @@ code {
   border-radius: 10px;
   border: none;
   padding: 1em 1em;
-  background: var(--blue-accent);
-  color: white;
+  background: var(--gold-accent);
+  color: #90579F;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   transition: all ease 0.3s;
   font-weight: bold;

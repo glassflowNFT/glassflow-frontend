@@ -85,8 +85,8 @@
 
 .user-action-buttons .follow-user-button.following {
   background: white;
-  border: 2px solid var(--blue-accent);
-  color: var(--blue-accent);
+  border: 2px solid var(--gold-accent);
+  color: var(--gold-accent);
 }
 
 .content-filter-wrapper {
@@ -117,14 +117,14 @@
 }
 
 .content-filter-wrapper .content-filter.active {
-  border-bottom: 2px solid var(--blue-accent);
-  color: var(--blue-accent);
+  border-bottom: 2px solid var(--gold-accent);
+  color: var(--gold-accent);
 }
 
 .user-info svg {
   cursor: pointer;
   width: 20px;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   margin: 0 5px;
   transition: all ease 0.3s;
 }
@@ -159,7 +159,7 @@
 .user-content .search-wrapper svg {
   position: absolute;
   top: 50%;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .user-wrapper.page-wrapper {
@@ -199,7 +199,7 @@
 .user-info svg {
   cursor: pointer;
   width: 20px;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   margin: 0 5px;
   transition: all ease 0.3s;
 }
@@ -239,7 +239,7 @@
 .user-content .search-wrapper svg {
   position: absolute;
   top: 50%;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 @media (max-width: 1000px) {

@@ -33,7 +33,7 @@
 .collection-info svg {
   cursor: pointer;
   width: 20px;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   transform: translateY(5px);
   margin: 0 5px;
   transition: all ease 0.3s;
@@ -46,7 +46,10 @@
 .collection-info .collection-name {
   font-weight: bold;
   text-transform: capitalize;
+  
+
 }
+
 
 .collection-info .collection-address {
   padding-left: 0.5em;
@@ -78,7 +81,7 @@
 
 .collection-stats-wrapper .stat-title {
   font-weight: bold;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .collection-stats-wrapper .collection-creator {

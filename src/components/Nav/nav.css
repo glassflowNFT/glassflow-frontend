@@ -8,7 +8,7 @@
 }
 
 .nav-wrapper .nav-wrapper-large .site-title {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   font-weight: bolder;
   font-size: 20pt;
   text-decoration: none;
@@ -20,6 +20,7 @@
   font-family: 'Poppins', sans-serif;
   font-size: 1em;
   padding: 0;
+  color: var(--almost-purple);
 }
 
 .nav-wrapper .nav-wrapper-large a {
@@ -36,9 +37,9 @@
 
 .dropdown-wrapper {
   position: relative;
-  background: var(--blue-accent);
+  background: var(--gold-accent);
   border-radius: 10px;
-  color: white;
+  color: #222222;
   display: flex;
   padding: 5px 1em;
   cursor: pointer;
@@ -77,7 +78,7 @@
 }
 
 .dropdown-item {
-  color: var(--almost-black);
+  color: var(--almost-purple);
   text-align: center;
   display: flex;
   margin: 5px 0;
@@ -92,18 +93,18 @@
 }
 
 .dropdown-item a {
-  color: var(--almost-black);
+  color: var(--almost-purple);
   text-decoration: none;
   transition: all ease 0.3s;
 }
 
 .dropdown-item:hover {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   background: rgba(0, 0, 0, 0);
 }
 
 .dropdown-item:hover a {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .nav-wrapper ul {
@@ -134,11 +135,11 @@
 }
 
 .nav-wrapper ul li a.active {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .nav-wrapper ul li a:hover {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 @media (max-width: 1200px) {
@@ -150,6 +151,7 @@
   }
   .dropdown-items-wrapper .multi {
     display: flex;
+    color: var(--gold-accent);
   }
 }
 

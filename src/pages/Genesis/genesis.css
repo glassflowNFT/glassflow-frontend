@@ -7,6 +7,7 @@
 .launch-wrapper {
   height: 400px;
   width: 900px;
+  color: var(--gold-accent);
   padding: 1em;
   border-radius: 10px;
   border: 1px solid var(--border-color);
@@ -30,6 +31,7 @@
 .launch-wrapper .launch-wrapper-left .launch-description {
   font-size: 0.9em;
   margin-bottom: 1em;
+  color: var(--almost-purple);
 }
 
 .launch-wrapper .launch-wrapper-left .launch-creator {
@@ -51,6 +53,7 @@
   flex-direction: column;
   justify-content: flex-end;
   background: var(--input);
+  color: var(--almost-purple);
   padding: 1em;
   border-radius: 10px;
 }
@@ -63,7 +66,7 @@
 }
 
 .launch-stats .launch-stat-wrapper span:nth-child(1) {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .launch-wrapper-left button {

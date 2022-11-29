@@ -12,7 +12,7 @@
 }
 
 .top-search-wrapper svg {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   width: 20px;
   margin-right: 0.5em;
 }
@@ -53,5 +53,5 @@
   padding-left: 0.5em;
   display: block;
   margin: 0.5em 0;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }

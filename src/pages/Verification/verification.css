@@ -40,7 +40,7 @@
 
 .verification-wrapper .container button {
   height: 40px;
-  background-color: var(--blue-accent);
+  background-color: var(--gold-accent);
   color: white;
   border-radius: 10px;
   border: none;
@@ -64,7 +64,7 @@
 }
 
 .verification-wrapper .container .header {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   font-weight: bold;
   font-size: 1.5em;
 }

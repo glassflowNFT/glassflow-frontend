@@ -1,11 +1,11 @@
 :root {
-  --blue-accent: #5874B0;
+  --gold-accent: #F3C674;
   --red-accent: #D1495B;
-  --almost-white: #FEFFFE;
-  --almost-black: #242423;
-  --secondary-text: #373737;
-  --border-color: #9F9F9F;
-  --input: #F2F4F8;
+  --almost-white: #cbd2d1;
+  --almost-purple: #90579F;
+  --secondary-text: #bdb9be;
+  --border-color: #0f0101;
+  --input: #1F1F1F;
 }
 
 
@@ -34,7 +34,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(24, 84, 107);
 }
 
 .App-link {

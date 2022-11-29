@@ -9,7 +9,7 @@
 
 .collections-section .home-section-header h1 {
   font-size: 20pt;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   margin-bottom: 0px;
 }
 
@@ -90,6 +90,7 @@
 
 .collections-wrapper .collection-preview .collection-name {
   font-weight: bold;
+  color: #90579F;
 }
 
 .collections-wrapper .collection-preview .collection-description {
@@ -100,7 +101,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   font-weight: bold;
   transition: all ease 0.3s;
 }
@@ -156,6 +157,7 @@
 .artists-wrapper .artist .artist-info .artist-name {
   font-weight: bold;
   margin-top: 1em;
+  color: var(--almost-purple);
 }
 
 .artists-wrapper .artist .artist-info span {
@@ -163,7 +165,7 @@
 }
 
 .artists-wrapper .artist .artist-info svg {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .artists-wrapper .artist .artist-bio {
@@ -174,7 +176,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   font-weight: bold;
   transition: all ease 0.3s;
 }

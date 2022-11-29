@@ -1,11 +1,13 @@
 .footer-wrapper {
   width: 100%;
   height: auto;
+  
+  
 }
 
 .footer-top {
-  color: white;
-  background: var(--blue-accent);
+  color: var(--gold-accent);
+  background: var(--almost-purple);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -40,6 +42,7 @@
 .footer-top .footer-section ul .footer-first {
   font-weight: bold;
   font-size: 1.2em;
+  color: var();
 }
 
 .footer-bottom {
@@ -60,7 +63,7 @@
 
 .footer-bottom .footer-socials .social-icons svg {
   margin-left: 2em;
-  color: var(--blue-accent);
+  color: var(--almost-purple);
   transition: all ease 0.3s;
 }
 

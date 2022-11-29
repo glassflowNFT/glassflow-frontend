@@ -19,7 +19,7 @@
   position: absolute;
   top: 50%;
   transform: translate(0.6em, -50%);
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .content-bottom {
@@ -37,7 +37,7 @@
 }
 
 .side-filter-wrapper svg {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .side-filter-wrapper.close {
@@ -118,9 +118,9 @@
 }
 
 .content-wrapper .content .image-wrapper {
-  width: 100%;
-  height: 150px;
-  overflow: hidden;
+  width: 50%;
+  height: 50%;
+  overflow: visible;
   border-radius: 10px;
 }
 
@@ -144,7 +144,7 @@
 }
 
 .content-wrapper .content .content-info svg {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
 }
 
 .content-wrapper .content .content-bio {
@@ -155,7 +155,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   font-weight: bold;
   transition: all ease 0.3s;
 }

@@ -110,7 +110,7 @@ export default function Search() {
     <div className="top-search-wrapper">
       <SearchIcon />
       <input
-        placeholder="Search for item or collections names"
+        placeholder="Search for item or collections names" // TODO: change search font color
         onFocus={() => setInputFocus(true)}
         onBlur={onBlur}
         onInput={(e: any) => setSearchValue(e.target.value)}

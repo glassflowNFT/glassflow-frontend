@@ -5,7 +5,7 @@
 .support-wrapper .accordion-header {
   border-radius: 10px;
   overflow: hidden;
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -19,7 +19,7 @@
 }
 
 .support-wrapper h1 {
-  color: var(--blue-accent);
+  color: var(--gold-accent);
   font-size: 35pt;
   margin-top: 0;
   margin-bottom: 0;
