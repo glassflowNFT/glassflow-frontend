@@ -5,7 +5,7 @@
 
 .content-container .search-wrapper {
   position: relative;
-  color: var(--gold-accent-dark);
+  color: var(--gold-accent-dark );
 }
 
 .content-container .search-wrapper input {

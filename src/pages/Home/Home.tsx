@@ -246,7 +246,7 @@ export default function Home() {
       <div 
         className="artist" 
         key={count}
-        onClick={() => navigate("/user/kidderwibbit")}
+        onClick={() => navigate("/user/kidder_wibbit")}
       >
         <div className="image-wrapper" style={bgGradient}>
           {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
