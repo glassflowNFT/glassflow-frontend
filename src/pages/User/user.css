@@ -81,6 +81,7 @@
 
 .user-action-buttons .report-user-button {
   background: #b64141;
+  color: var(--gold-accent);
 }
 
 .user-action-buttons .follow-user-button.following {
@@ -112,6 +113,7 @@
   cursor: pointer;
   outline: none;
   transition: all ease 0.3s;
+  color: var(--gold-accent-dark);
   border-bottom: 2px solid rgba(0, 0, 0, 0);
   font-size: 1em;
 }

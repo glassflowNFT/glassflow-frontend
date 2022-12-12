@@ -177,7 +177,7 @@ export default function Home() {
         <div 
         className="artist" 
         key={count}
-        onClick={() => navigate("/user/xyz")}
+        onClick={() => navigate("/user/henley")}
       >
         <div className="image-wrapper" style={bgGradient}>
           {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
@@ -191,7 +191,7 @@ export default function Home() {
       <div 
         className="artist" 
         key={count}
-        onClick={() => navigate("/user/xyz")}
+        onClick={() => navigate("/user/mothership")}
       >
         <div className="image-wrapper" style={bgGradient}>
           {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
@@ -205,7 +205,7 @@ export default function Home() {
       <div 
         className="artist" 
         key={count}
-        onClick={() => navigate("/user/xyz")}
+        onClick={() => navigate("/user/shurlok")}
       >
         <div className="image-wrapper" style={bgGradient}>
           {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
@@ -219,7 +219,7 @@ export default function Home() {
       <div 
         className="artist" 
         key={count}
-        onClick={() => navigate("/user/xyz")}
+        onClick={() => navigate("/user/n8")}
       >
       <div className="image-wrapper" style={bgGradient}>
         </div>
@@ -232,13 +232,13 @@ export default function Home() {
       <div 
         className="artist" 
         key={count}
-        onClick={() => navigate("/user/xyz")}
+        onClick={() => navigate("/user/divine_visions")}
       >
         <div className="image-wrapper" style={bgGradient}>
           {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
         </div>
         <div className="artist-info">
-          <span className="artist-name">Henley Bealle</span>
+          <span className="artist-name">Divine Visions</span>
           <span className="artist-bio secondary"></span>
         </div>
       </div>
@@ -246,30 +246,17 @@ export default function Home() {
       <div 
         className="artist" 
         key={count}
-        onClick={() => navigate("/user/xyz")}
+        onClick={() => navigate("/user/kidderwibbit")}
       >
         <div className="image-wrapper" style={bgGradient}>
           {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
         </div>
         <div className="artist-info">
-          <span className="artist-name">Henley Bealle</span>
+          <span className="artist-name">Kidder Wibbet</span>
           <span className="artist-bio secondary"></span>
         </div>
       </div>
 
-      <div 
-        className="artist" 
-        key={count}
-        onClick={() => navigate("/user/xyz")}
-      >
-        <div className="image-wrapper" style={bgGradient}>
-          {/*<img src={`https://picsum.photos/200/${count}`} alt="artist"></img>*/}
-        </div>
-        <div className="artist-info">
-          <span className="artist-name">Henley Bealle</span>
-          <span className="artist-bio secondary"></span>
-        </div>
-      </div>
         </section>
       </section>
       

@@ -5,6 +5,7 @@
 
 .content-container .search-wrapper {
   position: relative;
+  color: var(--gold-accent-dark);
 }
 
 .content-container .search-wrapper input {
@@ -58,6 +59,7 @@
   justify-content: space-between;
   padding: 0 1em;
   margin-bottom: 0.5em;
+  color: var(--gold-accent);
 }
 
 .side-filter-wrapper .side-filter-header span {
@@ -86,6 +88,7 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
+  color: var(--almost-white);
 }
 
 .gallery-load-icon {

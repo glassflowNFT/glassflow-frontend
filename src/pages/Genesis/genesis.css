@@ -2,17 +2,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .launch-wrapper {
-  height: 400px;
-  width: 900px;
+  display: flex;
+  height: 100%;
+  width: 100%;
   color: var(--gold-accent);
   padding: 1em;
   border-radius: 10px;
   border: 1px solid var(--border-color);
   margin: 2em 0;
-  display: flex;
+  
   justify-content: space-between;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -54,7 +56,7 @@
   justify-content: flex-end;
   background: var(--input);
   color: var(--almost-purple);
-  padding: 1em;
+  padding: 4em;
   border-radius: 10px;
 }
 
